@@ -1,0 +1,141 @@
+<!-- <mat-tab-group mat-align-tabs="start" (selectedTabChange)="selectedTab($event)" animationDuration="0ms">
+    <mat-tab *ngFor="let taskTypes of allTaskTypes" label="{{taskTypes.task_type_name}}">
+        <div class="table__row">
+            <mat-card class="table__card">
+                <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+                <mat-card-header class="table__header">
+                    <mat-card-title>{{tableTxt}}</mat-card-title>
+                    <mat-form-field appearance="standard">
+                        <mat-label>Type here to filter</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" #input>
+                    </mat-form-field>
+                </mat-card-header>
+                <div class="mat-elevation-z8">
+                    <table mat-table [dataSource]="dataSource" matSort>
+                        <ng-container matColumnDef="task_id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Task ID </th>
+                            <td mat-cell *matCellDef="let row" (click)="viewTasks(row)"> {{row.task_id}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="disposition_stage">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Stage </th>
+                            <td mat-cell *matCellDef="let row" (click)="viewTasks(row)"> {{row.disposition_stage}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="disposition_status">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                            <td mat-cell *matCellDef="let row" (click)="viewTasks(row)"> {{row.disposition_status}}
+                            </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="assigned_to_full_name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned To </th>
+                            <td mat-cell *matCellDef="let row" (click)="viewTasks(row)"> {{row.assigned_to_full_name}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="assigned_by_full_name">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned By </th>
+                            <td mat-cell *matCellDef="let row" (click)="viewTasks(row)"> {{row.assigned_by_full_name}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="document_url"
+                            *ngIf="displayedAccHoldersColumns.includes('document_url')">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Document URL </th>
+                            <td mat-cell *matCellDef="let row" (click)="viewTasks(row)">
+                                <button mat-button *ngIf="!downloadURLs[row.task_id]"
+                                    (click)="downloadDocFromStorage(row.document_url, row.task_id)">
+                                    Click here to download
+                                </button>
+                                <a *ngIf="downloadURLs[row.task_id]" [href]="downloadURLs[row.task_id]" target="_blank">
+                                    Download Link
+                                </a>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedAccHoldersColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedAccHoldersColumns;"></tr>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="5">No data matching the filter "{{input.value}}"</td>
+                        </tr>
+                    </table>
+                    <mat-paginator [length]="resultsLength" [pageSizeOptions]="[5, 10, 25, 100]"
+                        aria-label="Select page of users" showFirstLastButtons></mat-paginator>
+                </div>
+            </mat-card>
+        </div>
+    </mat-tab>
+</mat-tab-group> -->
+
+<mat-tab-group mat-align-tabs="start" (selectedTabChange)="selectedTab($event)" animationDuration="0ms">
+  <mat-tab *ngFor="let taskType of allTaskTypes" [label]="taskType.task_type_name">
+    <div *ngIf="taskTypeAccess[taskType.task_type_name]?.read" class="table__row">
+      <mat-card class="table__card">
+        <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+        <mat-card-header class="table__header">
+          <mat-card-title>{{tableTxt}}</mat-card-title>
+          <mat-form-field appearance="standard">
+            <mat-label>Type here to filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" #input>
+          </mat-form-field>
+        </mat-card-header>
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="task_id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Task ID </th>
+              <td mat-cell *matCellDef="let row" (click)="viewTasks(row)" data-label="Task ID"> {{row.task_id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="stage">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Disposition Stage </th>
+              <td mat-cell *matCellDef="let row" (click)="viewTasks(row)" data-label="Disposition Stage">
+                {{row.stage}} </td>
+            </ng-container>
+
+
+
+            <ng-container matColumnDef="assigned_to_full_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned To </th>
+              <td mat-cell *matCellDef="let row" (click)="viewTasks(row)" data-label="Assigned To">
+                {{row.assigned_to_full_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="assigned_by_full_name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned By </th>
+              <td mat-cell *matCellDef="let row" (click)="viewTasks(row)" data-label="Assigned By">
+                {{row.assigned_by_full_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="document_url" *ngIf="displayedAccHoldersColumns.includes('document_url')">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Document URL </th>
+              <td mat-cell *matCellDef="let row" data-label="Document URL">
+                <button mat-button *ngIf="!downloadURLs[row.task_id]"
+                  (click)="downloadDocFromStorage(row.document_url, row.task_id)">
+                  Click here to download
+                </button>
+                <a *ngIf="downloadURLs[row.task_id]" [href]="downloadURLs[row.task_id]" target="_blank">
+                  Download Link
+                </a>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedAccHoldersColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedAccHoldersColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="5">No data matching the filter "{{input.value}}"</td>
+            </tr>
+          </table>
+          <mat-paginator [length]="resultsLength" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"
+            showFirstLastButtons></mat-paginator>
+        </div>
+      </mat-card>
+    </div>
+    <div *ngIf="!taskTypeAccess[taskType.task_type_name]?.read">
+      <p>Access denied for this module.</p>
+    </div>
+  </mat-tab>
+</mat-tab-group>

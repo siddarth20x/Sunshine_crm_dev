@@ -1,0 +1,306 @@
+<div class="container-fluid container-fluid-sm container-fluid-md container-fluid-lg container-fluid-xl">
+  <br />
+  <div class="row">
+    <span class="__btns">
+      <span class="material-symbols-outlined"> download </span><a
+        href="../../../assets/download-template/Accounts Upload Template.csv" download>
+        Download Template</a>
+      <button mat-stroked-button (click)="openDeallocateAccUploadDialog()" color="primary"
+        *ngIf="isUploadPrivilegedModule">
+        <span class="material-symbols-outlined"> upload_file </span>De-Allocate
+        Accounts
+      </button>
+      <button mat-raised-button (click)="openAccUploadDialog()" color="primary" *ngIf="isUploadPrivilegedModule">
+        <span class="material-symbols-outlined"> upload_file </span>Upload New
+        Accounts
+      </button>
+      <button mat-raised-button (click)="failedRecordsRedirect()" color="primary">
+        Show Failed Accounts
+      </button>
+      <button mat-raised-button (click)="navigateToUploadedFiles()" color="primary">
+        <span class="material-symbols-outlined"> history </span>View Uploaded Files
+      </button>
+
+    </span>
+  </div>
+  <br />
+  <mat-accordion class="accordion">
+    <mat-expansion-panel [expanded]="step === 1">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="panelTitle">
+          <span>Advanced Search</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="panelContent" [formGroup]="advSearchForm" *ngIf="isReadPrivilegedModule">
+        <mat-form-field appearance="fill">
+          <mat-label>Bank</mat-label>
+          <mat-select name="bank" (selectionChange)="companySelectHandler($event)" formControlName="company_name">
+            <mat-option disabled> --Select-- </mat-option>
+            <mat-option *ngFor="let company of companyArr" [value]="company.company_name">
+              {{ company.company_name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="advSearchForm.get('company_id')?.hasError('required')">Please select bank to
+            continue</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Account No</mat-label>
+          <input matInput formControlName="account_number" />
+          <mat-error *ngIf="advSearchForm.get('account_number')?.hasError('pattern')">Invalid Account Number</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Product Account No</mat-label>
+          <input matInput formControlName="product_account_number" />
+          <mat-error *ngIf="
+              advSearchForm.get('product_account_number')?.hasError('pattern')
+            ">Invalid Product Account Number</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Agreement ID</mat-label>
+          <input matInput formControlName="agreement_id" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Customer ID</mat-label>
+          <input matInput formControlName="customer_id" />
+          <mat-error *ngIf="advSearchForm.get('customer_id')?.hasError('pattern')">Invalid Customer ID
+            Number</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Customer Name</mat-label>
+          <input matInput formControlName="customer_name" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Passport No</mat-label>
+          <input matInput formControlName="passport_number" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Emirates ID Number</mat-label>
+          <input matInput formControlName="emirates_id_number" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>State</mat-label>
+          <input matInput formControlName="state" />
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button class="advSerachBtn" color="primary" (click)="advanceSerachFilters()"
+          [disabled]="isDisabledFilterBtn()">
+          Search
+        </button>
+        <button mat-stroked-button class="advSerachBtn" color="" (click)="advanceSerachClearFilters()">
+          Clear Filters
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <br />
+  <div class="row table__row">
+    <mat-card class="table__card">
+      <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+      <mat-card-header class="table__header">
+        <div class="header-content">
+          <mat-card-title>{{ tableTxt }}</mat-card-title>
+          <div class="header-actions">
+            <button mat-raised-button (click)="downloadAccounts()" color="accent" [disabled]="!myDataArray || myDataArray.length === 0" *ngIf="myDataArray && myDataArray.length > 0" class="download-btn">
+              <span class="material-symbols-outlined"> download </span>Download Accounts
+            </button>
+          
+            <mat-form-field appearance="standard" class="filter-field">
+              <mat-label>Filter by Pending number of days</mat-label>
+              <mat-select [(ngModel)]="pendingDaysFilter" (selectionChange)="filterByPendingDays()">
+                <mat-option value="">All</mat-option>
+                <mat-option value="0-7">0-7 days</mat-option>
+                <mat-option value="8-15">8-15 days</mat-option>
+                <mat-option value="16-30">16-30 days</mat-option>
+                <mat-option value="31-60">31-60 days</mat-option>
+                <mat-option value="61-90">61-90 days</mat-option>
+                <mat-option value="90+">90+ days</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="standard" class="filter-field">
+              <mat-label>Type here to filter</mat-label>
+              <input matInput (keyup)="applyFilter($event)" #input />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-header>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let row" #tooltip="matTooltip" matTooltip="{{ row.lead_status_type_name }}"
+              matTooltipPosition="left" data-label="Status">
+              <span class="material-symbols-outlined" [ngClass]="{
+                  'status-pink': row.lead_status_type_name === 'PENDING',
+                  'status-yellow': row.lead_status_type_name === 'IN PROGRESS',
+                  'status-green': row.lead_status_type_name === 'COMPLETED',
+                  'status-blue': row.lead_status_type_name === 'DEFERRED',
+                  'status-red': row.lead_status_type_name === 'CANCELLED'
+                }">
+                radio_button_checked
+              </span>
+            </td>
+          </ng-container>
+          <!-- <ng-container matColumnDef="lead_id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                        <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}"
+                            data-label="Id">
+                            {{row.lead_id}} </td>
+                    </ng-container> -->
+
+          <ng-container matColumnDef="customer_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer</th>
+            <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{ row.lead_id }}/{{
+                row.company_id
+              }}" data-label="Customer">
+              {{ row.customer_name }}
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="account_number">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Account No. </th>
+                        <td mat-cell *matCellDef="let row"
+                            routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}"
+                            data-label="Account No">
+                            {{row.account_number}} </td>
+                    </ng-container> -->
+
+          <ng-container matColumnDef="product_account_number">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Product Account No.
+            </th>
+            <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{ row.lead_id }}/{{
+                row.company_id
+              }}" data-label="Product Account No">
+              {{ row.product_account_number }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="product_type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Product Type
+            </th>
+            <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{ row.lead_id }}/{{
+                row.company_id
+              }}" data-label="Product Type">
+              {{ row.product_type }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="pli_status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>PLI</th>
+            <td mat-cell *matCellDef="let row" data-label="PLI">
+              <ng-container *ngIf="row.has_police_case == 1">
+                <span class="material-symbols-outlined status-red-blink">
+                  report
+                </span>
+              </ng-container>
+            </td>
+          </ng-container>
+
+          <ng-container *ngIf="loggedInUserRole !== 'AGENT'" matColumnDef="multiple_bank_list">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Multiple Banks
+            </th>
+            <td mat-cell *matCellDef="let row" data-label="Multiple Banks">
+              <ng-container *ngIf="row.multiple_banks_list">
+                <span class="material-symbols-outlined status-warn-blink">
+                  warning
+                </span>
+              </ng-container>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="senior_manager">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Senior Manager
+            </th>
+            <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{ row.lead_id }}/{{
+                row.company_id
+              }}" data-label="Senior Manager">
+              <ng-container *ngIf="isUserDeactivated(row.senior_manager_full_name)">
+                <mat-icon color="warn" class="warn-deactivated" matTooltip="User got deactivated/deleted from platform">warning</mat-icon>
+              </ng-container>
+              {{ row.senior_manager_full_name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="team_manager">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Team Manager
+            </th>
+            <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{ row.lead_id }}/{{
+                row.company_id
+              }}" data-label="Team Manager">
+              <ng-container *ngIf="isUserDeactivated(row.team_manager_full_name)">
+                <mat-icon color="warn" class="warn-deactivated" matTooltip="User got deactivated/deleted from platform">warning</mat-icon>
+              </ng-container>
+              {{ row.team_manager_full_name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="team_lead">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Team Lead</th>
+            <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{ row.lead_id }}/{{
+                row.company_id
+              }}" data-label="Team Lead">
+              <ng-container *ngIf="isUserDeactivated(row.assigned_by_full_name)">
+                <mat-icon color="warn" class="warn-deactivated" matTooltip="User got deactivated/deleted from platform">warning</mat-icon>
+              </ng-container>
+              {{ row.assigned_by_full_name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="agent">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Agent</th>
+            <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{ row.lead_id }}/{{
+                row.company_id
+              }}" data-label="Agent">
+              <ng-container *ngIf="isUserDeactivated(row.assigned_to_full_name)">
+                <mat-icon color="warn" class="warn-deactivated" matTooltip="User got deactivated/deleted from platform">warning</mat-icon>
+              </ng-container>
+              {{ row.assigned_to_full_name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="last_worked_date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Last Worked On
+            </th>
+            <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{ row.lead_id }}/{{
+                row.company_id
+              }}" data-label="Last Worked Date">
+              {{ row.modified_dtm | date : "dd-MMM-yyyy" }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="pending_days">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Pending number of days
+            </th>
+            <td mat-cell *matCellDef="let row" routerLink="/account-management/view/{{ row.lead_id }}/{{
+                row.company_id
+              }}" data-label="Pending Days">
+              <span [ngClass]="{
+                'pending-days-urgent': calculatePendingDays(row) >= 30,
+                'pending-days-warning': calculatePendingDays(row) >= 15 && calculatePendingDays(row) < 30,
+                'pending-days-normal': calculatePendingDays(row) < 15
+              }">
+                {{ calculatePendingDays(row) >= 0 ? calculatePendingDays(row) : 'N/A' }}
+              </span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedAccHoldersColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedAccHoldersColumns"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="10">No account(s) found</td>
+          </tr>
+        </table>
+      </div>
+      <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of users"
+        showFirstLastButtons></mat-paginator>
+    </mat-card>
+  </div>
+</div>

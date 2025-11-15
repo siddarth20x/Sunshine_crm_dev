@@ -1,0 +1,369 @@
+.__btns {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+a {
+    text-decoration: none;
+    ;
+}
+
+.table__row {
+    padding: 0 11px;
+}
+
+
+table {
+    width: 100%;
+    box-shadow: none;
+
+}
+
+.mat-form-field {
+    font-size: 14px;
+    /* width: 100%; */
+    float: inline-end;
+}
+
+td,
+th {
+    width: 25%;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+}
+
+th {
+    background-color: #fafafa;
+}
+
+.table__card {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    margin: 20px;
+    padding: 20px;
+}
+
+.mat-elevation-z8 {
+    box-shadow: none;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+mat-card-header {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+}
+
+mat-card-title {
+    padding: 0;
+
+}
+
+.mat-card-header-text {
+    margin: 0 !important;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+    /* padding: 0; */
+    border-bottom-width: 1px;
+    /* border-bottom-style: solid; */
+    width: auto;
+}
+
+.userserch {
+    width: 100%;
+}
+
+.msg td {
+    text-align: center;
+    padding: 1rem;
+}
+
+.activity-type-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.activity-task_insert {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.activity-task_update {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.activity-account_update {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.activity-account_insert {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.activity-notes_insert {
+    background-color: #fff8e1;
+    color: #ffa000;
+}
+
+.activity-notes_update {
+    background-color: #fce4ec;
+    color: #c2185b;
+}
+
+.activity-new_account {
+    background-color: #e8eaf6;
+    color: #3949ab;
+}
+
+.activity-lead_status_update {
+    background-color: #e0f7fa;
+    color: #00838f;
+}
+
+.activity-task_status_update {
+    background-color: #f1f8e9;
+    color: #689f38;
+}
+
+.activity-stage_status_update {
+    background-color: #fff3e0;
+    color: #ef6c00;
+}
+
+.activity-payment_received {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.activity-payment_updated {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.activity-mol_check_insert {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.activity-mol_check_update {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.activity-user_data_insert {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.activity-user_data_update {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.activity-company_insert {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.activity-company_update {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.activity-user_preference_data_insert {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.activity-user_preference_data_update {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.activity-user_role_company_data_insert {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.activity-user_role_company_data_update {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.activity-company_loc_operation_insert {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.activity-company_loc_operation_update {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.activity-user_notification_data_insert {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.activity-user_notification_data_update {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.activity-user_login {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.activity-user_logout {
+    background-color: #fce4ec;
+    color: #c2185b;
+}
+
+.activity-ticket_create {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.activity-user_create {
+    background-color: #e8eaf6;
+    color: #3949ab;
+}
+
+.activity-bank_create {
+    background-color: #fff8e1;
+    color: #ffa000;
+}
+
+.mat-column-activity_detail {
+    min-width: 300px;
+    max-width: 500px;
+    word-wrap: break-word;
+}
+
+@media screen and (max-width:960px) {
+    .container-fluid {
+        /* padding: 0; */
+        margin-top: 1.5rem;
+    }
+
+    .table__row {
+        padding: 0;
+    }
+
+    th {
+        padding: 0;
+    }
+
+    .mat-column-activity_detail {
+        min-width: 200px;
+    }
+}
+
+@media screen and (max-width:428px) {
+
+    .container-fluid {
+        overflow-x: hidden;
+    }
+
+    /* Mat-Table Responsive CSS */
+    .mat-table {
+        border: 0;
+        vertical-align: middle;
+    }
+
+    .mat-table caption {
+        font-size: 1em;
+    }
+
+    .mat-table .mat-row {
+        /* border-bottom: 5px solid #ddd; */
+        /* display: block; */
+    }
+
+    .mat-table .mat-cell {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: 1em;
+        text-align: right;
+        font-weight: bold;
+        height: 30px;
+        margin-bottom: 4%;
+    }
+
+    .mat-header-row {
+        display: none;
+    }
+
+    .mat-table .mat-cell:before {
+        content: attr(data-label);
+        float: left;
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 0.85em;
+    }
+
+    .mat-table .mat-cell:last-child {
+        border-bottom: 0;
+    }
+
+    .mat-table .mat-cell:first-child {
+        margin-top: 4%;
+    }
+
+    th.mat-header-cell:first-of-type,
+    td.mat-cell:first-of-type,
+    td.mat-footer-cell:first-of-type {
+        padding: 0;
+    }
+
+    .table__header {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .mat-form-field {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .table__header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .mat-form-field {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

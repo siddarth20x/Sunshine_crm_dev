@@ -1,0 +1,33 @@
+<div id="conatiner-fluid container-sm container-md container-lg container-xl">
+    <div class="sidebar">
+        <div class="skeleton-loader" *ngIf="skeletonLoader">
+            <!-- <div class="skeleton-sidebar"></div> -->
+            <div class="skeleton-list-item"></div>
+            <div class="skeleton-list-item"></div>
+            <div class="skeleton-list-item"></div>
+            <div class="skeleton-list-item"></div>
+            <div class="skeleton-list-item"></div>
+            <div class="skeleton-list-item"></div>
+        </div>
+        <mat-nav-list class="mat__nav__list" *ngIf="!skeletonLoader && modules.length > 0">
+            <mat-list-item *ngFor="let mod of filterModules()" class="mat__list__item" routerLink="{{mod.route_name}}"
+                routerLinkActive="active" (click)="selectedModuleGroup(mod.module_group)"
+                [ngClass]="{
+                    'reminder-red-bg': mod.route_name === '/reminders' && reminderInfo.status === 'red',
+                    'reminder-green-bg': mod.route_name === '/reminders' && reminderInfo.status === 'green'
+                }">
+                <a matLine class="mat__line">
+                    <!-- <a matLine   class="mat__line" (click)="selectedModuleGroup(mod.module_group)"> -->
+                    <!-- <mat-icon>{{mod.module_icon}}</mat-icon> -->
+                    <span class="material-symbols-outlined">
+                        {{mod.module_icon}}
+                    </span>
+                    {{ mod.module_alias }}
+                    <span *ngIf="mod.route_name === '/reminders' && reminderInfo.count > 0" class="reminder-count-badge">
+                        {{reminderInfo.count}}
+                    </span>
+                </a>
+            </mat-list-item>
+        </mat-nav-list>
+    </div>
+</div>

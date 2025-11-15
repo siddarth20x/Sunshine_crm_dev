@@ -1,0 +1,109 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+    background-color: #ffffff;
+    /* background: #fd9e00; */
+    font-family: url(src/assets/fonts/static/Inter-Regular.ttf);
+}
+
+body {
+    margin: 0;
+    font-family: Inter;
+    overflow-x: hidden;
+}
+
+:root {
+    --header-bg: #ffffff;
+    --header-bg-text: #000000;
+    --sidebar-bg: #ffffff;
+    --sidebar-bg-text: #000000;
+    --button-color-bg: #3367d6;
+    --button-color-text: #ffffff;
+    --router-link-active-bg: #f0f5fe;
+    --router-link-active-text-color: #82afec;
+    --font-black: url(src/assets/fonts/static/Inter-Black.ttf);
+    --font-bold: url(src/assets/fonts/static/Inter-Bold.ttf);
+    --font-extra-bold: url(src/assets/fonts/static/Inter-ExtraBold.ttf);
+    --font-extra-light: url(src/assets/fonts/static/Inter-ExtraLight.ttf);
+    --font-light: url(src/assets/fonts/static/Inter-Light.ttf);
+    --font-medium: url(src/assets/fonts/static/Inter-Medium.ttf);
+    --font-regular: url(src/assets/fonts/static/Inter-Regular.ttf);
+    --font-semi-bold: url(src/assets/fonts/static/Inter-SemiBold.ttf);
+    --font-thin: url(src/assets/fonts/static/Inter-Thin.ttf);
+    /* --router-link-active-bg: #ffffff;
+    --router-link-active-text-color: #000000; */
+}
+
+.mat-card-header .mat-card-header-text {
+    margin: 0;
+}
+
+
+::placeholder {
+    padding-left: 10px;
+    color: black;
+    font-size: 12px;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+/* tr:hover {
+    cursor: pointer;
+    background: #fafafa;
+    text-align: center;
+} */
+
+:disabled {
+    cursor: not-allowed;
+}
+
+td,
+th {
+    text-align: center !important;
+    vertical-align: middle !important;
+    /* text-align: center;
+    vertical-align: middle !important; */
+}
+
+.mat-sort-header-container {
+    justify-content: center !important;
+}
+
+tr:hover {
+    cursor: pointer;
+    background: #fafafa;
+}
+
+@media screen and (max-width:428px) {
+
+    td, th {
+        text-align: right !important; /* Example override */
+        vertical-align: top !important; /* Example override */
+    }
+}

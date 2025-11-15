@@ -1,0 +1,51 @@
+<div class="row sidebar__compo_row">
+    <app-header class="header__comp" *ngIf="isHidden==true"></app-header>
+    <mat-toolbar class="mob__header" *ngIf="isHidden==true">
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span><img src="../../../assets/images/sunshineLogo.png" class="logo" alt="Sunshine Solutions"
+                title="Sunshine Solutions"></span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="notification-button" aria-label="Notification button">
+            <mat-icon [matBadge]=notificationCount matBadgeColor="warn" matBadgeHidden="false"
+                routerLink="/notification">notifications</mat-icon>
+        </button>
+        <mat-card-header class="__profile" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+            <mat-card-title class="__title">{{userFirstName}} {{userLastName}}</mat-card-title>
+            <!-- <mat-card-subtitle class="__subtitle">{{userDesignation}}</mat-card-subtitle> -->
+        </mat-card-header>
+        <mat-menu #menu="matMenu" xPosition="before">
+            <button mat-menu-item routerLink="/login"><mat-icon>logout</mat-icon> Logout</button>
+        </mat-menu>
+    </mat-toolbar>
+    <header></header>
+    <div class="data__comp" *ngIf="isHidden">
+        <nav class="top-icon-nav" role="navigation">
+            <a *ngFor="let item of topNavItems"
+               class="top-nav-item"
+               [routerLink]="item.route"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: item.exact }"
+               matTooltip="{{ item.label }}"
+               matTooltipPosition="below"
+               matTooltipShowDelay="200"
+               matTooltipHideDelay="0"
+               [attr.aria-label]="item.label">
+                <span class="material-symbols-outlined">
+                    {{ item.icon }}
+                </span>
+                <span class="sr-only">{{ item.label }}</span>
+            </a>
+        </nav>
+        <router-outlet></router-outlet>
+    </div>
+    <router-outlet *ngIf="!isHidden"></router-outlet>
+
+    <!-- <div class="col-2" *ngIf="routerLink !== '/login' && routerLink !== '/signup'">
+        <app-sidebar></app-sidebar>
+    </div>
+    <div class="col-10">
+        <router-outlet></router-outlet>
+    </div> -->
+</div>

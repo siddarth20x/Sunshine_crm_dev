@@ -1,0 +1,253 @@
+.tasks_row {
+    padding: 20px;
+    overflow: hidden;
+}
+
+.tasks_col {
+    /* padding: 0 20px 0 0; */
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 76px;
+}
+
+.tasks_list_completed {
+    width: 229px;
+    height: 451px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 4px;
+    border: 1.5px solid #22C55E;
+}
+
+.tasks_list_progress {
+    width: 229px;
+    height: 451px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 4px;
+    border: 1.5px solid #EAB308;
+}
+
+.tasks_list_cancelled {
+    width: 229px;
+    height: 451px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 4px;
+    border: 1.5px solid #DC2626;
+}
+
+.tasks_list_deffered {
+    width: 229px;
+    height: 451px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-radius: 4px;
+    border: 1.5px solid #1D4ED8;
+}
+
+.tasks_list_pending {
+    width: 229px;
+    height: 451px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 4px;
+    border: 1.5px solid #fd00e8;
+}
+
+.tasks_list_rework {
+    width: 229px;
+    height: 451px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 4px;
+    border: 1.5px solid #7a7a7a;
+}
+
+.tasks_list_await {
+    width: 229px;
+    height: 451px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 4px;
+    border: 1.5px solid #fd5d00;
+}
+
+.list_item {
+    cursor: pointer;
+    width: 95%;
+    border-radius: 2px;
+    background-color: #ececec;
+    margin: 6px;
+    height: auto;
+    padding: 5px;
+    font-family: var(--font-regular);
+    font-size: 14px;
+}
+
+.list_item:hover {
+    background-color: #d9d9d9;
+}
+
+.list_item span {
+    display: flex;
+}
+
+.mat-card {
+    display: block;
+    position: relative;
+    padding: 14px;
+    border-radius: 4px;
+    width: 80%;
+}
+
+p {
+    margin: 0;
+}
+
+.__legends {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.__legends p {
+    width: auto;
+    height: auto;
+    padding: 2px 5px;
+}
+
+.__legends p:nth-child(1) {
+    background-color: rgb(255, 212, 219);
+    border: 1.5px solid #fd00e8;
+    color: #fd00e8;
+    border-radius: 4px;
+}
+
+.__legends p:nth-child(2) {
+    background-color: #ffde7c;
+    border: 1.5px solid #EAB308;
+    color: #EAB308;
+    border-radius: 4px;
+}
+
+.__legends p:nth-child(3) {
+    background-color: #6fffa4;
+    border: 1.5px solid #22C55E;
+    color: #22C55E;
+    border-radius: 4px;
+}
+
+.__legends p:nth-child(4) {
+    background-color: #84a5ff;
+    border: 1.5px solid #1D4ED8;
+    color: #1D4ED8;
+    border-radius: 4px;
+}
+
+.__legends p:nth-child(5) {
+    background-color: rgb(250, 139, 157);
+    border: 1.5px solid #DC2626;
+    color: #DC2626;
+    border-radius: 4px;
+}
+
+.__legends p:nth-child(6) {
+    background-color: #aaaaaa;
+    border: 1.5px solid #7a7a7a;
+    color: #7a7a7a;
+    border-radius: 4px;
+}
+
+.__legends p:nth-child(7) {
+    background-color: #ffb489;
+    border: 1.5px solid #fd5d00;
+    color: #fd5d00;
+    border-radius: 4px;
+}
+
+.legends__btn {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.legends__btn button {
+    background-color: var(--button-color-bg);
+    color: var(--button-color-text);
+}
+
+.mat-tab-body-content {
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.__noDataFound {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media screen and (max-width:960px) {
+    .legends__btn {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+    }
+
+    .mat-card {
+        display: flex;
+        position: relative;
+        padding: 14px;
+        border-radius: 4px;
+        width: 100%;
+        flex-wrap: wrap;
+        /* flex-direction: column; */
+        align-items: flex-start;
+    }
+
+    .tasks_col {
+        /* padding: 0 20px 0 0; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+}
+
+
+@media screen and (max-width:428px) {
+    .legends__btn {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+    }
+
+    .mat-card {
+        display: flex;
+        position: relative;
+        padding: 14px;
+        border-radius: 4px;
+        width: 100%;
+        flex-wrap: wrap;
+        /* flex-direction: column; */
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .tasks_col {
+        /* padding: 0 20px 0 0; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+}

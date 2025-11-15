@@ -1,0 +1,23 @@
+<mat-toolbar class="mat-toolbar">
+    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+    </button> -->
+    <span>
+        <img src="../../../assets/images/sunshineLogo.png" class="logo" alt="Sunshine Solutions"
+            title="Sunshine Solutions">
+    </span>
+    <span class="example-spacer"></span>
+    <!-- Notification bell icon button -->
+    <button mat-icon-button class="notification-button" aria-label="Notification button">
+        <mat-icon [matBadge]=notificationCount matBadgeColor="warn" matBadgeHidden="false"
+            routerLink="/notification">notifications</mat-icon>
+    </button>
+    <!-- Profile section -->
+    <mat-card-header class="__profile" [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger">
+        <mat-card-title class="__title">{{userFirstName}} {{userLastName}}</mat-card-title>
+        <!-- <mat-card-subtitle class="__subtitle">{{userDesignation}}</mat-card-subtitle> -->
+    </mat-card-header>
+    <mat-menu #menu="matMenu" xPosition="before">
+        <button mat-menu-item routerLink="/login"><mat-icon>logout</mat-icon> Logout</button>
+    </mat-menu>
+</mat-toolbar>

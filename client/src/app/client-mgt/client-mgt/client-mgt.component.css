@@ -1,0 +1,254 @@
+.__btns {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+a {
+    text-decoration: none;
+    ;
+}
+
+.table__row {
+    padding: 0 11px;
+}
+
+
+table {
+    width: 100%;
+    box-shadow: none;
+
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.deactivated-user-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    cursor: help;
+    flex-shrink: 0;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    /* width: 100%; */
+    float: inline-end;
+}
+
+td,
+th {
+    width: 25%;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+}
+
+/* Center align Team Manager and Team Lead columns */
+.mat-column-team_manager_name,
+.mat-column-team_lead_name {
+    text-align: center !important;
+}
+
+.mat-column-team_manager_name .user-info,
+.mat-column-team_lead_name .user-info {
+    justify-content: center;
+}
+
+th {
+    background-color: #fafafa;
+}
+
+.table__card {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+
+}
+
+.mat-elevation-z8 {
+    box-shadow: none;
+}
+
+.table__header {
+    display: flex;
+    flex-direction: row;
+}
+
+mat-card-header {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+}
+
+mat-card-title {
+    padding: 0;
+
+}
+
+.mat-card-header-text {
+    margin: 0 !important;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+    /* padding: 0; */
+    border-bottom-width: 1px;
+    /* border-bottom-style: solid; */
+    width: auto;
+}
+
+@media screen and (max-width:960px) {
+    .container-fluid {
+        /* padding: 0; */
+        margin-top: 1.5rem;
+    }
+
+    .table__row {
+        padding: 0;
+    }
+
+    th {
+        padding: 0;
+    }
+}
+
+@media screen and (max-width:428px) {
+    .mat-card-header .mat-card-title {
+        font-size: 18px;
+    }
+
+    .__btns {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-top: 7%;
+    }
+
+    /* Mat-Table Responsive CSS */
+    .mat-table .mat-row {
+        /* border-bottom: 5px solid #ddd; */
+        /* display: block; */
+    }
+
+    .mat-table .mat-cell {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: 1em;
+        text-align: right;
+        font-weight: bold;
+        height: 30px;
+        margin-bottom: 4%;
+    }
+
+    .mat-header-row {
+        display: none;
+    }
+
+    .mat-table .mat-cell:before {
+        content: attr(data-label);
+        float: left;
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 0.85em;
+    }
+
+    .mat-table .mat-cell:last-child {
+        border-bottom: 0;
+    }
+
+    .mat-table .mat-cell:first-child {
+        margin-top: 4%;
+    }
+
+    th.mat-header-cell:first-of-type,
+    td.mat-cell:first-of-type,
+    td.mat-footer-cell:first-of-type {
+        padding: 0;
+    }
+
+    .table__header {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Enhanced warning styling for deactivated users */
+.deactivated-users-section {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.deactivated-users-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ffeaa7;
+}
+
+.warning-title {
+    color: #856404;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.deactivated-users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.deactivated-user-warning {
+    background-color: #fff8e1;
+    border: 1px solid #ffecb3;
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.warning-icon {
+    font-size: 16px;
+    color: #f39c12;
+    flex-shrink: 0;
+}
+
+.deactivated-user-warning span {
+    color: #856404;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Enhanced user info styling in table */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.user-info .warning-icon {
+    font-size: 14px;
+    color: #f39c12;
+}

@@ -1,0 +1,98 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<mat-divider></mat-divider><br>
+<mat-dialog-content>
+    <form [formGroup]="molCheckForm">
+        <!-- <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Contact Mode</mat-label>
+                    <mat-select name="contact_mode_list" formControlName="contact_mode_list"
+                        (selectionChange)="selectContactMode($event)">
+                        <mat-option *ngFor="let mode of contactMode" [value]="mode">
+                            {{mode}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="molCheckForm.get('contact_mode_list').hasError('required')">
+                        <strong>Contact Mode is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div> -->
+
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>MOL Status</mat-label>
+                    <mat-select formControlName="mol_status" (selectionChange)="selectMOLStatus($event)">
+                        <mat-option disabled>--Select--</mat-option>
+                        <mat-option [value]="mol" *ngFor="let mol of molStatus">{{mol}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="molCheckForm.get('mol_status').hasError('required')">
+                        <strong>MOL Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>New Passport No.</mat-label>
+                    <input matInput formControlName="mol_passport_no">
+                    <mat-error *ngIf="molCheckForm.get('mol_passport_no').hasError('required')">
+                        <strong>MOL Passport Number is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>MOL Expiry Date</mat-label>
+                    <input matInput [matDatepicker]="Expirypicker" formControlName="mol_expiry_date"
+                        (dateInput)="assignedDateHandler($event)">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="Expirypicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #Expirypicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>MOL Work Permit No</mat-label>
+                    <input matInput formControlName="mol_work_permit_no">
+                    <mat-error *ngIf="molCheckForm.get('mol_work_permit_no').hasError('required')">
+                        <strong>MOL Work Permit No is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Salary in MOL</mat-label>
+                    <input matInput formControlName="mol_salary">
+                    <mat-error *ngIf="molCheckForm.get('mol_salary').hasError('required')">
+                        <strong>Salary in MOL is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Company Name in MOL</mat-label>
+                    <input matInput formControlName="mol_company_name">
+                    <mat-error *ngIf="molCheckForm.get('mol_company_name').hasError('required')">
+                        <strong>Company Name in MOL is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelMolCheck()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="saveMolCheck()" [disabled]="molCheckForm.invalid">Save
+        MOL Check</button>
+</mat-dialog-actions>

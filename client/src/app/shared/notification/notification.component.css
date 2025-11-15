@@ -1,0 +1,133 @@
+.notifications-container {
+    padding: 16px;
+    width: 90%;
+    margin-top: 1rem;
+}
+
+.title span {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.notification-card {
+    margin-bottom: 16px;
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.notification-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+mat-card-header {
+    margin: 0;
+}
+
+.panelTitle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.panelTitle span {
+    flex-grow: 1;
+    margin: 0;
+}
+
+.acc-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.5em;
+}
+
+
+
+.panelContent {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 8px;
+    outline: none;
+}
+
+mat-form-field {
+    display: block;
+
+}
+
+.advSerachBtn {
+    float: right;
+
+    margin: 10px;
+}
+
+.msg td {
+    text-align: center;
+}
+
+.no-msg {
+    text-align: center;
+    padding: 8rem 0;
+}
+
+.material-symbols-outlined {
+    cursor: pointer;
+}
+
+@media screen and (max-width:960px) {
+    .notifications-container {
+        padding: 0px;
+        width: 100%;
+    }
+
+    .notification-card {
+        margin: 0.5rem .3rem;
+    }
+
+    .notification-title {
+        font-size: 14px;
+        flex-wrap: wrap;
+
+        width: 70%
+    }
+
+    .date {
+        font-size: 10px;
+    }
+
+    .notification-msg {
+        font-size: 12px;
+    }
+
+    .panelContent {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media screen and (max-width:428px) {
+    .notifications-container {
+        padding: 0px;
+        width: 100%;
+        margin-top: 3rem;
+        padding: 20px;
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+    }
+}

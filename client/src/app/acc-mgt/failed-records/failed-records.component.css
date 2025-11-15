@@ -1,0 +1,364 @@
+.__btns {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.table__row {
+  padding: 0 11px;
+  /* width:100%; */
+}
+
+table {
+  width: 100%;
+  box-shadow: none;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  /* width: 100%; */
+  float: inline-end;
+}
+
+td,
+th {
+  width: 25%;
+  font-family: var(--font-regular);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+}
+
+th {
+  background-color: #fafafa;
+}
+
+.table__card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.mat-elevation-z8 {
+  box-shadow: none;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table__header {
+  display: flex;
+  flex-direction: row;
+}
+
+mat-card-header {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-regular);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+}
+
+mat-card-title {
+  padding: 0;
+}
+
+.mat-card-header-text {
+  margin: 0 !important;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  border-bottom-width: 1px;
+  width: auto;
+}
+
+.acc-button {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  float: right;
+}
+
+/* .up {
+  transform: rotate(180deg);
+  outline: none;
+}
+
+.down {
+  transform: rotate(0deg);
+  outline: none;
+} */
+
+.panelTitle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.panelTitle span {
+  flex-grow: 1;
+  margin: 0;
+}
+
+.acc-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.5em;
+}
+
+.panelContent {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 12px;
+  outline: none;
+}
+
+mat-form-field {
+  display: block;
+}
+
+.advSerachBtn {
+  float: right;
+
+  margin: 10px;
+}
+
+.msg td {
+  text-align: center;
+}
+
+.scroll-container {
+  height: 1000px;
+  /* Adjust as needed */
+  /* overflow-y: auto; */
+}
+
+.status-red {
+  color: #dc2626;
+}
+
+.status-green {
+  color: #22c55e;
+}
+
+.status-blue {
+  color: #1d4ed8;
+}
+
+.status-pink {
+  color: #fd00e8;
+}
+
+.status-yellow {
+  color: #eab308;
+}
+
+tr:hover {
+  cursor: pointer;
+  background: #fafafa;
+  text-align: center;
+}
+
+.status-red-blink {
+  animation: blink 1s infinite;
+  color: red;
+  /* or any other style you prefer */
+}
+
+.status-warn-blink {
+  color: #ffd000;
+  animation: blink 5s infinite;
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+
+.table__card {
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  /* White background for clarity */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for a modern look */
+}
+
+.table__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+
+th,
+td {
+  padding: 16px 24px;
+  /* Add more padding for larger spaces */
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  /* Add a light gray border for rows */
+}
+
+th {
+  background-color: #f4f4f4;
+  /* Light gray header background */
+  font-weight: bold;
+  font-size: 14px;
+  /* Increase font size slightly for better readability */
+  text-transform: uppercase;
+  /* Add uppercase styling for column headers */
+}
+
+td {
+  white-space: nowrap;
+  /* Prevent cell content from wrapping */
+  font-size: 14px;
+  /* Ensure text size is consistent */
+}
+
+.mat-paginator {
+  margin-top: 16px;
+}
+
+.status-red-blink {
+  color: red;
+  animation: blink 1s infinite;
+}
+
+.status-warn-blink {
+  color: orange;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Column-specific Spacing */
+th.mat-header-cell,
+td.mat-cell {
+  padding-left: 32px;
+  /* Increase space between each column */
+}
+
+.mat-header-row th:first-child,
+.mat-row td:first-child {
+  padding-left: 16px;
+  /* Adjust first column's left padding */
+}
+
+.mat-header-row th:last-child,
+.mat-row td:last-child {
+  padding-right: 16px;
+  /* Adjust last column's right padding */
+}
+
+@media screen and (max-width: 960px) {
+  .panelContent {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  mat-form-field {
+    font-size: 5px;
+  }
+
+  .__lDtls {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media screen and (max-width: 428px) {
+  .container-fluid {
+    overflow-x: hidden;
+  }
+
+  .mat-card-header .mat-card-title {
+    font-size: 18px;
+  }
+
+  .__btns {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 7%;
+    flex-direction: column;
+  }
+
+  /* Mat-Table Responsive CSS */
+  .mat-table .mat-row {
+    /* border-bottom: 5px solid #ddd; */
+    /* display: block; */
+  }
+
+  .mat-table .mat-cell {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 1em;
+    text-align: right;
+    font-weight: bold;
+    height: 30px;
+    margin-bottom: 4%;
+  }
+
+  .mat-header-row {
+    display: none;
+  }
+
+  .mat-table .mat-cell:before {
+    content: attr(data-label);
+    float: left;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 0.85em;
+  }
+
+  .mat-table .mat-cell:last-child {
+    border-bottom: 0;
+  }
+
+  .mat-table .mat-cell:first-child {
+    margin-top: 4%;
+  }
+
+  th.mat-header-cell:first-of-type,
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type {
+    padding: 0;
+  }
+
+  .table__header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

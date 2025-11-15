@@ -1,0 +1,189 @@
+.action_btns {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin: 0 2%;
+}
+
+.card_row {
+    margin: 0 2% 0 0;
+}
+
+.accordion_row {
+    margin: 1% 2% 0 0;
+}
+
+.accordion {
+    padding: 0;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+td,
+th {
+    width: 25%;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+}
+
+th {
+    background-color: #fafafa;
+}
+
+.mat-form-field {
+    /* font-size: 14px; */
+    width: 100%;
+    /* float: inline-end; */
+}
+
+.profile__image {
+    width: 100%;
+    height: 50%;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+    padding: 0 10px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.__inp_fields {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.action_btns button {
+    width: 20%;
+}
+
+.example-card {
+    margin-bottom: 1.5rem;
+}
+
+
+@media screen and (max-width:960px) {
+
+    th.mat-header-cell,
+    td.mat-cell,
+    td.mat-footer-cell {
+        padding: 0 10px;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+    }
+
+    td,
+    th {
+        /* width: 25%; */
+        font-family: Inter;
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+    }
+
+    .__basic_info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        /* padding: 10px; */
+    }
+
+    .__inp_fields {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .tbl__class {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+}
+
+@media screen and (max-width:428px) {
+
+    .container-fluid,
+    .container-fluid-sm,
+    .container-fluid-md,
+    .container-fluid-lg,
+    .container-fluid-xl {
+        overflow-x: hidden;
+    }
+
+    th.mat-header-cell,
+    td.mat-cell,
+    td.mat-footer-cell {
+        padding: 0 10px;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+    }
+
+    td,
+    th {
+        width: 25%;
+        font-family: Inter;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+    }
+
+    .__basic_info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .__inp_fields {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .col-10 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    .tbl__class {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .back_btn {
+        margin: 4% 0 0 0;
+    }
+
+    .card_row {
+        margin: 0;
+    }
+
+    .action_btns {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin: 0;
+    }
+}

@@ -1,0 +1,42 @@
+<div class="notifications-container">
+    <div class="title">
+        <span> <button mat-icon-button aria-label="Actions" routerLink="/dashboard">
+                <span class="material-symbols-outlined">
+                    chevron_left
+                </span>
+            </button></span>
+        <span>Notifications</span>
+    </div>
+    <br>
+    <mat-form-field appearance="standard">
+        <mat-label>Type here to filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input>
+    </mat-form-field>
+    <br>
+    <mat-card *ngFor="let notification of paginatedNotifications " class="notification-card">
+        <div class="notification-header">
+            <mat-card-title class="notification-title">{{notification.notification_type_description}}</mat-card-title>
+            <span class="date">{{notification.effective_from}}</span>
+        </div>
+        <p class="notification-msg">{{notification.notification_message}}</p>
+        <div class="notification-footer">
+            <mat-chip [color]="getStatusColor(notification.status)"></mat-chip>
+            <span *ngIf="notification.notification_acknowledged_on!=null" class="material-symbols-outlined"
+                (click)="markAsUnread(notification)">
+                mark_email_read
+            </span>
+            <span *ngIf="notification.notification_acknowledged_on==null" class="material-symbols-outlined"
+                matTooltip="Mark As Read" (click)="markAsRead(notification)">
+                mark_email_unread
+            </span>
+        </div>
+    </mat-card>
+    <mat-card class="no-msg" *ngIf="paginatedNotifications.length==0">
+        <span>
+            <h2>No Notifications !</h2>
+        </span>
+    </mat-card>
+    <mat-paginator *ngIf="notificationsLength>0" [length]="notificationsLength" [pageSize]="pageSize"
+        [pageSizeOptions]="[2, 5, 10, 25]" (page)="onPageChange($event)" showFirstLastButtons>
+    </mat-paginator>
+</div>

@@ -1,0 +1,101 @@
+._rows {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+/* Country dropdown styling */
+.country-dropdown .mat-select-value {
+    font-weight: 500;
+}
+
+.country-dropdown .mat-option {
+    padding: 8px 16px;
+}
+
+.country-dropdown .mat-option .country-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.country-dropdown .mat-option .country-name {
+    font-weight: 500;
+}
+
+.country-dropdown .mat-option .country-code {
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* Selected country display in trigger */
+.country-dropdown .mat-select-trigger {
+    display: flex;
+    align-items: center;
+}
+
+.country-dropdown .mat-select-trigger span {
+    font-weight: 500;
+    color: #1976d2;
+}
+
+
+
+.snap-container {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    /* margin: auto; */
+    text-align: center;
+}
+
+.list-unstyled {
+    list-style: none;
+}
+
+.list-unstyled li {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+#mobile_only {
+    display: none;
+}
+
+@media screen and (max-width:428px) {
+    ._rows {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .col-2, .col-sm {
+        width: 100%;
+    }
+
+    #mobile_only {
+        display: block;
+    }
+
+    #mobile_only .video-container video {
+        width: 97%;
+        height: 2%;
+    }
+
+}

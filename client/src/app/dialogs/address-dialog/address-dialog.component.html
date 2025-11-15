@@ -1,0 +1,199 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<mat-divider></mat-divider><br>
+<mat-dialog-content>
+    <form [formGroup]="addressForm">
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Source of Address</mat-label>
+                    <mat-select name="contact_mode_list" formControlName="contact_mode_list"
+                        (selectionChange)="selectContactMode($event)">
+                        <mat-option *ngFor="let mode of contactMode" [value]="mode">
+                            {{mode}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addressForm.get('contact_mode_list').hasError('required')">
+                        <strong>Source of Address is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Current Location</mat-label>
+                    <input matInput formControlName="current_location">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- <div class="_rows"></div> -->
+
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>City</mat-label>
+                    <input matInput formControlName="city">
+                    <mat-error *ngIf="addressForm.get('city').hasError('required')">
+                        <strong>City is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>State</mat-label>
+                    <input matInput formControlName="state">
+                    <mat-error *ngIf="addressForm.get('state').hasError('required')">
+                        <strong>State is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Country</mat-label>
+                    <input matInput formControlName="country">
+                    <mat-error *ngIf="addressForm.get('country').hasError('required')">
+                        <strong>Country is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Zipcode</mat-label>
+                    <input type="number" matInput formControlName="zipcode">
+                    <mat-error *ngIf="addressForm.get('zipcode').hasError('required')">
+                        <strong>Zipcode is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Address Name</mat-label>
+                    <input matInput formControlName="address_name">
+                    <mat-error *ngIf="addressForm.get('address_name').hasError('required')">
+                        <strong>Address Name is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Address Line 1</mat-label>
+                    <textarea matInput formControlName="address_line_1"></textarea>
+                    <mat-error *ngIf="addressForm.get('address_line_1').hasError('required')">
+                        <strong>Address Line 1 is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Address Line 2</mat-label>
+                    <textarea matInput formControlName="address_line_2"></textarea>
+                    <mat-error *ngIf="addressForm.get('address_line_2').hasError('required')">
+                        <strong>Address Line 2 is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Address Line 3</mat-label>
+                    <input matInput formControlName="address_line_3">
+                    <mat-error *ngIf="addressForm.get('address_line_3').hasError('required')">
+                        <strong>Address Line 3 is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Address Type</mat-label>
+                    <mat-select name="address_type" formControlName="address_type">
+                        <mat-option *ngFor="let mode of addressType" [value]="mode">
+                            {{mode}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addressForm.get('address_type').hasError('required')">
+                        <strong>Address Type is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Residence Type</mat-label>
+                    <mat-select name="residence_type" formControlName="residence_type">
+                        <mat-option *ngFor="let mode of residenceType" [value]="mode">
+                            {{mode}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addressForm.get('residence_type').hasError('required')">
+                        <strong>Residence Type is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Living Status</mat-label>
+                    <mat-select name="living_status" formControlName="living_status">
+                        <mat-option *ngFor="let mode of livingStatusType" [value]="mode">
+                            {{mode}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addressForm.get('living_status').hasError('required')">
+                        <strong>Living Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div id="mobile_only">
+
+            <div class="_rows">
+                <div class="col-1">
+                    <button mat-stroked-button (click)="toggleCamera()">
+                        <span class="material-symbols-outlined">
+                            photo_camera
+                        </span>
+                        {{ cameraOpened ? 'Close Camera' : 'Open Camera' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile_only">
+
+            <div class="video-container" *ngIf="!error">
+                <video [class.show]="!isCaptured" [class.hide]="isCaptured" #video id="video" [width]="WIDTH"
+                    [height]="HEIGHT" autoplay></video>
+                <canvas [class.show]="isCaptured" [class.hide]="!isCaptured" #canvas id="canvas" [width]="WIDTH"
+                    [height]="HEIGHT"></canvas>
+            </div>
+            <div class="snap-container">
+                <button class="btn btn-primary" *ngIf="!isCaptured" (click)="capture()">Snap Photo</button>
+                <button class="btn btn-primary" *ngIf="isCaptured" (click)="uploadFileToBucket()">Upload</button>
+                <!-- <button class="btn btn-danger" *ngIf="isCaptured" (click)="removeCurrent()">Take Another</button> -->
+            </div>
+            <ul class="list-unstyled">
+                <li *ngFor="let src of captures; let idx = index" (click)="setPhoto(idx)">
+                    <img [src]="src" height="50" />
+                </li>
+            </ul>
+        </div>
+
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-checkbox color="primary" formControlName="is_primary">Is Primary Address?</mat-checkbox>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelAddress()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="saveAddress()" [disabled]="!areMandatoryFieldsFilled()">Save
+        Address</button>
+</mat-dialog-actions>

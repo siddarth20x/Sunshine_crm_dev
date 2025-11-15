@@ -1,0 +1,248 @@
+/* .example-full-width {
+    width: 100%;
+} */
+
+.__upload {
+    display: flex;
+    gap: 10px;
+}
+
+::ng-deep .mat-dialog-content.__tasks {
+    max-height: 300px;
+    /* Adjust the height as needed */
+    overflow-y: auto;
+    /* padding-right: 16px; */
+    /* Ensure proper padding for scrollbar */
+}
+
+::ng-deep .mat-dialog-content.__notes {
+    max-height: 200px;
+    /* Adjust the height as needed */
+    overflow-y: auto;
+    /* padding-right: 16px; */
+    /* Ensure proper padding for scrollbar */
+}
+
+/* Fix modal scrolling issue */
+::ng-deep .mat-dialog-container {
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+::ng-deep .mat-dialog-content {
+    max-height: none !important;
+    overflow: visible !important;
+    padding-right: 16px !important;
+    box-sizing: border-box !important;
+}
+
+.mat_form_fields {
+    width: 100%;
+}
+
+
+.btn_row {
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+    margin: 15px 0;
+}
+
+.download-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 0.375rem 0.75rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.download-btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.download-btn i {
+  font-size: 1rem;
+}
+
+.input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.input-group .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group-append {
+  display: flex;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start; 
+  margin-bottom: 0.5rem;
+}
+
+.col-sm {
+  flex: 1 1 0;
+  min-width: 220px;
+  padding-right: 10px;
+  box-sizing: border-box;
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative; /* Needed for absolute warning */
+}
+
+/* Contactable dropdown loading states */
+
+/* Loading spinner in dropdown */
+mat-option mat-spinner {
+  margin-right: 8px;
+}
+
+/* Disabled option styling */
+mat-option[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Ensure dropdown has proper z-index */
+.mat-select-panel {
+  z-index: 1000 !important;
+}
+
+/* Improve dropdown stability */
+.mat-form-field {
+  position: relative;
+}
+
+.mat-select {
+  min-width: 200px;
+}
+
+/* Disposition message styling - Improved readability */
+.disposition-message {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  margin: 4px 0 8px 0; /* Reduced top margin to move up slightly */
+  border-radius: 6px;
+  background-color: #fff5f5;
+  border-left: 5px solid #dc3545;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  cursor: pointer; /* Indicates it's interactive */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visibility */
+}
+
+.disposition-message:hover {
+  background-color: #ffe6e6; /* Lighter red background on hover */
+  border-left-color: #c82333; /* Darker red border on hover */
+  transform: translateY(-1px); /* Slight upward movement on hover */
+  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.2); /* Enhanced shadow on hover */
+}
+
+.message-text {
+  color: #dc3545;
+  font-size: 15px; /* Increased font size for better readability */
+  font-weight: 600; /* Increased font weight for better contrast */
+  line-height: 1.5; /* Improved line height for better readability */
+  margin: 0;
+  padding: 0;
+  transition: color 0.3s ease; /* Smooth color transition */
+  letter-spacing: 0.2px; /* Slight letter spacing for better readability */
+}
+
+.disposition-message:hover .message-text {
+  color: #c82333; /* Darker red text on hover */
+}
+
+/* Disabled form field styling */
+.mat-form-field.mat-form-field-disabled {
+  opacity: 0.6;
+}
+
+.mat-form-field.mat-form-field-disabled .mat-form-field-label {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.mat-form-field.mat-form-field-disabled .mat-select-value {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.mat-form-field.mat-form-field-disabled .mat-input-element {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+/* Feedback message styling - Same format as disposition message */
+.feedback-message {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  margin: 4px 0 8px 0;
+  border-radius: 6px;
+  background-color: #fff5f5;
+  border-left: 5px solid #dc3545;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-message:hover {
+  background-color: #ffe6e6;
+  border-left-color: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.2);
+}
+
+.feedback-message .message-text {
+  color: #dc3545;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  transition: color 0.3s ease;
+  letter-spacing: 0.2px;
+}
+
+.feedback-message:hover .message-text {
+  color: #c82333;
+}
+
+/* Menu styling for required fields */
+.menu-section-header {
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.required-fields-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.required-field {
+  background-color: #fff3cd !important;
+  border-left: 3px solid #ffc107 !important;
+  font-weight: 600 !important;
+}
+
+.required-field:hover {
+  background-color: #ffeaa7 !important;
+  border-left-color: #f39c12 !important;
+}
+
+.required-field mat-icon {
+  color: #856404 !important;
+}
+
+.required-field span {
+  color: #856404 !important;
+}

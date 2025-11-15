@@ -1,0 +1,313 @@
+<div class="account-sheet">
+    <header class="page-header">
+        <div class="page-header__inline">
+            <button mat-button class="back-button back-button--accent" (click)="goBack()">
+                <span class="material-symbols-outlined">chevron_left</span>
+                Back
+            </button>
+            <div class="page-header__title">
+                <h2 class="title-value">
+                    {{ customerName }}<span class="title-divider" *ngIf="bankName && bankName !== '--'"> - {{ bankName }}</span>
+                </h2>
+            </div>
+            <form class="assigned-to-form" [formGroup]="accountsUserForm">
+                <mat-form-field class="assigned-to-field" appearance="outline">
+                    <mat-label>Assigned To</mat-label>
+                    <input type="text" matInput formControlName="assigned_to_full_name"
+                        [matAutocomplete]="assignedToAuto" />
+                    <mat-autocomplete #assignedToAuto="matAutocomplete"
+                        (optionSelected)="assignedToHandler($event.option.value)">
+                        <mat-option *ngFor="let option of assignedToFilteredOptions | async" [value]="option.full_name">
+                            {{ option.full_name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </form>
+        </div>
+    </header>
+
+    <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+
+    <section class="action-banner" *ngIf="actionRequiredBanner">
+        <span class="material-symbols-outlined">flag</span>
+        <span class="action-banner__text">{{ actionRequiredBanner }}</span>
+    </section>
+
+    <section class="banks-alert" *ngIf="banksList.length > 1">
+        <span class="material-symbols-outlined">warning</span>
+        <span class="alert-label">MULTIPLE BANKS ALERT :</span>
+        <span class="alert-links">
+            <ng-container *ngFor="let banks of banksList; let i = index">
+                <a [routerLink]="['/account-management/view', banks.lead_id, banks.company_id]"
+                    (click)="fetchLeadByLeadId(banks.lead_id, banks.company_id)">
+                    {{ banks.bank_name }}
+                </a><span *ngIf="i < banksList.length - 1">, </span>
+            </ng-container>
+        </span>
+    </section>
+
+    <div class="content-layout">
+        <div class="content-main">
+            <section class="content-card account-card">
+                <header class="content-card__header">
+                    <div class="section-pill">Account Details</div>
+                </header>
+                <table class="account-grid" *ngIf="accountDetailColumns.length">
+                    <tbody>
+                        <tr *ngFor="let row of accountGridRows">
+                            <ng-container *ngFor="let field of row">
+                                <th scope="row">{{ field.label }} :</th>
+                                <td>{{ getDetailValue(field) }}</td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="content-card history-card">
+                <header class="content-card__header">
+                    <div class="section-pill">Tracing History</div>
+                </header>
+                <div class="content-card__body">
+                    <div class="table-wrapper" *ngIf="!tracingHistoryLoading; else tracingHistoryLoader">
+                        <ng-container *ngIf="tracingHistoryData.length; else tracingHistoryEmpty">
+                            <table class="tracing-history-table">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let column of tracingHistoryColumns">{{ column.label }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of tracingHistoryData; trackBy: tracingHistoryTrackBy">
+                                        <td *ngFor="let column of tracingHistoryColumns">
+                                            {{ getTracingDisplay(row, column) }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-container>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-card final-card">
+                <header class="content-card__header">
+                    <div class="section-pill">Final Remarks</div>
+                </header>
+                <div class="content-card__body">
+                    <div class="table-wrapper" *ngIf="!tracingHistoryLoading; else finalRemarkLoader">
+                        <ng-container *ngIf="finalRemarkData.length; else finalRemarkEmpty">
+                            <table class="tracing-history-table final-remark-table">
+                                <thead>
+                                    <tr>
+                                        <th *ngFor="let column of finalRemarkColumns">{{ column.label }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of finalRemarkData; trackBy: tracingHistoryTrackBy">
+                                        <td *ngFor="let column of finalRemarkColumns">
+                                            {{ getTracingDisplay(row, column) }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-container>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-card" *ngIf="activePanel as panel">
+                <header class="content-card__header">
+                    <h2>{{ getPanelTitle(panel) }}</h2>
+                    <p *ngIf="panel === 'tracing'">Visa, MOL, and tracing updates remain visible without expanding panels.</p>
+                </header>
+                <div class="content-card__body">
+                    <ng-container [ngSwitch]="panel">
+                        <div *ngSwitchCase="'tracing'">
+                            <div class="panel-stack">
+                                <app-visa-check-tab></app-visa-check-tab>
+                                <app-mol-check-tab></app-mol-check-tab>
+                                <app-tracing-tab></app-tracing-tab>
+                            </div>
+                        </div>
+
+                        <app-case-history-tab *ngSwitchCase="'feedback-disposition'"></app-case-history-tab>
+
+                        <div *ngSwitchCase="'field-feedback'" class="panel-stack">
+                            <app-tasks-tab></app-tasks-tab>
+                            <app-logs-interaction-tab></app-logs-interaction-tab>
+                        </div>
+
+                        <div *ngSwitchCase="'execution'" class="execution-panel">
+                            <mat-card class="execution-card">
+                                <mat-card-content>
+                                    <div class="execution-layout">
+                                        <form
+                                            class="execution-form"
+                                            [formGroup]="executionForm"
+                                            (ngSubmit)="onExecutionSave()"
+                                            novalidate
+                                        >
+                                            <div class="execution-input-row">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Requested/Not-Requested</mat-label>
+                                                    <mat-select
+                                                        formControlName="requestStatus"
+                                                        (selectionChange)="onExecutionStatusChange($event.value)"
+                                                    >
+                                                        <mat-option *ngFor="let option of executionStatusOptions" [value]="option">
+                                                            {{ option }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-error *ngIf="executionForm.get('requestStatus')?.touched && executionForm.get('requestStatus')?.hasError('required')">
+                                                        Please choose the current request status.
+                                                    </mat-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Requested Date</mat-label>
+                                                    <input
+                                                        matInput
+                                                        [matDatepicker]="executionRequestedDate"
+                                                        formControlName="requestDate"
+                                                        placeholder="Select date"
+                                                    />
+                                                    <mat-datepicker-toggle matSuffix [for]="executionRequestedDate"></mat-datepicker-toggle>
+                                                    <mat-datepicker #executionRequestedDate></mat-datepicker>
+                                                    <mat-error *ngIf="executionForm.get('requestDate')?.touched && executionForm.get('requestDate')?.hasError('required')">
+                                                        Requested date is required when status is Requested.
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <mat-form-field appearance="outline" class="execution-textarea">
+                                                <mat-label>Reason for Not Requested</mat-label>
+                                                <textarea
+                                                    matInput
+                                                    rows="3"
+                                                    formControlName="notRequestedReason"
+                                                    placeholder="Provide the reason when request was not made"
+                                                ></textarea>
+                                                <mat-hint align="end">
+                                                    {{ executionForm.get('notRequestedReason')?.value?.length || 0 }}/500
+                                                </mat-hint>
+                                                <mat-error *ngIf="executionForm.get('notRequestedReason')?.touched && executionForm.get('notRequestedReason')?.hasError('required')">
+                                                    Reason is required when status is Not-Requested.
+                                                </mat-error>
+                                                <mat-error *ngIf="executionForm.get('notRequestedReason')?.touched && executionForm.get('notRequestedReason')?.hasError('maxlength')">
+                                                    Please keep the reason within 500 characters.
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <div class="execution-actions">
+                                                <button
+                                                    type="button"
+                                                    mat-stroked-button
+                                                    color="primary"
+                                                    (click)="onExecutionCancel()"
+                                                    [disabled]="executionForm.pristine && !executionForm.dirty"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    mat-flat-button
+                                                    color="primary"
+                                                    [disabled]="executionForm.invalid || executionSaving"
+                                                >
+                                                    {{ executionSaving ? 'Saving...' : 'Save' }}
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                        <aside class="execution-note">
+                                            <h4>Note:</h4>
+                                            <p>
+                                                <span>1.</span>
+                                                <strong>If Requested</strong> is selected, then <strong>Requested Date</strong> becomes mandatory.
+                                            </p>
+                                            <p>
+                                                <span>2.</span>
+                                                <strong>If Not-Requested</strong> is selected, then <strong>Reason for Not Requested</strong> becomes mandatory.
+                                            </p>
+                                        </aside>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+
+                        <div *ngSwitchCase="'documents'" class="documents-tab">
+                            <mat-card class="documents-upload-card">
+                                <mat-card-header>
+                                    <div class="documents-upload-card__header">
+                                        <div>
+                                            <h3>Document Uploads</h3>
+                                            <p>Drop in the latest customer files so the team stays in sync.</p>
+                                        </div>
+                                        <button mat-stroked-button color="primary" type="button">
+                                            <mat-icon>add</mat-icon>
+                                            Upload new file
+                                        </button>
+                                    </div>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <div class="documents-upload-grid">
+                                        <button mat-flat-button color="primary" type="button" class="upload-entry">
+                                            <mat-icon>upload</mat-icon>
+                                            Upload File 1
+                                        </button>
+                                        <button mat-flat-button color="primary" type="button" class="upload-entry">
+                                            <mat-icon>upload</mat-icon>
+                                            Upload File 2
+                                        </button>
+                                        <button mat-stroked-button type="button" class="upload-entry upload-entry--outlined">
+                                            <mat-icon>folder_open</mat-icon>
+                                            Browse files
+                                        </button>
+                                    </div>
+                                    <p class="documents-helper">Accepted formats: PDF, DOCX, XLSX, and images up to 10 MB.</p>
+                                </mat-card-content>
+                            </mat-card>
+                            <div class="documents-list">
+                                <app-uploaded-files></app-uploaded-files>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </section>
+        </div>
+
+        <nav class="icon-stack" aria-label="Section navigation">
+            <button
+                type="button"
+                class="icon-stack__item"
+                *ngFor="let item of sectionNavItems"
+                [class.icon-stack__item--active]="activePanel === item.id"
+                (click)="setActivePanel(item.id)"
+                [attr.title]="item.label">
+                <span class="material-symbols-outlined">{{ item.icon }}</span>
+            </button>
+        </nav>
+    </div>
+
+    <ng-template #tracingHistoryLoader>
+        <div class="table-wrapper table-wrapper--loading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+    </ng-template>
+
+    <ng-template #tracingHistoryEmpty>
+        <div class="table-empty" *ngIf="!tracingHistoryError">No tracing history recorded.</div>
+        <div class="table-empty table-empty--error" *ngIf="tracingHistoryError">{{ tracingHistoryError }}</div>
+    </ng-template>
+
+    <ng-template #finalRemarkLoader>
+        <div class="table-wrapper table-wrapper--loading">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+    </ng-template>
+
+    <ng-template #finalRemarkEmpty>
+        <div class="table-empty">No final remarks recorded.</div>
+    </ng-template>
+</div>

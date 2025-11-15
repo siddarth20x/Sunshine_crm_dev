@@ -1,0 +1,21 @@
+# Backup files
+backup_*.js
+*_BACKUP_*.sql
+
+# Database dumps
+db-dump/
+
+# Archives
+*.zip
+sunshine-crm-dev-main/
+
+# Test files
+test_sp.sql
+test_login_and_activity.js
+test_*.js
+*.js
+!server/**/*.js
+!client/**/*.js
+
+server/.env
+upload-file-server/.env

@@ -1,0 +1,228 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<!-- <h4 *ngIf="dialogTitle!=='Assign New Target'">Task ID : {{dialogData?.task_id}}</h4> -->
+<mat-divider></mat-divider><br>
+<mat-dialog-content class="__tasks">
+    <form [formGroup]="targetsForm">
+        <div class="row">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Assigned By</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                        formControlName="admin_full_name" [matAutocomplete]="admin"
+                        (input)="handleInput($event, adminControl)">
+                    <button mat-icon-button *ngIf="targetsForm.get('admin_full_name').value && !targetsForm.get('admin_full_name').disabled" matSuffix
+                        (click)="adminHandler('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <button mat-icon-button matSuffix *ngIf="isUserDeactivated(targetsForm.get('admin_full_name').value)" tabindex="-1"
+                        (click)="openDeactivatedUserMessage('Assigned By')">
+                        <mat-icon color="warn">warning</mat-icon>
+                    </button>
+                    <mat-autocomplete #admin="matAutocomplete" (optionSelected)="adminHandler($event.option.value)">
+                        <mat-option *ngFor="let option of adminFilteredOptions | async" [value]="option.full_name">
+                            {{option.full_name}}
+                            <sub>({{option.user_id}} | {{option.role_name | uppercase}})
+                                <mat-icon *ngIf="isUserDeactivated(option.full_name)" color="warn" style="font-size: 16px; vertical-align: middle;" matTooltip="User got deactivated/removed from platform">warning</mat-icon>
+                            </sub>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Select Senior Manager</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="String" matInput
+                        formControlName="senior_manager_full_name" [matAutocomplete]="srmgr"
+                        (input)="handleInput($event, seniorMgrControl)">
+                    <button mat-icon-button *ngIf="targetsForm.get('senior_manager_full_name').value && !targetsForm.get('senior_manager_full_name').disabled" matSuffix
+                        (click)="seniorMgrHandler('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <button mat-icon-button matSuffix *ngIf="isUserDeactivated(targetsForm.get('senior_manager_full_name').value)" tabindex="-1"
+                        (click)="openDeactivatedUserMessage('Senior Manager')">
+                        <mat-icon color="warn">warning</mat-icon>
+                    </button>
+                    <mat-autocomplete #srmgr="matAutocomplete" (optionSelected)="seniorMgrHandler($event.option.value)">
+                        <mat-option *ngFor="let option of seniorMgrFilteredOptions | async" [value]="option.full_name">
+                            {{option.full_name}}
+                            <sub>({{option.user_id}} | {{option.role_name | uppercase}})
+                                <mat-icon *ngIf="isUserDeactivated(option.full_name)" color="warn" style="font-size: 16px; vertical-align: middle;" matTooltip="User got deactivated/removed from platform">warning</mat-icon>
+                            </sub>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Select Team Manager</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                        formControlName="team_manager_full_name" [matAutocomplete]="tmmgr"
+                        (input)="handleInput($event, teamMgrControl)">
+                    <button mat-icon-button *ngIf="targetsForm.get('team_manager_full_name').value && !targetsForm.get('team_manager_full_name').disabled" matSuffix
+                        (click)="teamMgrHandler('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <button mat-icon-button matSuffix *ngIf="isUserDeactivated(targetsForm.get('team_manager_full_name').value)" tabindex="-1"
+                        (click)="openDeactivatedUserMessage('Team Manager')">
+                        <mat-icon color="warn">warning</mat-icon>
+                    </button>
+                    <mat-autocomplete #tmmgr="matAutocomplete" (optionSelected)="teamMgrHandler($event.option.value)">
+                        <mat-option *ngFor="let option of teamMgrFilteredOptions | async" [value]="option.full_name">
+                            {{option.full_name}}
+                            <sub>({{option.user_id}} | {{option.role_name | uppercase}})
+                                <mat-icon *ngIf="isUserDeactivated(option.full_name)" color="warn" style="font-size: 16px; vertical-align: middle;" matTooltip="User got deactivated/removed from platform">warning</mat-icon>
+                            </sub>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Select Team Lead</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="String" matInput
+                        formControlName="team_lead_full_name" [matAutocomplete]="tmld"
+                        (input)="handleInput($event, teamLeadsControl)">
+                    <button mat-icon-button *ngIf="targetsForm.get('team_lead_full_name').value && !targetsForm.get('team_lead_full_name').disabled" matSuffix
+                        (click)="teamLeadHandler('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <button mat-icon-button matSuffix *ngIf="isUserDeactivated(targetsForm.get('team_lead_full_name').value)" tabindex="-1"
+                        (click)="openDeactivatedUserMessage('Team Lead')">
+                        <mat-icon color="warn">warning</mat-icon>
+                    </button>
+                    <mat-autocomplete #tmld="matAutocomplete" (optionSelected)="teamLeadHandler($event.option.value)">
+                        <mat-option *ngFor="let option of teamLeadsFilteredOptions | async" [value]="option.full_name">
+                            {{option.full_name}}
+                            <sub>({{option.user_id}} | {{option.role_name | uppercase}})
+                                <mat-icon *ngIf="isUserDeactivated(option.full_name)" color="warn" style="font-size: 16px; vertical-align: middle;" matTooltip="User got deactivated/removed from platform">warning</mat-icon>
+                            </sub>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Select Agent</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                        formControlName="agent_full_name" [matAutocomplete]="agent"
+                        (input)="handleInput($event, agentsControl)">
+                    <button mat-icon-button *ngIf="targetsForm.get('agent_full_name').value && !targetsForm.get('agent_full_name').disabled" matSuffix
+                        (click)="agentsHandler('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <button mat-icon-button matSuffix *ngIf="isUserDeactivated(targetsForm.get('agent_full_name').value)" tabindex="-1"
+                        (click)="openDeactivatedUserMessage('Agent')">
+                        <mat-icon color="warn">warning</mat-icon>
+                    </button>
+                    <mat-autocomplete #agent="matAutocomplete" (optionSelected)="agentsHandler($event.option.value)">
+                        <mat-option *ngFor="let option of agentsFilteredOptions | async" [value]="option.full_name">
+                            {{option.full_name}}
+                            <sub>({{option.user_id}} | {{option.role_name | uppercase}})
+                                <mat-icon *ngIf="isUserDeactivated(option.full_name)" color="warn" style="font-size: 16px; vertical-align: middle;" matTooltip="User got deactivated/removed from platform">warning</mat-icon>
+                            </sub>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Role validation error message -->
+        <div class="row" *ngIf="hasRoleValidationError()">
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                <div class="feedback-message">
+                    <span class="message-text">At least one role (Senior Manager, Team Manager, Team Lead, or Agent) should be selected to assign target.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- <div class="col-sm"> -->
+                <!-- <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Target Assigned By</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                        formControlName="target_assigned_by_full_name" [matAutocomplete]="taby"
+                        (input)="handleInput($event, targetAssignedControl)">
+                    <button mat-icon-button *ngIf="targetsForm.get('target_assigned_by_full_name').value" matSuffix
+                        (click)="targetsForm.get('target_assigned_by_full_name').setValue(''); targetAssignedControl.setValue('')">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                    <mat-autocomplete #taby="matAutocomplete"
+                        (optionSelected)="targetAssignedByHandler($event.option.value)">
+                        <mat-option *ngFor="let option of targetAssignedFilteredOptions | async"
+                            [value]="option.full_name">
+                            {{option.full_name}}
+                            <sub>({{option.user_id}} | {{option.role_name | uppercase}})</sub>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field> -->
+            <!-- </div> -->
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Enter Target Amount</mat-label>
+                    <input matInput formControlName="target_amount">
+                </mat-form-field>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>From date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="from_date"
+                        (dateChange)="assignedDateHandler($event)">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>To date</mat-label>
+                    <input matInput [matDatepicker]="target_dtmpicker" formControlName="to_date"
+                        (dateChange)="targetDateHandler($event)">
+                    <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="target_dtmpicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #target_dtmpicker></mat-datepicker>
+                    <mat-error *ngIf="targetsForm.get('to_date').hasError('invalidTargetDate')">Target date must be
+                        greater
+                        than or equal to the assigned date.</mat-error>
+                </mat-form-field>
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>No. of working days</mat-label>
+                    <input type="number" aria-label="Number" matInput formControlName="working_days">
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Achieved Target</mat-label>
+                    <input matInput formControlName="achieved_target">
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelTarget()">Cancel</button>
+
+    <ng-container>
+        <button mat-raised-button color="primary" (click)="createNewTrget()" [disabled]="targetsForm.invalid || hasRoleValidationError()"
+            *ngIf="dialogTitle === 'Assign New Target' && isCreatePrivilegedModule && !isAgent && !isTeamLead">Create
+            Target</button>
+    </ng-container>
+
+    <button mat-raised-button color="primary" (click)="updateTarget(dialogData)"
+        *ngIf="dialogTitle !== 'Assign New Target' && isEditPrivilegedModule" 
+        [disabled]="isAgent || !hasFormChanges || hasRoleValidationError()">Update
+        Target</button>
+</mat-dialog-actions>

@@ -1,0 +1,462 @@
+<br />
+<br />
+<button mat-button color="primary" (click)="goBack()">
+  <span class="material-symbols-outlined"> chevron_left </span> Back
+</button>
+<br />
+<div class="row">
+  <div class="col-sm action_btns">
+    <button
+      mat-button
+      color="warn"
+      (click)="deActivateUser()"
+      *ngIf="userStatus === 1"
+    >
+      Delete
+    </button>
+    <!-- <button mat-button color="primary" (click)="ActivateUser()" *ngIf="userStatus===0">Activate</button> -->
+    <!-- <button mat-stroked-button color="primary">Approve</button> -->
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="saveUserDetails()"
+      [disabled]="
+        userForm.invalid ||
+        selectFormControl.value?.length == 0 ||
+        reportingControl.value == null ||
+        !hasFormChanges
+      "
+    >
+      Save
+    </button>
+  </div>
+</div>
+<br />
+<div class="row card_row">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title
+        ><span class="material-symbols-outlined"> person </span>Basic
+        Info</mat-card-title
+      >
+      <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+    </mat-card-header>
+    <mat-divider></mat-divider><br />
+    <mat-card-content>
+      <div
+        class="row row-cols-1 row-cols-md-2 row-cols-sm-1 row-xs-1 g-2 __basic_info"
+        [formGroup]="userForm"
+      >
+        <div class="col-2 col-md-2 col-sm-1 col-xs-1">
+          <!-- <img [src]="profileURL" alt="Profile Photo"
+                        onerror="this.src='../../../assets/images/fallback-image.png'" class="profile__image"> -->
+        </div>
+        <div class="col-10 col-md-10 col-sm-1 col-xs-1">
+          <div cellspacing="0">
+            <span class="__inp_fields">
+              <!-- <td> -->
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>First name</mat-label>
+                <input matInput formControlName="first_name" />
+              </mat-form-field>
+              <!-- </td> -->
+              <!-- <td> -->
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="last_name" />
+              </mat-form-field>
+              <!-- </td> -->
+            </span>
+            <span class="__inp_fields">
+              <!-- <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Designation</mat-label>
+                                <input matInput formControlName="designation">
+                            </mat-form-field> -->
+
+              <!-- <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Role</mat-label>
+                                    <input matInput formControlName="role_name">
+                                </mat-form-field> -->
+              <!-- <mat-form-field appearance="outline">
+                                <mat-label>Role</mat-label>
+                                <mat-select formControlName="designation"
+                                    (selectionChange)="onDesignationSelect($event)">
+                                    <mat-option disabled>--Select--</mat-option>
+                                    <mat-option [value]="roles.role_name" *ngFor="let roles of rolesList">{{
+                                        roles.role_name }}</mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+              <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                <mat-label>Role</mat-label>
+                <input
+                  type="text"
+                  aria-label="Number"
+                  placeholder="Pick one"
+                  matInput
+                  [formControl]="roleControl"
+                  [matAutocomplete]="auto1"
+                />
+                <button
+                  *ngIf="roleControl.value"
+                  mat-icon-button
+                  matSuffix
+                  aria-label="Clear"
+                  (click)="clearRoleSelection()"
+                >
+                  <mat-icon>clear</mat-icon>
+                </button>
+                <mat-autocomplete
+                  #auto1="matAutocomplete"
+                  (optionSelected)="onDesignationSelect($event)"
+                >
+                  <mat-option
+                    *ngFor="let option of filteredRoles | async"
+                    [value]="option.role_name"
+                  >
+                    {{ option.role_name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+              <div class="reporting-to-wrapper">
+                <mat-form-field class="example-full-width" appearance="outline" style="flex: 1;">
+                  <mat-label>Reporting To</mat-label>
+                  <input
+                    type="text"
+                    aria-label="Number"
+                    placeholder="Pick one"
+                    matInput
+                    [formControl]="reportingControl"
+                    [matAutocomplete]="auto2"
+                  />
+                  <button
+                    *ngIf="selectedReportingUserIsDeactivated"
+                    mat-icon-button
+                    matSuffix
+                    aria-label="Warning"
+                    (click)="showDeactivatedUserWarning()"
+                  >
+                    <mat-icon color="warn">warning</mat-icon>
+                  </button>
+                  <button
+                    *ngIf="roleControl.value && !selectedReportingUserIsDeactivated"
+                    mat-icon-button
+                    matSuffix
+                    aria-label="Clear"
+                    (click)="clearReportingSelection()"
+                  >
+                    <mat-icon>clear</mat-icon>
+                  </button>
+                  <mat-autocomplete
+                    #auto2="matAutocomplete"
+                    (optionSelected)="onReportingSelect($event)"
+                  >
+                    <mat-option
+                      *ngFor="let option of filterdReportingUsers | async"
+                      [value]="option.full_name"
+                    >
+                      {{ option.full_name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+            </span>
+
+            <span class="__inp_fields">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Email Address</mat-label>
+                <input type="email" matInput formControlName="email_address" />
+              </mat-form-field>
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Phone</mat-label>
+                <input type="number" matInput formControlName="phone" />
+              </mat-form-field>
+            </span>
+            <span class="__inp_fields">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>MAC Address</mat-label>
+                <input matInput formControlName="mac_address" />
+              </mat-form-field>
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Allowed IP</mat-label>
+                <input matInput formControlName="allowed_ip" />
+              </mat-form-field>
+            </span>
+            <span class="__inp_fields">
+              <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Country</mat-label>
+                <!-- <button *ngIf="roleControl.value" mat-icon-button matSuffix aria-label="Clear"
+                                    (click)="clearRoleSelection()">
+                                    <mat-icon>clear</mat-icon>
+                                </button> -->
+                <mat-select
+                  (selectionChange)="onCountryChange($event)"
+                  formControlName="country"
+                >
+                  <mat-option
+                    *ngFor="let country of countries"
+                    [value]="country.name"
+                  >
+                    {{ country.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>State</mat-label>
+                <mat-select
+                  (selectionChange)="onStateChange($event)"
+                  formControlName="state"
+                >
+                  <mat-option *ngFor="let state of states" [value]="state.name">
+                    {{ state.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>City</mat-label>
+                <mat-select
+                  (selectionChange)="onCityChange($event)"
+                  formControlName="city"
+                >
+                  <mat-option *ngFor="let city of cities" [value]="city">
+                    {{ city }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span class="__inp_fields">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-select
+                  (openedChange)="openedChange($event)"
+                  placeholder="Allowed Banks"
+                  [formControl]="selectFormControl"
+                  multiple
+                  required
+                >
+                  <mat-select-trigger>
+                    {{
+                      selectFormControl.value
+                        ? selectFormControl.value[0]?.company_name
+                        : ""
+                    }}
+                    <span
+                      *ngIf="selectFormControl.value?.length > 1"
+                      class="additional-selection"
+                    >
+                      (+{{ selectFormControl.value.length - 1 }}
+                      {{
+                        selectFormControl.value?.length === 2
+                          ? "other"
+                          : "others"
+                      }})
+                    </span>
+                  </mat-select-trigger>
+                  <div class="select-container">
+                    <mat-optgroup>
+                      <mat-form-field style="width: 100%">
+                        <input
+                          #search
+                          autocomplete="off"
+                          placeholder="Search Banks"
+                          aria-label="Search"
+                          matInput
+                          [formControl]="searchTextboxControl"
+                        />
+                        <button
+                          [disableRipple]="true"
+                          *ngIf="search.value"
+                          matSuffix
+                          mat-icon-button
+                          aria-label="Clear"
+                          (click)="clearSearch($event)"
+                        >
+                          <mat-icon>close</mat-icon>
+                        </button>
+                      </mat-form-field>
+                    </mat-optgroup>
+                    <mat-optgroup
+                      *ngIf="(filteredCompany | async)?.length === 0"
+                    >
+                      <mat-option>No companies found</mat-option>
+                    </mat-optgroup>
+
+                    <mat-option
+                      (onSelectionChange)="selectionChange($event)"
+                      *ngFor="let option of filteredCompany | async"
+                      [value]="option"
+                    >
+                      {{ option.company_name }}
+                    </mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
+              <!-- 
+                                    <mat-form-field class="example-chip-list">
+                                        <mat-label>Select Company</mat-label>
+                                        <mat-chip-list aria-label="Fruit selection">
+                                            <mat-chip *ngFor="let fruit of filteredFruits" (removed)="remove(fruit)" [aria-label]="'remove ' + fruit">
+                                                {{fruit}}
+                                                <mat-icon matChipRemove>cancel</mat-icon>
+                                            </mat-chip>
+                                        </mat-chip-list>
+                                        <input placeholder="New Fruit..." #fruitInput [formControl]="fruitCtrl"
+                                            [matChipInputFor]="chipList" [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                            (matChipInputTokenEnd)="add($event)" />
+                                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                                            <mat-option *ngFor="let fruit of filteredFruits | async; trackBy: trackByFn" [value]="fruit">
+                                                {{fruit}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field> -->
+            </span>
+            <span class="__inp_fields client-container">
+              <mat-label *ngIf="selectFormControl.value?.length > 0"
+                >Your chosen banks</mat-label
+              ><br />
+              <div *ngIf="selectFormControl.value" class="companyName">
+                <span *ngFor="let comp of selectedValues">
+                  {{ comp.company_name }}
+                  <button mat-icon-button (click)="cancelCompany(comp)">
+                    <mat-icon>cancel</mat-icon>
+                  </button></span
+                >
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <!-- <mat-card-actions>
+            <button mat-button>LIKE</button>
+            <button mat-button>SHARE</button>
+        </mat-card-actions> -->
+  </mat-card>
+</div>
+<br />
+<div class="row accordion_row">
+  <mat-accordion class="accordion">
+    <mat-expansion-panel
+      [expanded]="step === 0"
+      [disabled]="isManagePrivilegeDisabled"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span class="material-symbols-outlined"> manage_accounts </span>
+          Manage Privileges
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        <mat-form-field appearance="standard">
+          <mat-label>Filter Modules</mat-label>
+          <input matInput (keyup)="applyFilter($event)" #input />
+        </mat-form-field>
+        <!-- <div class="mat-elevation-z8"> -->
+        <div class="tbl__class">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="module_id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{ row.module_id }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="module_alias">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Module Name
+              </th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{ row.module_alias }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="module_type">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Module Type
+              </th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                {{ row.module_type }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role_dropdown">
+              <th mat-header-cell *matHeaderCellDef>Privileges Assign(ed)</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                <div *ngFor="let priv of privilegesList; let k = index">
+                  <mat-checkbox
+                    class="privilege-checks"
+                    [checked]="
+                      isPrivilegeSelected(priv.privilege_bit, row.module_id)
+                    "
+                    color="primary"
+                    (change)="
+                      privilegeChange(
+                        $event,
+                        priv.privilege_bit,
+                        row.module_id,
+                        row
+                      )
+                    "
+                    >{{ priv.privilege_name }}</mat-checkbox
+                  >
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="active_inactive">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+              <td mat-cell *matCellDef="let row; let i = index" id="td">
+                <!-- <mat-checkbox class="privilege-checks" [checked]="isStatusActive(row.module_id)"
+                                    color="primary"
+                                    (change)="switchModStatus($event,row.module_id,i)">Active</mat-checkbox> -->
+
+                <mat-checkbox
+                  class="privilege-checks fake-disabled"
+                  [checked]="hasAnyPrivilegeSelected(row.module_id)"
+                  [disabled]="true"
+                  color="primary"
+                >
+                  Active
+                </mat-checkbox>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Action</th>
+              <td mat-cell *matCellDef="let row; let i = index">
+                <button
+                  mat-button
+                  (click)="saveURC($event, i,row)"
+                  color="primary"
+                  [disabled]="!changedModulesMap[row.module_id]"
+                >
+                  Save
+                </button>
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedAccHoldersColumns"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedAccHoldersColumns"
+            ></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="5">
+                No data matching the filter "{{ input.value }}"
+              </td>
+            </tr>
+          </table>
+          <mat-paginator
+            [length]="resultsLength"
+            [pageSize]="5"
+            aria-label="Select page of users"
+            showFirstLastButtons
+          ></mat-paginator>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

@@ -1,0 +1,100 @@
+<div class="container-fluid">
+
+    <br>
+    <div class="table__row" *ngIf="isReadPrivilegedModule">
+        <mat-card class="table__card">
+            <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+            <mat-card-header class="table__header">
+                <!-- <mat-card-title>Card Title </mat-card-title> -->
+                <!-- <mat-card-subtitle>Card Sub Title</mat-card-subtitle> -->
+                <mat-form-field appearance="standard">
+                    <mat-label>Filter Address</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" #input>
+                </mat-form-field>
+            </mat-card-header>
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+                    <ng-container matColumnDef="contact_mode_list">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Address Source</th>
+                        <td mat-cell *matCellDef="let row" data-label="Contact Mode">{{row.contact_mode_list}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="address_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Address Name</th>
+                        <td mat-cell *matCellDef="let row" data-label="Address name">{{row.address_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="current_location">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Current Location</th>
+                        <td mat-cell *matCellDef="let row" data-label="Current Location">{{row.current_location}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="city">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
+                        <td mat-cell *matCellDef="let row" data-label="city">{{row.city}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="state">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
+                        <td mat-cell *matCellDef="let row" data-label="state">{{row.state}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="country">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Country</th>
+                        <td mat-cell *matCellDef="let row" data-label="country">{{row.country}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="zipcode">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Zipcode</th>
+                        <td mat-cell *matCellDef="let row" data-label="zipcode">{{row.zipcode}}</td>
+                    </ng-container>
+
+                    <!-- New Address Field -->
+                    <ng-container matColumnDef="office_address">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Office Address</th>
+                        <td mat-cell *matCellDef="let row" data-label="Office Address">{{row.office_address}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="is_primary">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Primary Adddress</th>
+                        <td mat-cell *matCellDef="let row" data-label="Primary address">{{row.is_primary==1?'Yes':'No'}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="expand">
+                        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button aria-label="expand row"
+                                (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                                <mat-icon *ngIf="expandedElement != element">keyboard_arrow_down</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="expandedDetail">
+                        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                            <div class="example-element-detail"
+                                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                <div class="example-element-description">
+                                    Created Address Line 1 as <strong> {{element.address_line_1}}</strong><br>
+                                    Created Address Line 2 as <strong> {{element.address_line_2}}</strong><br>
+                                    Created Address Line 3 as <strong> {{element.address_line_3}}</strong><br>
+                                    Current Location <strong> {{element.current_location}}</strong><br>
+                                    Created By <strong> {{element.created_by_full_name}}</strong> at <strong>
+                                        {{element.created_dtm | date :"dd-MMM-yyyy"}}</strong><br>
+                                    <!-- Modified By <strong> {{element.modified_by_full_name}}</strong> at <strong>
+                                        {{element.modified_dtm | date :"short"}}</strong> -->
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+                        class="example-element-row" [class.example-expanded-row]="expandedElement === element"
+                        (click)="expandedElement = expandedElement === element ? null : element">
+                    </tr>
+                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="7">No address(s) found</td>
+                    </tr>
+                </table>
+                <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of logs"
+                    showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-card>
+    </div>
+</div>

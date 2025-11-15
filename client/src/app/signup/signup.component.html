@@ -1,0 +1,100 @@
+<div class="container container-sm container-md container-lg container-xl">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <mat-card class="singup__card">
+                <mat-card-title>Signup</mat-card-title>
+                <mat-divider inset></mat-divider><br>
+                <mat-card-content>
+                    <form [formGroup]="singupForm">
+                        <div class="row " cellspacing="0">
+                            <div class="col-sm">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>First name</mat-label>
+                                    <input matInput formControlName="first_name">
+                                    <mat-error
+                                        *ngIf="singupForm.get('first_name').hasError('first_name') && !singupForm.get('first_name').hasError('required')">
+                                        Please enter a First Name
+                                    </mat-error>
+                                    <mat-error *ngIf="singupForm.get('first_name').hasError('first_name')">
+                                        First Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm"><mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput formControlName="last_name">
+                                    <mat-error
+                                        *ngIf="singupForm.get('last_name').hasError('last_name') && !singupForm.get('last_name').hasError('required')">
+                                        Please enter a Last Name
+                                    </mat-error>
+                                    <mat-error *ngIf="singupForm.get('last_name').hasError('last_name')">
+                                        Last Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field></div>
+                            <div class="col-sm">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Phone</mat-label>
+                                    <input matInput formControlName="phone">
+                                    <mat-error
+                                        *ngIf="singupForm.get('phone').hasError('phone') && !singupForm.get('phone').hasError('required')">
+                                        Please enter a Phone
+                                    </mat-error>
+                                    <mat-error *ngIf="singupForm.get('phone').hasError('phone')">
+                                        Phone is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Email</mat-label>
+                                    <input type="email" matInput formControlName="email_id"
+                                        placeholder="Ex. pat@example.com">
+                                    <mat-error
+                                        *ngIf="singupForm.get('email_id').hasError('email_id') && !singupForm.get('email_id').hasError('required')">
+                                        Please enter a valid email address
+                                    </mat-error>
+                                    <mat-error *ngIf="singupForm.get('email_id').hasError('required')">
+                                        Email is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Password</mat-label>
+                                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                                    <button mat-icon-button matSuffix (click)="hide = !hide"
+                                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Designation</mat-label>
+                                    <mat-select formControlName="designation"
+                                        (selectionChange)="onDesignationSelect($event)">
+                                        <mat-option *ngFor="let desig of designation" [value]="desig.name">
+                                            {{desig.name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </form>
+                </mat-card-content>
+                <mat-divider inset></mat-divider>
+                <mat-card-actions align="end">
+                    <!-- <button mat-raised-button [disabled]="!singupForm.valid" (click)="submit()">Submit</button> -->
+                    <button mat-raised-button (click)="submit()">Submit</button>
+                </mat-card-actions>
+                <mat-card-footer>
+                    <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
+                </mat-card-footer>
+            </mat-card>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>

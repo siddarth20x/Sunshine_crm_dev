@@ -1,0 +1,55 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<mat-divider></mat-divider><br>
+<mat-dialog-content>
+    <form [formGroup]="tracingDetails">
+        <!-- Debug info to help see form status
+        <div class="form-status" style="margin-bottom: 10px; color: #666;">
+            <small>Form valid: {{tracingDetails.valid}} | Fields filled: {{tracingDetails.get('sql_details')?.value ? '✓' : '✗'}} SQL, 
+            {{tracingDetails.get('company_trade_license_details')?.value ? '✓' : '✗'}} License, 
+            {{tracingDetails.get('additional_details')?.value ? '✓' : '✗'}} Additional</small>
+        </div> -->
+
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>SQL Details *</mat-label>
+                    <textarea matInput formControlName="sql_details"></textarea>
+                    <mat-error *ngIf="tracingDetails.get('sql_details')?.hasError('required')">
+                        <strong>SQL Details is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Company Trade Licence Details *</mat-label>
+                    <textarea matInput formControlName="company_trade_license_details"></textarea>
+                    <mat-error *ngIf="tracingDetails.get('company_trade_license_details')?.hasError('required')">
+                        <strong>Company Trade Licence Details is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Additional Details *</mat-label>
+                    <textarea matInput formControlName="additional_details"></textarea>
+                    <mat-error *ngIf="tracingDetails.get('additional_details')?.hasError('required')">
+                        <strong>Additional Details is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelTraceDetails()">Cancel</button>
+    <!-- Simplified disabled condition - just check if the form is valid -->
+    <button mat-raised-button color="primary" (click)="saveTraceDetails()" 
+            [disabled]="!areAllFieldsFilled()">
+        Save Trace
+    </button>
+</mat-dialog-actions>

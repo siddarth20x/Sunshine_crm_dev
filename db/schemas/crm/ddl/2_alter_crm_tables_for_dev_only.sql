@@ -1,0 +1,12 @@
+ALTER TABLE crm.address ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER is_primary;
+ALTER TABLE crm.contact ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER is_primary;
+ALTER TABLE crm.leads ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER allocation_type;
+ALTER TABLE crm.leads_payment_ledger ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER ghrc_offer_3;
+ALTER TABLE crm.mol_check ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER mol_passport_no;
+ALTER TABLE crm.notes ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER note;
+ALTER TABLE crm.task ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER is_automated;
+ALTER TABLE crm.tracing_details ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER additional_details;
+ALTER TABLE crm.visa_check ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER unified_number;
+ALTER TABLE crm.web_tracing_details ADD COLUMN is_uploaded_record TINYINT NOT NULL DEFAULT 0 AFTER traced_details;
+ALTER TABLE crm.activity_log ADD COLUMN is_uploaded_record TINYINT NULL AFTER lead_status_type;
+ALTER TABLE crm.activity_log ADD COLUMN is_touched TINYINT NOT NULL DEFAULT 0 AFTER is_uploaded_record;

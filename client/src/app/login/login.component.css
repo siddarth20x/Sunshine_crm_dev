@@ -1,0 +1,32 @@
+.singup__card {
+    margin: 5% 0%;
+    width: 50%;
+}
+
+
+.example-full-width {
+    width: 100%;
+}
+
+td {
+    padding-right: 8px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+img{
+    width: 50px;
+}
+
+@media screen and (max-width:428px) {
+    .singup__card {
+        margin: 15% 0%;
+        width: 90%;
+
+    }
+}

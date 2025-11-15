@@ -1,0 +1,152 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<mat-divider></mat-divider><br>
+<mat-dialog-content>
+    <form [formGroup]="visaCheckForm">
+        <!-- <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Contact Mode</mat-label>
+                    <mat-select name="contact_mode_list" formControlName="contact_mode_list"
+                        (selectionChange)="selectContactMode($event)">
+                        <mat-option *ngFor="let mode of contactMode" [value]="mode">
+                            {{mode}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="visaCheckForm.get('contact_mode_list').hasError('required')">
+                        <strong>Contact Mode is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div> -->
+        <div class="_rows">
+            <div class="col-sm">
+                <!-- <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Visa Status</mat-label>
+                    <textarea matInput formControlName="visa_status"></textarea>
+                    <mat-error *ngIf="visaCheckForm.get('visa_status').hasError('required')">
+                        <strong>Visa Status is required</strong>
+                    </mat-error>
+                </mat-form-field> -->
+
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Visa Status</mat-label>
+                    <!-- <input matInput formControlName="pli_status"> -->
+                    <mat-select formControlName="visa_status" (selectionChange)="selectVisaStatus($event)">
+                        <mat-option disabled>--Select--</mat-option>
+                        <mat-option [value]="visa" *ngFor="let visa of visaStatus">{{visa}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="visaCheckForm.get('visa_status').hasError('required')">
+                        <strong>Visa Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Visa Passport No.</mat-label>
+                    <input matInput formControlName="visa_passport_no">
+                    <mat-error *ngIf="visaCheckForm.get('visa_passport_no').hasError('required')">
+                        <strong>Visa Passport Number is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <!-- <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Visa Expiry Date</mat-label>
+                    <textarea matInput formControlName="visa_expiry_date"></textarea>
+                    <mat-error *ngIf="visaCheckForm.get('visa_expiry_date').hasError('required')">
+                        <strong>Visa Expiry Date is required</strong>
+                    </mat-error>
+                </mat-form-field> -->
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>Visa Expiry Date</mat-label>
+                    <input matInput [matDatepicker]="Expirypicker" formControlName="visa_expiry_date"
+                        (dateInput)="assignedDateHandler($event)">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="Expirypicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #Expirypicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Visa File Number</mat-label>
+                    <input matInput formControlName="visa_file_number">
+                    <mat-error *ngIf="visaCheckForm.get('visa_file_number').hasError('required')">
+                        <strong>Visa File Number is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Visa Emirates</mat-label>
+                    <input matInput formControlName="visa_emirates">
+                    <mat-error *ngIf="visaCheckForm.get('visa_emirates').hasError('required')">
+                        <strong>Visa Emirates is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Company Name in Visa</mat-label>
+                    <input matInput formControlName="visa_company_name">
+                    <mat-error *ngIf="visaCheckForm.get('visa_company_name').hasError('required')">
+                        <strong>Company Name in Visa is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Designation in Visa</mat-label>
+                    <input matInput formControlName="visa_designation">
+                    <mat-error *ngIf="visaCheckForm.get('visa_designation').hasError('required')">
+                        <strong>Designation in Visa is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Contact Number in Visa</mat-label>
+                    <input type="number" matInput formControlName="visa_contact_no">
+                    <mat-error *ngIf="visaCheckForm.get('visa_contact_no').hasError('required')">
+                        <strong>Contact Number in Visa is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Visa Emirates Id</mat-label>
+                    <input matInput formControlName="visa_emirates_id">
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Unified Number</mat-label>
+                    <input matInput formControlName="unified_number">
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- <div class="_rows">
+            <div class="col-sm">
+                <mat-checkbox color="primary" formControlName="is_primary">Is Primary Address?</mat-checkbox>
+            </div>
+        </div> -->
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelVisaCheck()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="saveVisaCheck()" [disabled]="visaCheckForm.invalid">Save
+        Visa Check</button>
+</mat-dialog-actions>

@@ -1,0 +1,97 @@
+<div class="container-fluid">
+    <br>
+    <div class="table__row" *ngIf="isReadPrivilegedModule">
+        <mat-card class="table__card">
+            <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+            <mat-card-header class="table__header">
+                <!-- <mat-card-title>Card Title </mat-card-title> -->
+                <!-- <mat-card-subtitle>Card Sub Title</mat-card-subtitle> -->
+                <mat-form-field appearance="standard">
+                    <mat-label>Filter Contacts</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" #input>
+                </mat-form-field>
+            </mat-card-header>
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+                    <!-- <ng-container matColumnDef="contact_mode_list">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact Mode</th>
+                        <td mat-cell *matCellDef="let row" data-label="Contact Mode">{{row.contact_mode_list}}</td>
+                    </ng-container> -->
+                    <ng-container matColumnDef="customer_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Customer Name</th>
+                        <td mat-cell *matCellDef="let row" data-label="Customer Name">{{row.customer_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="is_primary">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Primary Contact</th>
+                        <td mat-cell *matCellDef="let row" data-label="Primary Contact">{{row.is_primary==1?'Yes':'No'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+                        <td mat-cell *matCellDef="let row" data-label="Email">{{row.email}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="phone">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Phone</th>
+                        <td mat-cell *matCellDef="let row" data-label="Phone">{{row.phone}}</td>
+                    </ng-container>
+
+                    <!-- New Contact Fields -->
+                    <ng-container matColumnDef="friend_residence_phone">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Friend Residence Phone</th>
+                        <td mat-cell *matCellDef="let row" data-label="Friend Residence Phone">{{row.friend_residence_phone}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="monthly_income">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Monthly Income</th>
+                        <td mat-cell *matCellDef="let row" data-label="Monthly Income">{{row.monthly_income}}</td>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="contact_id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact Detail</th>
+                        <td mat-cell *matCellDef="let row">More</td>
+                    </ng-container> -->
+                    <ng-container matColumnDef="expand">
+                        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button aria-label="expand row"
+                                (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                                <mat-icon *ngIf="expandedElement != element">keyboard_arrow_down</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="expandedDetail">
+                        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                            <div class="example-element-detail"
+                                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                <div class="example-element-description">
+                                    Phone Extn. as <strong> {{element.phone_ext}}</strong><br>
+                                    Alternate Phone as <strong> {{element.alternate_phone}}</strong><br>
+                                    Contact Name as <strong> {{element.contact_name}}</strong><br>
+                                    Relationship as <strong> {{element.relationship}}</strong><br>
+                                    Other Contact as <strong> {{element.contact_name_ph_no}}</strong><br>
+                                    Created By <strong> {{element.created_by_full_name}}</strong> at <strong>
+                                        {{element.created_dtm | date :"dd-MMM-yyyy"}}</strong><br>
+                                    <!-- Modified By <strong> {{element.modified_by_full_name}}</strong> at <strong>
+                                        {{element.modified_dtm | date :"short"}}</strong> -->
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+                        class="example-element-row" [class.example-expanded-row]="expandedElement === element"
+                        (click)="expandedElement = expandedElement === element ? null : element">
+                    </tr>
+                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="7">No contact(s) found</td>
+                    </tr>
+                </table>
+                <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of logs"
+                    showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-card>
+    </div>
+</div>
+
+<!--  -->

@@ -1,0 +1,362 @@
+<br>
+<button mat-button color="primary" routerLink="/client-management"><span class="material-symbols-outlined">
+        chevron_left
+    </span> Back</button>
+<br><br>
+<div class="row card_row">
+    <mat-progress-bar mode="indeterminate" *ngIf="userSaveProg"></mat-progress-bar>
+    <mat-card class="example-card">
+        <mat-card-header>
+            <mat-card-title>Bank Info</mat-card-title>
+        </mat-card-header>
+        <mat-divider></mat-divider><br>
+        <mat-card-content>
+            <form [formGroup]="companyForm">
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-sm-1 row-xs-1 g-2 __basic_info">
+                    <div class="col-12 col-md-12 col-sm-1 col-xs-1">
+                        <div cellspacing="0">
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Team Lead</mat-label>
+                                    <mat-select formControlName="team_lead_id">
+                                        <mat-option disabled>--Select--</mat-option>
+                                        <mat-option [value]="type.user_id" *ngFor="let type of getSafeUserArray('team_lead')">
+                                            {{ type.full_name }} ({{ type.role_name | uppercase }})
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="companyForm.get('team_lead_id')?.hasError('required')">Team
+                                        lead is required</mat-error>
+                                </mat-form-field>
+
+
+                                <!-- <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Team Lead</mat-label>
+                                    <input type="text" placeholder="Select a team lead" aria-label="Team Lead" matInput
+                                        [formControl]="teamLeadControl" [matAutocomplete]="auto">
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                            {{ option.full_name }}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                    <mat-error *ngIf="companyForm.get('team_lead_id')?.hasError('required')">
+                                        Team Lead is required
+                                    </mat-error>
+                                </mat-form-field> -->
+
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Team Manager</mat-label>
+                                    <mat-select formControlName="team_manager_id">
+                                        <mat-option disabled>--Select--</mat-option>
+                                        <mat-option [value]="type.user_id" *ngFor="let type of getSafeUserArray('team_manager')">
+                                            {{ type.full_name }} ({{ type.role_name | uppercase }})
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="companyForm.get('team_manager_id')?.hasError('required')">Team
+                                        Manager is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Senior Manager</mat-label>
+                                    <mat-select formControlName="senior_manager_id">
+                                        <mat-option disabled>--Select--</mat-option>
+                                        <mat-option [value]="type.user_id" *ngFor="let type of getSafeUserArray('senior_manager')">
+                                            {{ type.full_name }} ({{ type.role_name | uppercase }})
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="companyForm.get('senior_manager_id')?.hasError('required')">Team
+                                        Senior Manager
+                                        is required</mat-error>
+                                </mat-form-field>
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Bank</mat-label>
+                                    <input matInput formControlName="company_name">
+                                    <mat-error *ngIf="companyForm.get('company_name')?.hasError('required')">Bank
+                                        Name is required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Bank Code</mat-label>
+                                    <input matInput formControlName="company_code">
+                                    <mat-error *ngIf="companyForm.get('company_code')?.hasError('required')">Bank
+                                        Code is required</mat-error>
+                                </mat-form-field>
+                                <!-- <mat-form-field appearance="outline">
+                                    <mat-label>Bank Type</mat-label>
+                                    <mat-select formControlName="company_type_id">
+                                        <mat-option disabled>--Select--</mat-option>
+                                        <mat-option [value]="type.company_type_id" *ngFor="let type of companyTypes">{{
+                                            type.company_type_name }}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="companyForm.get('company_type_id')?.hasError('required')">Bank
+                                        Type is required</mat-error>
+                                </mat-form-field> -->
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Bank Type</mat-label>
+                                    <input matInput formControlName="company_type_name">
+                                    <mat-error *ngIf="companyForm.get('company_type_name')?.hasError('required')">Bank
+                                        Type is required</mat-error>
+                                </mat-form-field>
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Bank Description</mat-label>
+                                    <input matInput formControlName="company_desc">
+                                    <mat-error *ngIf="companyForm.get('company_desc')?.hasError('required')">Description
+                                        is required</mat-error>
+                                </mat-form-field>
+
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Bank Logo URL</mat-label>
+                                    <input matInput formControlName="company_logo_url">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Bank Website</mat-label>
+                                    <input matInput formControlName="website">
+                                    <mat-error *ngIf="companyForm.get('website')?.hasError('pattern')">Invalid
+                                        URL</mat-error>
+                                </mat-form-field>
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Country</mat-label>
+                                    <input matInput formControlName="country" />
+                                    <mat-error *ngIf="companyForm.get('country')?.hasError('required')">Country is
+                                        required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Region</mat-label>
+                                    <mat-select formControlName="region">
+                                        <mat-option disabled>--Select--</mat-option>
+                                        <mat-option value="INTERNATIONAL">INTERNATIONAL</mat-option>
+                                        <mat-option value="DOMESTIC">DOMESTIC</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="companyForm.get('region')?.hasError('required')"><strong>Region</strong>
+                                        is required</mat-error>
+                                </mat-form-field>
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Account No.</mat-label>
+                                    <input matInput formControlName="account_no" />
+                                    <mat-error *ngIf="companyForm.get('account_no')?.hasError('required')">Account No. is
+                                        required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>IBAN No.</mat-label>
+                                    <input matInput formControlName="iban_no" />
+                                    <mat-error *ngIf="companyForm.get('iban_no')?.hasError('required')">IBAN No. is
+                                        required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Swift Code</mat-label>
+                                    <input matInput formControlName="swift_code" />
+                                    <mat-error *ngIf="companyForm.get('swift_code')?.hasError('required')">Swift Code is
+                                        required</mat-error>
+                                </mat-form-field>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+    <!-- Client Contact Info and Client Location Info cards here with similar validation structure -->
+    <mat-card class="example-card">
+        <mat-card-header>
+            <mat-card-title>Bank Contact Info</mat-card-title>
+        </mat-card-header>
+        <mat-divider></mat-divider><br>
+        <mat-card-content>
+            <form [formGroup]="companyContactForm">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-sm-1 row-xs-1 g-2 __basic_info">
+                    <div class="col-12 col-md-12 col-sm-1 col-xs-1">
+                        <div cellspacing="0">
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Salutation</mat-label>
+                                    <input matInput formControlName="salutation">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput formControlName="first_name">
+                                    <mat-error *ngIf="companyContactForm.get('first_name')?.hasError('required')">First
+                                        Name is required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput formControlName="last_name">
+                                    <mat-error *ngIf="companyContactForm.get('last_name')?.hasError('required')">Last
+                                        Name is required</mat-error>
+                                </mat-form-field>
+
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput formControlName="email_address">
+                                    <mat-error
+                                        *ngIf="companyContactForm.get('email_address')?.hasError('required')">Email is
+                                        required</mat-error>
+                                    <mat-error
+                                        *ngIf="companyContactForm.get('email_address')?.hasError('email')">Invalid
+                                        Email</mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Contact Department</mat-label>
+                                    <mat-select formControlName="contact_dept_type_id">
+                                        <mat-option disabled>--Select--</mat-option>
+                                        <mat-option [value]="type.contact_dept_type_id"
+                                            *ngFor="let type of contactDeptTypes">{{ type.contact_dept_type_name
+                                            }}</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="companyContactForm.get('contact_dept_type_id')?.hasError('required')">Contact
+                                        Department is required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Contact Mode List</mat-label>
+                                    <input matInput formControlName="contact_mode_list">
+                                </mat-form-field>
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Phone</mat-label>
+                                    <input matInput formControlName="phone">
+                                    <mat-error *ngIf="companyContactForm.get('phone')?.hasError('required')">Phone is
+                                        required</mat-error>
+                                    <mat-error *ngIf="companyContactForm.get('phone')?.hasError('pattern')">Invalid
+                                        Phone Number</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Phone Ext</mat-label>
+                                    <input matInput formControlName="phone_ext">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Alternate Phone</mat-label>
+                                    <input matInput formControlName="alternate_phone">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Designation</mat-label>
+                                    <input matInput formControlName="designation">
+                                </mat-form-field>
+
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+    <mat-card class="example-card">
+        <mat-card-header>
+            <mat-card-title>Bank Location Info</mat-card-title>
+        </mat-card-header>
+        <mat-divider></mat-divider><br>
+        <mat-card-content>
+            <form [formGroup]="companyLocationForm">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-sm-1 row-xs-1 g-2 __basic_info">
+                    <div class="col-12 col-md-12 col-sm-1 col-xs-1">
+                        <div cellspacing="0">
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Location Name</mat-label>
+                                    <input matInput formControlName="location_name">
+                                    <mat-error
+                                        *ngIf="companyLocationForm.get('location_name')?.hasError('required')">Location
+                                        Name is required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Location Type</mat-label>
+                                    <mat-select formControlName="location_type_id">
+                                        <mat-option disabled>--Select--</mat-option>
+                                        <mat-option [value]="type.location_type_id"
+                                            *ngFor="let type of locationTypes">{{ type.location_type_name
+                                            }}</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="companyLocationForm.get('location_type_id')?.hasError('required')">Location
+                                        Type is required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Location Code</mat-label>
+                                    <input matInput formControlName="location_code">
+                                </mat-form-field>
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Address Name</mat-label>
+                                    <input matInput formControlName="address_name">
+                                    <mat-error
+                                        *ngIf="companyLocationForm.get('address_name')?.hasError('required')">Address
+                                        Name is required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Address Type</mat-label>
+                                    <mat-select formControlName="address_type_id">
+                                        <mat-option disabled>--Select--</mat-option>
+                                        <mat-option [value]="type.address_type_id" *ngFor="let type of addressTypes">{{
+                                            type.address_type_name }}</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="companyLocationForm.get('address_type_id')?.hasError('required')">Address
+                                        Type is required</mat-error>
+                                </mat-form-field>
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Address Line 1</mat-label>
+                                    <input matInput formControlName="address_line_1">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Address Line 2</mat-label>
+                                    <input matInput formControlName="address_line_2">
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Address Line 3</mat-label>
+                                    <input matInput formControlName="address_line_3">
+                                </mat-form-field>
+                            </span>
+                            <span class="__inp_fields">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>City</mat-label>
+                                    <input matInput formControlName="city">
+                                    <mat-error *ngIf="companyLocationForm.get('city')?.hasError('required')">City is
+                                        required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>State</mat-label>
+                                    <input matInput formControlName="state">
+                                    <mat-error *ngIf="companyLocationForm.get('state')?.hasError('required')">State is
+                                        required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Country</mat-label>
+                                    <input matInput formControlName="country">
+                                    <mat-error *ngIf="companyLocationForm.get('country')?.hasError('required')">Country
+                                        is required</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <mat-label>Zipcode</mat-label>
+                                    <input matInput formControlName="zipcode">
+                                    <mat-error *ngIf="companyLocationForm.get('zipcode')?.hasError('required')">Zipcode
+                                        is required</mat-error>
+                                </mat-form-field>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+<br>
+<div class="row">
+    <div class="col-sm action_btns">
+        <button mat-raised-button color="primary" type="submit" (click)="saveCompanyDetails()">Save</button>
+    </div>
+</div>

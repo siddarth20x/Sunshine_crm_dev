@@ -1,0 +1,275 @@
+<div class="_row">
+    <div class="col-2">
+        <mat-form-field appearance="outline" class="mat_form_fields">
+            <mat-label>From Date</mat-label>
+            <input matInput [matDatepicker]="from" [value]="fromDate" (dateChange)="fromDateHandler($event)">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="from">
+            </mat-datepicker-toggle>
+            <mat-datepicker #from></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="col-2">
+        <mat-form-field appearance="outline" class="mat_form_fields">
+            <mat-label>To Date</mat-label>
+            <input matInput [matDatepicker]="to" [value]="toDate" (dateChange)="toDateHandler($event)">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="to">
+            </mat-datepicker-toggle>
+            <mat-datepicker #to></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="col-sm" *ngIf="showUserFilter">
+        <mat-form-field appearance="outline" class="mat_form_fields">
+            <mat-label>Users</mat-label>
+            <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="agentFullName"
+                [matAutocomplete]="auto">
+            <button *ngIf="dailyRepParams.agent_id!==null" mat-icon-button matSuffix aria-label="Clear"
+                (click)="clearAgentSelection()">
+                <mat-icon>clear</mat-icon>
+            </button>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="agentHandler($event.option.value)">
+                <mat-option *ngFor="let option of agentFilteredOptions | async" [value]="option.full_name">
+                    {{option.full_name}}
+                    <sub>({{option.user_id}} | {{option.role_name |
+                        uppercase}})</sub>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div class="col-sm">
+        <mat-form-field appearance="outline" class="mat_form_fields" [class.disabled-field]="!dailyRepParams.agent_id && loggedInUserRoleName !== 'AGENT'">
+            <mat-label>Bank</mat-label>
+            <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="companyName"
+                [matAutocomplete]="cmp" [disabled]="!dailyRepParams.agent_id && loggedInUserRoleName !== 'AGENT'" [readonly]="!dailyRepParams.agent_id && loggedInUserRoleName !== 'AGENT'">
+            <button *ngIf="dailyRepParams.company_id!==null" mat-icon-button matSuffix aria-label="Clear"
+                (click)="clearcompanySelection()">
+                <mat-icon>clear</mat-icon>
+            </button>
+            <mat-autocomplete #cmp="matAutocomplete" (optionSelected)="companyHandler($event.option.value)">
+                <mat-option *ngFor="let option of companyNameFilteredOptions | async" [value]="option.company_name">
+                    {{option.company_name}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div class="col-sm">
+        <mat-form-field appearance="outline">
+            <mat-label>Contact Mode</mat-label>
+            <mat-select [formControl]="codes" multiple (selectionChange)="codesHandler($event)">
+                <mat-option *ngFor="let code of codesList" [value]="code">{{code}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+<!-- Feedback message below bank field only -->
+<div class="_row" *ngIf="!dailyRepParams.agent_id && loggedInUserRoleName !== 'AGENT'">
+    <div class="col-sm"></div>
+    <div class="col-sm">
+        <div class="feedback-message">
+            <span class="message-text">Please Select a User First To Enable Bank Selection</span>
+        </div>
+    </div>
+</div>
+
+<div class="_row">
+    <div class="col-sm report_btns">
+        <button mat-raised-button class="btnGen" [disabled]="disableGenerateBtn"
+            (click)="generateCNCReport(loggedInUserId)">Generate</button>
+        <button mat-raised-button class="btnGen" (click)="exportToExcelFormat(myDataArray,'Final Feedback Report')"
+            [disabled]="disableExportBtn">Export
+            To Excel</button>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<div class="table__row" *ngIf="showCNCTBLBtn">
+    <mat-card class="table__card" *ngIf="resultsLength>0">
+        <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+        <mat-card-header class="table__header">
+            <mat-card-title>Final Feedback Reports</mat-card-title>
+            <!-- <mat-card-subtitle *ngIf="fromDate && toDate">
+                {{fromDate}} to {{toDate}}
+            </mat-card-subtitle>
+            <mat-card-subtitle *ngIf="!fromDate || !toDate">
+                {{fromDate ? (fromDate | date:"dd-MMM-yyyy") : ''}}
+                {{toDate ? (toDate | date:"dd-MMM-yyyy") : ''}}
+            </mat-card-subtitle> -->
+
+            <mat-form-field appearance="standard">
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" #input>
+            </mat-form-field>
+        </mat-card-header>
+        <div class="table-container">
+            <div class="mat-elevation-z8 table-wrapper">
+                <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+                    <ng-container matColumnDef="customer_name">
+                        <th mat-header-cell *matHeaderCellDef>Customer Name</th>
+                        <td mat-cell *matCellDef="let row" data-label="Customer Name">{{row.customer_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="company_name">
+                        <th mat-header-cell *matHeaderCellDef>Bank</th>
+                        <td mat-cell *matCellDef="let row" data-label="Bank">{{row.company_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="product_type">
+                        <th mat-header-cell *matHeaderCellDef>Product Type</th>
+                        <td mat-cell *matCellDef="let row" data-label="Product Type">{{row.product_type}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="customer_id">
+                        <th mat-header-cell *matHeaderCellDef>Customer Id</th>
+                        <td mat-cell *matCellDef="let row" data-label="Customer Id">{{row.customer_id}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="account_number">
+                        <th mat-header-cell *matHeaderCellDef>Account Number</th>
+                        <td mat-cell *matCellDef="let row" data-label="Account Number">{{row.account_number}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="stage_status_code">
+                        <th mat-header-cell *matHeaderCellDef>Code</th>
+                        <td mat-cell *matCellDef="let row" data-label="Code">
+                            {{row.stage_status_code}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="total_outstanding_amount">
+                        <th mat-header-cell *matHeaderCellDef>Outstanding</th>
+                        <td mat-cell *matCellDef="let row" data-label="Outstanding">
+                            {{row.total_outstanding_amount}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="contacble_non_contactable">
+                        <th mat-header-cell *matHeaderCellDef>Contacble / Non Contactable</th>
+                        <td mat-cell *matCellDef="let row" data-label="Contacble / Non Contactable">{{row.stage}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="tracing_source_type_name">
+                        <th mat-header-cell *matHeaderCellDef>Trace Source</th>
+                        <td mat-cell *matCellDef="let row" data-label="Trace Source">{{row.tracing_source_type_name}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="feedback">
+                        <th mat-header-cell *matHeaderCellDef>Feedback</th>
+                        <td mat-cell *matCellDef="let row" data-label="Feedback">{{row.feedback}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="field_feedback">
+                        <th mat-header-cell *matHeaderCellDef>Field Feedback</th>
+                        <td mat-cell *matCellDef="let row" data-label="Field Feedback">{{row.field_feedback}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="contact_contact_mode">
+                        <th mat-header-cell *matHeaderCellDef>Conact Contact Mode</th>
+                        <td mat-cell *matCellDef="let row" data-label="Contacble / Non Contactable">
+                            {{row.contact_contact_mode}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="contact_info">
+                        <th mat-header-cell *matHeaderCellDef>Contact Info</th>
+                        <td mat-cell *matCellDef="let row" data-label="Contact Info">
+                            <div style="white-space: pre-line;">{{ formatContactInfo(row.contact_info) }}</div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="address_contact_mode">
+                        <th mat-header-cell *matHeaderCellDef>Address Contact Mode</th>
+                        <td mat-cell *matCellDef="let row" data-label="Contacble / Non Contactable">
+                            {{row.address_contact_mode}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="address_info">
+                        <th mat-header-cell *matHeaderCellDef>Address Info</th>
+                        <td mat-cell *matCellDef="let row" data-label="Address Info">{{row.address_info}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="visa_status">
+                        <th mat-header-cell *matHeaderCellDef>Visa Status</th>
+                        <td mat-cell *matCellDef="let row" data-label="Visa Status">{{row.visa_status}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="visa_company_name">
+                        <th mat-header-cell *matHeaderCellDef>Visa Company Name</th>
+                        <td mat-cell *matCellDef="let row" data-label="Visa Company Name">
+                            {{row.visa_company_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="visa_expiry_date">
+                        <th mat-header-cell *matHeaderCellDef>Visa Expiry</th>
+                        <td mat-cell *matCellDef="let row" data-label="Visa Expiry">
+                            {{row.visa_expiry_date |date : "dd-MMM-yyyy"}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="visa_contact_no">
+                        <th mat-header-cell *matHeaderCellDef>Visa Contact No.</th>
+                        <td mat-cell *matCellDef="let row" data-label="Visa Contact No.">
+                            {{row.visa_contact_no}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="mol_status">
+                        <th mat-header-cell *matHeaderCellDef>MOL Status</th>
+                        <td mat-cell *matCellDef="let row" data-label="MOL Status">{{row.mol_status}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="mol_company_name">
+                        <th mat-header-cell *matHeaderCellDef>MOL Company Name</th>
+                        <td mat-cell *matCellDef="let row" data-label="MOL Company Name">
+                            {{row.mol_company_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="mol_expiry_date">
+                        <th mat-header-cell *matHeaderCellDef>MOL Expiry Date</th>
+                        <td mat-cell *matCellDef="let row" data-label="MOL Expiry Date">
+                            {{row.mol_expiry_date |date : "dd-MMM-yyyy"}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="mol_salary">
+                        <th mat-header-cell *matHeaderCellDef>MOL Salary</th>
+                        <td mat-cell *matCellDef="let row" data-label="MOL Salary">{{row.mol_salary}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="last_activity_dtm">
+                        <th mat-header-cell *matHeaderCellDef>Last Activity</th>
+                        <td mat-cell *matCellDef="let row" data-label="Last Activity">{{row.last_activity_dtm |
+                            date:'dd-MMM-yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="next_follow_up_dtm">
+                        <th mat-header-cell *matHeaderCellDef>Next follow up</th>
+                        <td mat-cell *matCellDef="let row" data-label="Next follow up">{{row.next_follow_up_dtm |
+                            date:'dd-MMM-yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="assigned_to_full_name">
+                        <th mat-header-cell *matHeaderCellDef>Assigned To</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.assigned_to_full_name }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="assigned_by_full_name">
+                        <th mat-header-cell *matHeaderCellDef>Assigned By</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.assigned_by_full_name }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="team_manager_full_name">
+                        <th mat-header-cell *matHeaderCellDef>Team Manager</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.team_manager_full_name }}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="senior_manager_full_name">
+                        <th mat-header-cell *matHeaderCellDef>Senior Manager</th>
+                        <td mat-cell *matCellDef="let row">
+                            {{ row.senior_manager_full_name }}
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                    <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+                        class="example-element-row" [class.example-expanded-row]="expandedElement === element"
+                        (click)="expandedElement = expandedElement === element ? null : element">
+                    </tr>
+                    <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
+                </table>
+
+            </div>
+        </div>
+        <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of logs"
+            showFirstLastButtons></mat-paginator>
+    </mat-card>
+</div>
+<br>
+<div *ngIf="resultsLength==0" class="noDataFound">
+    <p>
+        <strong> No records found </strong>
+    </p>
+    <p>
+        <button mat-stroked-button class="clearFilters" color="primary" (click)="clearFilters()">
+            Clear your filters and try again
+        </button>
+    </p>
+</div>

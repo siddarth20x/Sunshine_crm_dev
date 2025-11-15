@@ -1,0 +1,150 @@
+<div class="container-fluid">
+    <mat-card class="__filters">
+        <span>
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>From Date</mat-label>
+                <input matInput [matDatepicker]="fromDatePicker" [value]="date7DaysAgo"
+                    (dateChange)="fromDateHandler($event)">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromDatePicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>To Date</mat-label>
+                <input matInput [matDatepicker]="toDatePicker" [value]="currentDate"
+                    (dateChange)="toDateHandler($event)">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #toDatePicker></mat-datepicker>
+            </mat-form-field>
+        </span>
+        <span>
+            <button mat-button (click)="clearFilters()">Clear Filter</button>
+            <button mat-raised-button class="applyBtn" (click)="applyFilters()">Apply Filter</button>
+        </span>
+    </mat-card>
+    <br>
+    <div class="table__row">
+        <mat-card class="table__card" *ngIf="resultsLength>0">
+            <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+            <mat-card-header class="table__header">
+                <mat-card-title>Viewing logs for </mat-card-title>
+                <mat-card-subtitle *ngIf="date7DaysAgo && currentDate">
+                    {{date7DaysAgo | date:"dd-MMM-yyyy"}} to {{currentDate | date:"dd-MMM-yyyy"}}
+                </mat-card-subtitle>
+                <mat-card-subtitle *ngIf="!date7DaysAgo || !currentDate">
+                    {{date7DaysAgo ? (date7DaysAgo | date:"dd-MMM-yyyy") : ''}}
+                    {{currentDate ? (currentDate | date:"dd-MMM-yyyy") : ''}}
+                </mat-card-subtitle>
+
+                <mat-form-field appearance="standard">
+                    <mat-label>Filter Logs</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" #input>
+                </mat-form-field>
+            </mat-card-header>
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+                    <ng-container matColumnDef="activity_dtm">
+                        <th mat-header-cell *matHeaderCellDef>Activity Date/Time</th>
+                        <td mat-cell *matCellDef="let row">{{row.activity_dtm | date:'dd-MMM-yyyy h:mm a'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="activity_type">
+                        <th mat-header-cell *matHeaderCellDef>Activity Type</th>
+                        <td mat-cell *matCellDef="let row">
+                            <span class="activity-type-badge" [ngClass]="'activity-' + row.activity_type.toLowerCase()">
+                                {{formatActivityType(row.activity_type)}}
+                            </span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="activity_detail">
+                        <th mat-header-cell *matHeaderCellDef>Activity Detail</th>
+                        <td mat-cell *matCellDef="let row">
+                            <div style="max-width: 300px; word-wrap: break-word;">
+                                {{row.activity_detail | slice:0:100}}{{row.activity_detail.length > 100 ? '...' : ''}}
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="expand">
+                        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-icon-button aria-label="expand row"
+                                (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                                <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                                <mat-icon *ngIf="expandedElement != element">keyboard_arrow_down</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="expandedDetail">
+                        <td mat-cell *matCellDef="let element" [attr.colspan]="4">
+                            <div class="example-element-detail"
+                                [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                                <div class="example-element-description" 
+                                     style="padding: 16px; background-color: #f5f5f5; border-radius: 4px; white-space: pre-line; font-family: monospace; font-size: 12px; line-height: 1.4;">
+                                    {{element.activity_detail}}
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="['activity_dtm', 'activity_type', 'activity_detail', 'expand']"></tr>
+                    <tr mat-row *matRowDef="let element; columns: ['activity_dtm', 'activity_type', 'activity_detail', 'expand'];"
+                        class="example-element-row" [class.example-expanded-row]="expandedElement === element"
+                        (click)="expandedElement = expandedElement === element ? null : element">
+                    </tr>
+                    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+                    
+                    <!-- No data row -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="4" style="text-align: center;">No data found</td>
+                    </tr>
+                </table>
+                <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of logs"
+                    showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-card>
+    </div>
+    <div *ngIf="resultsLength==0" class="noDataFound">
+        <p>
+            <strong> No activity logs found from "{{date7DaysAgo}}" to "{{currentDate}}" </strong>
+        </p>
+        <p>
+            <button mat-stroked-button class="clearFilters" color="primary" (click)="clearFilters()">
+                Clear your filters and try again
+            </button>
+        </p>
+    </div>
+</div>
+
+<!------Accordian code base-->
+<!-- <div *ngIf="paginatedData && paginatedData.length>0">
+            <mat-card-content>
+                <mat-expansion-panel *ngFor="let activity of paginatedData" class="expoansionPanel">
+                    <mat-expansion-panel-header>
+
+                        <div [ngSwitch]="activity.activity_type" class="activity-panel">
+                            <mat-panel-title [ngClass]="getActivityTypeClass(activity.activity_type)">
+                                {{ getActivityTypeLabel(activity.activity_type) }}
+                            </mat-panel-title>
+                        </div>
+                        <mat-panel-description>
+                            Activity Date Time: {{ activity.activity_dtm | date: 'medium' }}
+                            <mat-icon>clock</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    {{ activity.activity_detail }}
+                </mat-expansion-panel>
+            </mat-card-content>
+        </div>
+        <div *ngIf="paginatedData && paginatedData.length==0" class="noDataFound">
+            <p>
+                No activity logs found from "{{date7DaysAgo}}" to "{{currentDate}}"
+            </p>
+            <p>
+                <button mat-stroked-button class="clearFilters" color="primary" (click)="clearFilters()">
+                    Clear your filters and try again
+                </button>
+            </p>
+        </div>
+        <mat-paginator [length]="resultsLength" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]"
+            (page)="onPageChange($event)" showFirstLastButtons>
+        </mat-paginator> -->

@@ -1,0 +1,272 @@
+<div class="dialogBox">
+    <div mat-dialog-title class="dialogHeader">
+        <h2>{{dialogTitle}}</h2>
+        <button mat-icon-button mat-dialog-close class="close-icon">
+            <span class="material-symbols-outlined">
+                close
+            </span>
+        </button>
+    </div>
+    <div class="row">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Bank</mat-label>
+            <mat-select name="disposition_status" (selectionChange)="companySelectHandler($event)">
+                <mat-option disabled>
+                    --Select--
+                </mat-option>
+                <mat-option *ngFor="let company of companyArr" [value]="company.company_id">
+                    {{company.company_name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="row" *ngIf="hideUI">
+        <mat-radio-group [(ngModel)]="allocationType" aria-label="Select allocation type" class="allocation-type-group">
+            <mat-radio-button value="monthly" class="simple-radio">  Monthly Allocation (New accounts)</mat-radio-button>
+            <mat-radio-button value="existing" class="simple-radio">  Existing Accounts</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <div class="row __file_upload" *ngIf="hideUI">
+        <div class="input-group mb-3">
+            <!-- <input type="file" class="form-control shadow-none" id="inputGroupFile" (change)="onFileSelected($event)" accept=".csv"> -->
+            <input type="file" class="form-control shadow-none" id="inputGroupFile" (change)="onFileSelected($event)"
+                accept=".csv,text/csv" multiple="false">
+            <!-- <label class="input-group-text" for="inputGroupFile02">Upload</label> -->
+        </div>
+    </div>
+    <!-- File format feedback message -->
+    <div class="row" *ngIf="hideUI">
+        <div class="col-sm">
+            <div class="feedback-message">
+                <span class="message-text">Only CSV file format is allowed. Please ensure your file has a .csv extension.</span>
+            </div>
+        </div>
+    </div>
+    <div class="_errData" *ngIf="errMsg">
+        <span class="material-symbols-outlined">
+            error
+        </span>
+        <span>
+            {{errMsg}}
+        </span>
+    </div>
+    <mat-dialog-content class="mat-typography">
+        <div class="row">
+            <mat-progress-bar [mode]="progressBarMode" *ngIf="showProgressBar"></mat-progress-bar>
+            <div class="upload-progress" *ngIf="uploadProgress > 0 && uploadProgress < 100">
+                <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+                <span class="progress-text">Uploading to Firebase: {{uploadProgress | number:'1.0-0'}}%</span>
+            </div>
+            <table class="table table-striped" *ngIf="processedCSV && processedCSV.length>0">
+                <thead style="position: sticky; top: 0; background-color: white;">
+                    <tr>
+                        <th>Senior Manager</th>
+                        <th>Team Manager</th>
+                        <th>Team Lead</th>
+                        <th>Agent Name</th>
+                        <th>Account No - Agreement No</th>
+                        <th>Agreement ID</th>
+                        <th>FINWARE_ACN01</th>
+                        <th>Cust Id - Relationship No</th>
+                        <th>Allocation Status</th>
+                        <th>Product Type</th>
+                        <th>Product Account No</th>
+                        <th>Business Name</th>
+                        <th>Customer Name</th>
+                        <th>FRESH/STAB</th>
+                        <th>Cycle Statement</th>
+                        <th>BKT Status</th>
+                        <th>Card Auth</th>
+                        <th>DPD R</th>
+                        <th>Mindue Manual</th>
+                        <th>RB Amount</th>
+                        <th>Overdue Amount</th>
+                        <th>Vintage</th>
+                        <th>Date of WOFF</th>
+                        <th>Passport No</th>
+                        <th>DOB</th>
+                        <th>Nationality</th>
+                        <th>Emirates ID Number</th>
+                        <th>Due Since Date</th>
+                        <th>Credit Limit</th>
+                        <th>TOS Amount</th>
+                        <th>POS Amount</th>
+                        <th>Minimum Payment</th>
+                        <th>Last payment amount</th>
+                        <th>Last payment date</th>
+                        <th>Last Month Paid Unpaid</th>
+                        <th>Last Usage Date</th>
+                        <th>DPD String</th>
+                        <th>Banker name</th>
+                        <th>Employer Details</th>
+                        <th>Designation</th>
+                        <th>Company Contact</th>
+                        <th>Office Address</th>
+                        <th>Home Country Number</th>
+                        <th>Friend Residence Phone</th>
+                        <th>Mobile Number</th>
+                        <th>Email ID</th>
+                        <th>Monthly Income</th>
+                        <th>Home Country Address</th>
+                        <th>City</th>
+                        <th>Pincode</th>
+                        <th>State</th>
+                        <th>Father Name</th>
+                        <th>Mother Name</th>
+                        <th>Spouse Name</th>
+                        <th>GHRC Offer 1</th>
+                        <th>GHRC Offer 2</th>
+                        <th>GHRC Offer 3</th>
+                        <th>Withdraw Date</th>
+                        <th>PLI Status</th>
+                        <th>Execution Status</th>
+                        <th>Feedback</th>
+                        <th>Contactable Status</th>
+                        <th>Disposition Stage</th>
+                        <th>Disposition Status Name</th>
+                        <th>Traced Source</th>
+                        <th>Traced Details</th>
+                        <th>Visa Status</th>
+                        <th>MOL Status</th>
+                        <!-- <th>Contact Info</th> -->
+                        <th>MOL Passport No</th>
+                        <th>MOL Expiry date</th>
+                        <th>MOL Work Permit No</th>
+                        <th>Salary in MOL</th>
+                        <th>Company Name in MOL</th>
+                        <th>SQL Details</th>
+                        <th>Company Trade License Details</th>
+                        <th>Additional Details</th>
+                        <th>Visa Passport No</th>
+                        <th>Visa Expiry date</th>
+                        <th>Visa File Number</th>
+                        <th>Visa Emirates</th>
+                        <th>Company Name in Visa</th>
+                        <th>Designation in Visa</th>
+                        <th>Contact Number in Visa</th>
+                        <th>Visa Emirates ID</th>
+                        <th>Unified Number</th>
+                        <th>DCORE ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let csv of processedCSV; let i=index">
+                        <td>{{csv.senior_manager_id || csv['Senior Manager Id']}}</td>
+                        <td>{{csv.team_manager_id || csv['Team Manager Id']}}</td>
+                        <td>{{csv.team_lead_id || csv['Team Lead Id']}}</td>
+                        <td>{{csv.assigned_to || csv['Assigned To']}}</td>
+                        <td>{{csv.account_no || csv.account_number || csv['Account no - Agreement No']}}</td>
+                        <td>{{csv.agreement_id || csv['Agreement ID']}}</td>
+                        <td>{{csv.finware_acn01 || csv['FINWARE_ACN01']}}</td>
+                        <td>{{csv.cust_id || csv.customer_id || csv['Cust Id - Relationship No']}}</td>
+                        <td>{{csv.allocation_status || csv['Allocation Status']}}</td>
+                        <td>{{csv.product_type || csv['Product Type']}}</td>
+                        <td>{{csv.product_account_no || csv.product_account_number || csv['Product Account No']}}</td>
+                        <td>{{csv.business_name || csv['SME Account Name'] || csv['Business Name']}}</td>
+                        <td>{{csv.customer_name || csv['Customer Name']}}</td>
+                        <td>{{csv.fresh_stab || csv['FRESH/STAB']}}</td>
+                        <td>{{csv.cycle_statement || csv['Cycle Statement']}}</td>
+                        <td>{{csv.bkt_status || csv.bucket_status || csv['BKT Status']}}</td>
+                        <td>{{csv.card_auth || csv['Card_Auth'] || csv['Card Auth']}}</td>
+                        <td>{{csv.dpd_r || csv['DPD_R'] || csv['DPD R']}}</td>
+                        <td>{{csv.mindue_manual || csv['Mindue Manual']}}</td>
+                        <td>{{csv.rb_amount || csv['RB Amount']}}</td>
+                        <td>{{csv.overdue_amount || csv['Overdue Amount']}}</td>
+                        <td>{{csv.vintage || csv['Vintage']}}</td>
+                        <td>{{csv.date_of_woff || csv['Date of WOFF']}}</td>
+                        <td>{{csv.passport_no || csv.passport_number || csv['Passport No']}}</td>
+                        <td>{{csv.dob || csv.date_of_birth || csv['DOB']}}</td>
+                        <td>{{csv.nationality || csv['Nationality']}}</td>
+                        <td>{{csv.emirates_id_number || csv['Emirates ID Number']}}</td>
+                        <td>{{csv.due_since_date || csv['DUE SINCE DATE']}}</td>
+                        <td>{{csv.credit_limit || csv['Credit Limit']}}</td>
+                        <td>{{csv.tos_amount || csv.total_outstanding_amount || csv['TOS Amount']}}</td>
+                        <td>{{csv.pos_amount || csv.principal_outstanding_amount || csv['POS Amount']}}</td>
+                        <td>{{csv.minimum_payment || csv['Minimum Payment']}}</td>
+                        <td>{{csv.last_payment_amount || csv.last_paid_amount || csv['Last payment amount']}}</td>
+                        <td>{{csv.last_payment_date || csv.last_paid_date || csv['Last payment date']}}</td>
+                        <td>{{csv.last_month_paid_unpaid || csv['Last month Paid Unpaid']}}</td>
+                        <td>{{csv.last_usage_date || csv['Last Usage Date']}}</td>
+                        <td>{{csv.dpd_string || csv['DPD String'] || csv['DPD Strin']}}</td>
+                        <td>{{csv.banker_name || csv['Banker name']}}</td>
+                        <td>{{csv.employer_details || csv['Employer Details']}}</td>
+                        <td>{{csv.designation || csv['Designation']}}</td>
+                        <td>{{csv.company_contact || csv['Company Contact']}}</td>
+                        <td>{{csv.office_address || csv['Office_Address'] || csv['Office Address']}}</td>
+                        <td>{{csv.home_country_number || csv['Home Country Number']}}</td>
+                        <td>{{csv.friend_residence_phone || csv['Friend_residence_phone'] || csv['Friend Residence Phone']}}</td>
+                        <td>{{csv.mobile_number || csv['Mobile Number']}}</td>
+                        <td>{{csv.email_id || csv['Email ID']}}</td>
+                        <td>{{csv.monthly_income || csv['Monthly Income']}}</td>
+                        <td>{{csv.home_country_address || csv['Home Country Address']}}</td>
+                        <td>{{csv.city || csv['City']}}</td>
+                        <td>{{csv.pincode || csv['Pincode']}}</td>
+                        <td>{{csv.state || csv['State']}}</td>
+                        <td>{{csv.father_name || csv['Father Name']}}</td>
+                        <td>{{csv.mother_name || csv['Mother Name']}}</td>
+                        <td>{{csv.spouse_name || csv['Spouse Name']}}</td>
+                        <td>{{csv.ghrc_offer_1 || csv['GHRC Offer 1']}}</td>
+                        <td>{{csv.ghrc_offer_2 || csv['GHRC Offer 2']}}</td>
+                        <td>{{csv.ghrc_offer_3 || csv['GHRC Offer 3']}}</td>
+                        <td>{{csv.withdraw_date || csv['Withdraw Date']}}</td>
+                        <td>{{csv.pli_status || csv['PLI Status']}}</td>
+                        <td>{{csv.execution_status || csv['Execution Status']}}</td>
+                        <td>{{csv.feedback || csv['Feedback']}}</td>
+                        <td>{{csv['Contactable / Non-contactable'] || csv.contactable_status || csv['Contactable']}}</td>
+                        <td>{{csv.disposition_stage || csv['Disposition Stage']}}</td>
+                        <td>{{csv.disposition_status_name || csv['Disposition Status Name']}}</td>
+                        <td>{{csv.traced_source || csv['Traced Source']}}</td>
+                        <td>{{csv.traced_details || csv['Traced Details']}}</td>
+                        <td>{{csv.visa_status || csv['Visa Status']}}</td>
+                        <td>{{csv.mol_status || csv['MOL Status']}}</td>
+                        <!-- <td>{{csv.contact_info}}</td> -->
+                        <td>{{csv.mol_passport_no || csv['MOL Passport No']}}</td>
+                        <td>{{csv.mol_expiry_date || csv['MOL Expiry date']}}</td>
+                        <td>{{csv.mol_work_permit_no || csv['MOL Work Permit No']}}</td>
+                        <td>{{csv.salary_in_mol || csv['Salary in MOL']}}</td>
+                        <td>{{csv.company_name_in_mol || csv['Company Name in MOL']}}</td>
+                        <td>{{csv.sql_details || csv['SQL Details']}}</td>
+                        <td>{{csv.company_trade_license_details || csv['Company Trade License Details']}}</td>
+                        <td>{{csv.additional_details || csv['Additional Details']}}</td>
+                        <td>{{csv.visa_passport_no || csv['Visa Passport No']}}</td>
+                        <td>{{csv.visa_expiry_date || csv['Visa Expiry date']}}</td>
+                        <td>{{csv.visa_file_number || csv['Visa File Number']}}</td>
+                        <td>{{csv.visa_emirates || csv['Visa Emirates']}}</td>
+                        <td>{{csv.company_name_in_visa || csv['Company Name in Visa']}}</td>
+                        <td>{{csv.designation_in_visa || csv['Designation in Visa']}}</td>
+                        <td>{{csv.contact_number_in_visa || csv['Contact Number in Visa']}}</td>
+                        <td>{{csv.visa_emirates_id || csv['Visa Emirates ID']}}</td>
+                        <td>{{csv.unified_number || csv['Unified Number']}}</td>
+                        <td>{{csv.dcore_id || csv['DCORE ID']}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered border-danger" *ngIf="csvValidationError && csvValidationError.length>0">
+                <thead style="position: sticky; top: 0; background-color: red; ">
+                    <tr>
+                        <th scope="col">Row</th>
+                        <th scope="col">Error</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let csvErrors of csvValidationError; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                            <div *ngIf="csvErrors.message">{{ csvErrors.message }}</div>
+                            <div *ngIf="csvErrors.error">{{ csvErrors.error }}</div>
+                            <div *ngIf="!csvErrors.message && !csvErrors.error">Unknown error</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end" *ngIf="hideUI">
+        <button mat-button mat-dialog-close color="red">Cancel</button>
+        <!-- <button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial color="primary">Save</button> -->
+        <button mat-raised-button color="primary" [disabled]="isCompanySelected || uploadBtnDisabled"
+            (click)="uploadAndStageAccounts()">Upload</button>
+    </mat-dialog-actions>
+
+</div>

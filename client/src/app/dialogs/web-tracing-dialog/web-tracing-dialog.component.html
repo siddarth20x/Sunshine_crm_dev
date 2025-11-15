@@ -1,0 +1,46 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<mat-divider></mat-divider><br>
+<mat-dialog-content>
+    <form [formGroup]="webTracingForm">
+        <!-- Debug info to help see form status -->
+        <!-- <div class="form-status" style="margin-bottom: 10px; color: #666;">
+            <small>Form valid: {{webTracingForm.valid}} | Fields filled: 
+            {{webTracingForm.get('tracing_source_type_id')?.value ? '✓' : '✗'}} Source Type, 
+            {{webTracingForm.get('traced_details')?.value ? '✓' : '✗'}} Details</small>
+        </div> -->
+
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Tracing Source Type *</mat-label>
+                    <input type="text" matInput [formControl]="tracingSourceTypeControl" [matAutocomplete]="autoTST" placeholder="Start typing a tracing source type...">
+                    <mat-autocomplete #autoTST="matAutocomplete" (optionSelected)="tracedSourceHandler($event.option.value)">
+                        <mat-option *ngFor="let option of tracingSourceTypeFilteredOptions | async" [value]="option.tracing_source_type_name">
+                            {{option.tracing_source_type_name}}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-hint>Select a tracing source type to proceed</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows" *ngIf="showTracedDetailsInput">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Traced Details </mat-label>
+                    <textarea matInput formControlName="traced_details" placeholder="Enter traced details"></textarea>
+                    <mat-error *ngIf="webTracingForm.get('traced_details')?.hasError('required')">
+                        <strong>Traced Details are required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelWebTrace()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="saveWebTrace()" 
+            [disabled]="!areAllFieldsFilled()">
+        Save Web Trace
+    </button>
+</mat-dialog-actions>

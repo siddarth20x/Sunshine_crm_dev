@@ -1,0 +1,59 @@
+<!-- <div class="row roles__row" *ngFor="let mod of modules">
+    <div class="col-sm">
+        {{ mod.module_alias }}
+    </div>
+    <div class="col-sm">
+        <mat-form-field appearance="standard">
+            <mat-label>Select Roles</mat-label>
+            <mat-select [formControl]="selectPrivileges" multiple>
+                <mat-option *ngFor="let privilege of privilegesList"
+                    [value]="privilege">{{privilege.privilege_name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="col-sm">
+        <button mat-stroked-button>Save</button>
+        <button mat-stroked-button>Save</button>
+    </div>
+</div> -->
+
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th>Module Name</th>
+            <th>Module Type</th>
+            <th>Assign Role</th>
+            <!-- <th>Activate Module</th>
+            <th>De-activate Module</th> -->
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="tbl__row" *ngFor="let mod of modules">
+            <td>
+                {{ mod.module_alias }}
+            </td>
+            <td>
+                {{ mod.module_type }}
+            </td>
+            <td>
+                <mat-form-field appearance="fill">
+                    <!-- <mat-label>Select Roles</mat-label> -->
+                    <mat-select [formControl]="selectPrivileges" multiple>
+                        <mat-option *ngFor="let privilege of privilegesList; let i=index" [value]="privilege"
+                            (onSelectionChange)="selectPrivilegeForUser(privilege,$event,privilege.privilege_id)">{{privilege.privilege_name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </td>
+            <!-- <td><mat-radio-group aria-label="Select an option" id="i">
+                    <mat-radio-button for="i" value="1">Option 1</mat-radio-button>
+                </mat-radio-group></td>
+            <td><mat-radio-group aria-label="Select an option" id="i">
+                    <mat-radio-button for="i" value="1">Option 1</mat-radio-button>
+                </mat-radio-group></td> -->
+            <td>
+                <button mat-stroked-button>Save</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

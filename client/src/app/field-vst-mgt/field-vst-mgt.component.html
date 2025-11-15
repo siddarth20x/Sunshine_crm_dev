@@ -1,0 +1,122 @@
+<div class="container-fluid container-fluid-sm container-fluid-md container-fluid-lg container-fluid-xl ">
+    <br>
+    <div class="row filter_row">
+        <mat-card class="table__card">
+            <mat-card-header class="__table__header">
+                <mat-form-field class="bankInp" appearance="outline">
+                    <mat-label>Bank</mat-label>
+                    <mat-select name="bank" (selectionChange)="companySelectHandler($event)">
+                        <mat-option disabled>
+                            --Select--
+                        </mat-option>
+                        <mat-option *ngFor="let company of companyArr" [value]="company.company_id">
+                            {{company.company_name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-header>
+            <mat-card-actions align="end">
+                <button mat-raised-button color='primary' (click)="getAllTasks(fvTaskId, companyId)">Search</button>
+            </mat-card-actions>
+        </mat-card>
+
+    </div>
+    <br>
+    <br>
+    <div class="row table__row">
+        <mat-card class="table__card">
+            <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+            <mat-card-header class="table__header">
+                <mat-card-title>{{tableTxt}}</mat-card-title>
+                <mat-form-field appearance="standard">
+                    <mat-label>Type here to filter</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" #input>
+                </mat-form-field>
+            </mat-card-header>
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="task_status_type_name">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let row" #tooltip="matTooltip"
+                            matTooltip="{{row.task_status_type_name}}" matTooltipPosition="left" data-label="Status"
+                            (click)="openFVTaskDialog(row)">
+                            <span class="material-symbols-outlined" [ngClass]="{
+                            'status-pink': row.lead_status_type_name === 'PENDING',
+                            'status-yellow': row.lead_status_type_name === 'IN PROGRESS',
+                            'status-green': row.lead_status_type_name === 'COMPLETED',
+                            'status-blue': row.lead_status_type_name === 'DEFERRED',
+                            'status-red': row.lead_status_type_name === 'CANCELLED'
+                        }">
+                                radio_button_checked
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="account_number">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Account No. </th>
+                        <td mat-cell *matCellDef="let row" (click)="openFVTaskDialog(row)" data-label="Account No">
+                            {{row.account_number}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="customer_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
+                        <td mat-cell *matCellDef="let row" (click)="openFVTaskDialog(row)" data-label="Customer Name">
+                            {{row.customer_name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="agreement_id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Agreement ID </th>
+                        <td mat-cell *matCellDef="let row" (click)="openFVTaskDialog(row)" data-label="Agreement ID">
+                            {{row.agreement_id}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="product_type">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Type </th>
+                        <td mat-cell *matCellDef="let row" (click)="openFVTaskDialog(row)" data-label="Product type">
+                            {{row.product_type}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="product_account_number">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Acc No. </th>
+                        <td mat-cell *matCellDef="let row" (click)="openFVTaskDialog(row)" data-label="Id">
+                            {{row.product_account_number}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="assigned_by_full_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned By </th>
+                        <td mat-cell *matCellDef="let row" (click)="openFVTaskDialog(row)" data-label="Assigned By">
+                            {{row.assigned_by_full_name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="assigned_to_full_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Assigned To </th>
+                        <td mat-cell *matCellDef="let row" (click)="openFVTaskDialog(row)" data-label="Assigned To">
+                            {{row.assigned_to_full_name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="stage">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stage </th>
+                        <td mat-cell *matCellDef="let row" (click)="openFVTaskDialog(row)" data-label="Stage">
+                            {{row.stage}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="mode_of_contact">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Mode of contact</th>
+                        <td mat-cell *matCellDef="let row" data-label="Mode of contact">
+                            {{row.mode_of_contact}}
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedAccHoldersColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedAccHoldersColumns;"></tr>
+
+                    <tr class="mat-row msg" *matNoDataRow>
+                        <td class="mat-cell" colspan="7" *ngIf="hasLeadFetchError">No account(s) found</td>
+                    </tr>
+                </table>
+            </div>
+            <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of users"
+                showFirstLastButtons></mat-paginator>
+        </mat-card>
+    </div>
+</div>

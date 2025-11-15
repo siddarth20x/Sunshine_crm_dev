@@ -1,0 +1,129 @@
+<div class="_row">
+    <div class="col-2">
+        <!-- <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>From Time</mat-label>
+            <input type="time" matInput [value]="last15Mins" (input)="fromDateHandler($event)">
+        </mat-form-field> -->
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>From Date</mat-label>
+            <input type="date" matInput (input)="fromDateHandler($event)" [value]="fromTime">
+        </mat-form-field>
+    </div>
+    <div class="col-2">
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>To Date</mat-label>
+            <input type="date" matInput (input)="toDateHandler($event)" [value]="toTime">
+        </mat-form-field>
+    </div>
+    <div class="col-sm button-container">
+        <button mat-raised-button class="btnGen" [disabled]="disableGenerateBtn"
+            (click)="getAllInactiveUsers(loggedInUserId)">Generate</button>
+        <button mat-raised-button class="btnGen" (click)="exportToExcelFormat(myDataArray,'Idle Time Reports')"
+            [disabled]="disableExportBtn">Export To Excel</button>
+    </div>
+    <!-- <div class="col-sm" align="end">
+        <button mat-raised-button class="btnGen" (click)="exportToExcelFormat(myDataArray,'Idle Time Reports')">Export
+            To Excel</button>
+    </div> -->
+</div>
+
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<div class="table__row">
+    <mat-card class="table__card" *ngIf="resultsLength>0">
+        <mat-card-header class="table__header">
+            <div>
+                <mat-card-title>Idle Time Report</mat-card-title>
+                <mat-card-subtitle *ngIf="fromTime && toTime">
+                    Showing results from {{fromTime | date:'dd-MMM-yyyy'}} to {{toTime | date:'dd-MMM-yyyy'}}
+                </mat-card-subtitle>
+                <mat-card-subtitle *ngIf="!fromTime || !toTime">
+                    Please select date range to view idle users
+                </mat-card-subtitle>
+                <mat-card-subtitle *ngIf="resultsLength > 0">
+                    Found {{resultsLength}} idle users (Page {{pageIndex + 1}} of {{Math.ceil(totalResults / pageSize)}})
+                </mat-card-subtitle>
+            </div>
+
+            <mat-form-field appearance="standard">
+                <mat-label>Filter Idle Users</mat-label>
+                <input matInput (keyup)="applyFilter($event)" #input>
+            </mat-form-field>
+        </mat-card-header>
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+                <ng-container matColumnDef="full_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="full_name">Full Name</th>
+                    <td mat-cell *matCellDef="let row" data-label="Full Name">{{row.full_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="roles">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="roles">Role</th>
+                    <td mat-cell *matCellDef="let row" data-label="Role">{{row.roles}}</td>
+                </ng-container>
+                <ng-container matColumnDef="last_login">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="last_login">Last Login</th>
+                    <td mat-cell *matCellDef="let row" data-label="Last Login">
+                      {{row.last_login ? (row.last_login | date:'dd-MMM-yyyy') : 'Never'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="last_activity_dtm">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="last_activity_dtm">Last Activity Date</th>
+                    <td mat-cell *matCellDef="let row" data-label="Last Activity Date">
+                      {{row.last_activity_dtm ? (row.last_activity_dtm | date:'dd-MMM-yyyy') : 'N/A'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="idle_time_in_mins">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header="idle_time_in_mins">Idle Time(mins)</th>
+                    <td mat-cell *matCellDef="let row" data-label="Idle Time(mins)">{{row.idle_time_in_mins}}</td>
+                </ng-container>
+                <!-- <ng-container matColumnDef="expand">
+                    <th mat-header-cell *matHeaderCellDef>Activity Detail</th>
+                    <td mat-cell *matCellDef="let row">More</td>
+                </ng-container> -->
+                <ng-container matColumnDef="expand">
+                    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button aria-label="expand row"
+                            (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                            <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                            <mat-icon *ngIf="expandedElement != element">keyboard_arrow_down</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="expandedDetail">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                        <div class="example-element-detail"
+                            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                            <div class="example-element-description">
+                                Report Start Time : {{element.report_start_time}} <br>
+                                Report End Time : {{element.report_end_time}}
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
+                    [class.example-expanded-row]="expandedElement === element"
+                    (click)="expandedElement = expandedElement === element ? null : element">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+            <mat-paginator [length]="totalResults" [pageSize]="pageSize" [pageIndex]="pageIndex"
+                (page)="onPageChange($event)" aria-label="Select page of logs"
+                showFirstLastButtons></mat-paginator>
+        </div>
+    </mat-card>
+</div>
+<div *ngIf="resultsLength===0 && !showProgressBar" class="noDataFound">
+    <p *ngIf="fromTime && toTime">
+        <strong> No Idle Users found from "{{fromTime | date:'dd-MMM-yyyy'}}" to "{{toTime | date:'dd-MMM-yyyy'}}" </strong>
+    </p>
+    <p *ngIf="!fromTime || !toTime">
+        <strong> Please select both start and end dates to view idle users report </strong>
+    </p>
+    <p *ngIf="fromTime && toTime">
+        <button mat-stroked-button class="clearFilters" color="primary" (click)="clearFilters()">
+            Clear your filters and try again
+        </button>
+    </p>
+</div>

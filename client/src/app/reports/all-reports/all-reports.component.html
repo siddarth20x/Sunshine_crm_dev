@@ -1,0 +1,52 @@
+<div class="container-fluid">
+    <br>
+    <mat-tab-group mat-align-tabs="start" animationDuration="0ms">
+
+        <mat-tab label="Idle Time Report" *ngIf="userRole!=='AGENT'">
+            <ng-template matTabContent>
+                <app-idle-time-reports></app-idle-time-reports>
+            </ng-template>
+        </mat-tab>
+
+        <mat-tab label="Daily Report">
+            <ng-template matTabContent>
+                <app-daily-reports></app-daily-reports>
+            </ng-template>
+        </mat-tab>
+
+        <mat-tab label="Contactable / Non-contactable Report" *ngIf="userRole!=='AGENT'">
+            <ng-template matTabContent>
+                <app-contactable-non-contactable-reports></app-contactable-non-contactable-reports>
+            </ng-template>
+        </mat-tab>
+
+        <mat-tab label="Touched / Untouched Report" *ngIf="userRole!=='AGENT'">
+            <ng-template matTabContent>
+                <app-touched-untouched-reports></app-touched-untouched-reports>
+            </ng-template>
+        </mat-tab>
+        <!-- <mat-tab label="Not worked from 15-30 days" *ngIf="userRole!=='AGENT'">
+            <ng-template matTabContent>
+                <app-fifteen-thirty-reports></app-fifteen-thirty-reports>
+            </ng-template>
+        </mat-tab> -->
+
+        <mat-tab label="Projection Report" *ngIf="userRole!=='AGENT'">
+            <ng-template matTabContent>
+                <app-projection-reports></app-projection-reports>
+            </ng-template>
+        </mat-tab>
+
+        <mat-tab label="Final Feedback" *ngIf="userRole!=='AGENT'">
+            <ng-template matTabContent>
+                <app-final-feedback-reports></app-final-feedback-reports>
+            </ng-template>
+        </mat-tab>
+
+        <mat-tab label="Feedback for Bank" *ngIf="userRole!=='AGENT'">
+            <ng-template matTabContent>
+                <app-feedback-for-bank-reports></app-feedback-for-bank-reports>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+</div>

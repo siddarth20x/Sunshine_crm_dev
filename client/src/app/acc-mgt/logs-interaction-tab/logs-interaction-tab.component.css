@@ -1,0 +1,439 @@
+.__filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 15px 15px 0;
+}
+
+.__filters span:nth-child(1) {
+  display: flex;
+  gap: 25px;
+}
+
+.applyBtn {
+  background-color: var(--button-color-bg);
+  color: var(--button-color-text);
+}
+
+
+.expoansionPanel {
+  margin: 0 0 5px 0;
+}
+
+.noDataFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* mat-card-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+} */
+
+/* Activity Type Badge Styling */
+.activity-type-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Activity Type Specific Colors */
+.activity-new_account {
+  background-color: #4caf50;
+  color: white;
+}
+
+.activity-task_insert {
+  background-color: #2196f3;
+  color: white;
+}
+
+.activity-task_update {
+  background-color: #33b5e5;
+  color: white;
+}
+
+.activity-contact_insert {
+  background-color: #ff9800;
+  color: white;
+}
+
+.activity-contact_update {
+  background-color: #ff9800;
+  color: white;
+}
+
+.activity-address_insert {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.activity-address_update {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.activity-notes_insert {
+  background-color: #607d8b;
+  color: white;
+}
+
+.activity-notes_update {
+  background-color: #607d8b;
+  color: white;
+}
+
+.activity-mol_check_insert {
+  background-color: #795548;
+  color: white;
+}
+
+.activity-mol_check_update {
+  background-color: #795548;
+  color: white;
+}
+
+.activity-visa_check_insert {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.activity-visa_check_update {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.activity-leads_payment_ledger_insert {
+  background-color: #009688;
+  color: white;
+}
+
+.activity-payment_ledger_update {
+  background-color: #009688;
+  color: white;
+}
+
+.activity-traced_details_insert {
+  background-color: #ff5722;
+  color: white;
+}
+
+.activity-traced_details_update {
+  background-color: #ff5722;
+  color: white;
+}
+
+.activity-account_update {
+  background-color: #ffbb33;
+  color: white;
+}
+
+.activity-account_insert {
+  background-color: #ffbb33;
+  color: white;
+}
+
+.account-insert {
+  color: #ffffff;
+  background-color: #33cc33;
+  /* Example color for ACCOUNT_INSERT */
+}
+
+.notes-insert {
+  color: #ffffff;
+  background-color: #aa66cc;
+  /* Example color for NOTES_INSERT */
+}
+
+.notes-update {
+  color: #ffffff;
+  background-color: #ff4444;
+  /* Example color for NOTES_UPDATE */
+}
+
+mat-panel-title {
+  padding: 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+td,
+th {
+  width: 25%;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+}
+
+th {
+  background-color: #fafafa;
+}
+
+.table__card {
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+
+}
+
+.mat-elevation-z8 {
+  box-shadow: none;
+  /* width:100% */
+}
+
+.table__header {
+  display: flex;
+  flex-direction: row;
+}
+
+mat-card-header {
+  display: flex;
+  /* flex-direction: row-reverse; */
+  flex-direction: row;
+
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+}
+
+mat-card-title {
+  padding: 0;
+
+}
+
+.mat-card-header-text {
+  margin: 0 !important;
+}
+
+
+th.mat-header-cell:first-of-type {
+  padding: 0;
+}
+
+td.mat-cell:first-of-type {
+  padding: 0;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+  padding: 0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  width: auto;
+}
+
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+  padding-right: .5rem;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+
+.filter-fields {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.filter-fields mat-form-field {
+  width: 100%;
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 1em;
+}
+
+.filter-buttons button {
+  flex: 1;
+  margin: 0 0.5em;
+}
+
+
+
+.mat-card {
+  width: 100%;
+}
+
+.table__row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table__card {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.example-element-row {
+  cursor: pointer;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+@media screen and (max-width:960px) {
+
+  .__filters {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .__filters span:nth-child(1) {
+    display: flex;
+    gap: 25px;
+    flex-direction: column;
+  }
+
+  .example-element-row td {
+    padding-right: 1rem;
+  }
+
+}
+
+@media (min-width: 600px) {
+  .filter-fields {
+    flex-direction: row;
+  }
+
+  .filter-buttons {
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (max-width:428px) {
+  .filter-fields {
+    flex-direction: row;
+  }
+
+  .filter-buttons {
+    justify-content: flex-end;
+  }
+
+  /* Mat-Table Responsive CSS */
+  .mat-table .mat-row {
+    /* border-bottom: 5px solid #ddd; */
+    /* display: block; */
+  }
+
+  .mat-table .mat-cell {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 1em;
+    text-align: right;
+    font-weight: bold;
+    height: 30px;
+    margin-bottom: 4%;
+  }
+
+  .mat-header-row {
+    display: none;
+  }
+
+  .mat-table .mat-cell:before {
+    content: attr(data-label);
+    float: left;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 0.85em;
+  }
+
+  .mat-table .mat-cell:last-child {
+    border-bottom: 0;
+  }
+
+  .mat-table .mat-cell:first-child {
+    margin-top: 4%;
+  }
+
+  th.mat-header-cell:first-of-type,
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type {
+    padding: 0;
+  }
+
+  .table__header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

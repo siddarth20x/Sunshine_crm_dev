@@ -1,0 +1,14 @@
+.mat_form_fields{
+    width: 100%;
+}
+
+@media screen and (max-width:428px) {
+    ._rows {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; */
+        gap: 10px;
+    }
+    
+}

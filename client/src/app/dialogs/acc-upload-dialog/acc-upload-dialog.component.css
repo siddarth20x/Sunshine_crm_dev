@@ -1,0 +1,199 @@
+.__file_upload {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.table tr {
+    height: 50px;
+}
+
+.dialogHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mat-dialog-content {
+    max-height: 350px;
+    /* Adjust this value to your desired maximum height */
+    overflow-y: auto;
+    overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+._errData {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* background: antiquewhite; */
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    color: red;
+}
+
+/* Error table styling - header red, data rows white */
+.table.table-bordered.border-danger thead tr {
+    background-color: red !important;
+}
+
+.table.table-bordered.border-danger thead th {
+    background-color: red !important;
+    color: white !important;
+}
+
+.table.table-bordered.border-danger tbody tr {
+    background-color: white !important;
+}
+
+.table.table-bordered.border-danger tbody tr:hover {
+    background-color: white !important;
+}
+
+.table.table-bordered.border-danger tbody td {
+    background-color: white !important;
+}
+
+.table.table-bordered.border-danger tbody tr:hover td {
+    background-color: white !important;
+}
+
+/* .dialogBox{
+    height: 90%;
+} */
+
+.upload-progress {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.progress-text {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #666;
+}
+
+/* Simple Radio Button Styling */
+.allocation-type-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* reduced from 16px */
+    margin: 10px 0 10px 0; /* reduced from 25px 0 20px 0 */
+    padding: 0 8px;
+}
+
+.simple-radio {
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid transparent;
+    position: relative;
+}
+
+.simple-radio:hover {
+    background: #f5f9ff;
+    border-color: #e3f2fd;
+    transform: translateX(4px);
+}
+
+.simple-radio.mat-radio-checked {
+    background: #e3f2fd;
+    color: #1976d2;
+    font-weight: 500;
+    border-color: #bbdefb;
+}
+
+/* Custom radio button styling */
+.simple-radio ::ng-deep .mat-radio-outer-circle {
+    border-color: #bdbdbd;
+    border-width: 2px;
+    transition: all 0.2s ease;
+}
+
+.simple-radio ::ng-deep .mat-radio-inner-circle {
+    background-color: #2196f3;
+    transition: all 0.2s ease;
+}
+
+.simple-radio.mat-radio-checked ::ng-deep .mat-radio-outer-circle {
+    border-color: #2196f3;
+    border-width: 2px;
+}
+
+/* .simple-radio ::ng-deep .mat-radio-ripple {
+    background-color: rgba(33, 150, 243, 0.1);
+} */
+
+.simple-radio ::ng-deep .mat-radio-label {
+    font-size: 15px;
+    font-weight: 400;
+    color: #424242;
+    transition: color 0.2s ease;
+    margin-left: 16px;
+}
+
+.simple-radio:hover ::ng-deep .mat-radio-label {
+    color: #1976d2;
+}
+
+.simple-radio.mat-radio-checked ::ng-deep .mat-radio-label {
+    color: #1565c0;
+    font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .allocation-type-group {
+        margin: 20px 0 16px 0;
+        gap: 12px;
+    }
+    
+    .simple-radio {
+        padding: 10px 14px;
+    }
+    
+    .simple-radio ::ng-deep .mat-radio-label {
+        font-size: 14px;
+    }
+}
+
+/* Feedback message styling - Enhanced for better visibility */
+.feedback-message {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  margin: 8px 0 0 0;
+  border-radius: 6px;
+  background-color: #fff5f5;
+  border-left: 5px solid #dc3545;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-message:hover {
+  background-color: #ffe6e6;
+  border-left-color: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.2);
+}
+
+.feedback-message .message-text {
+  color: #dc3545;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  transition: color 0.3s ease;
+  letter-spacing: 0.2px;
+}
+
+.feedback-message:hover .message-text {
+  color: #c90d0d;
+}
+ 

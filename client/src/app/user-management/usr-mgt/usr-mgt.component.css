@@ -1,0 +1,198 @@
+.container-fluid {
+    /* padding-left: 0; */
+    padding: 0;
+}
+
+.stats__row {
+    margin: 2% 0;
+}
+
+.table__row {
+    padding: 0 25px;
+}
+
+.button__row {
+    padding: 0 15px;
+
+}
+
+.button__row button {
+    float: inline-end;
+}
+
+table {
+    width: 100%;
+    box-shadow: none;
+
+}
+
+.mat-form-field {
+    font-size: 14px;
+    /* width: 100%; */
+    float: inline-end;
+}
+
+td,
+th {
+    width: 25%;
+    font-family: var(--font-regular);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #fafafa;
+}
+
+.table__card {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+
+}
+
+.mat-elevation-z8 {
+    box-shadow: none;
+}
+
+.table__header {
+    display: flex;
+    flex-direction: row;
+}
+
+mat-card-header {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-regular);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+}
+
+mat-card-title {
+    padding: 0;
+
+}
+
+.mat-card-header-text {
+    margin: 0 !important;
+}
+
+.create__btn {
+    background: var(--button-color-bg);
+    color: var(--button-color-text);
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+    /* padding: 0; */
+    border-bottom-width: 1px;
+    /* border-bottom-style: solid; */
+    width: auto;
+}
+
+@media screen and (max-width:428px) {
+    .container-fluid {
+        padding: 0;
+        overflow-x: hidden;
+        margin: 10% 0;
+    }
+
+
+
+    .mat-card-header .mat-card-title {
+        font-size: 16px;
+    }
+
+    /* Mat-Table Responsive CSS */
+    .mat-table .mat-row {
+        /* border-bottom: 5px solid #ddd; */
+        /* display: block; */
+    }
+
+    .mat-table .mat-cell {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: 1em;
+        text-align: right;
+        font-weight: bold;
+        height: 30px;
+        margin-bottom: 4%;
+    }
+
+    .mat-header-row {
+        display: none;
+    }
+
+    .mat-table .mat-cell:before {
+        content: attr(data-label);
+        float: left;
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 0.85em;
+    }
+
+    .mat-table .mat-cell:last-child {
+        border-bottom: 0;
+    }
+
+    .mat-table .mat-cell:first-child {
+        margin-top: 4%;
+    }
+
+    th.mat-header-cell:first-of-type,
+    td.mat-cell:first-of-type,
+    td.mat-footer-cell:first-of-type {
+        padding: 0;
+    }
+
+    .table__header {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.reporting-to-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    max-width: 100%;
+    min-height: 40px;
+}
+
+.reporting-to-text {
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: calc(100% - 24px);
+    text-align: center;
+}
+
+.deactivated-user-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    cursor: help;
+    flex-shrink: 0;
+}
+
+/* Specific styling for Reporting To column */
+.mat-column-reporting_to {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.mat-column-reporting_to .mat-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+}

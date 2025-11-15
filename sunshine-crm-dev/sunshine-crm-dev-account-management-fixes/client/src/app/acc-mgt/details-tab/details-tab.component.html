@@ -1,0 +1,511 @@
+<mat-tab-group mat-align-tabs="start" animationDuration="0ms" [formGroup]="accountsUserForm"
+    (selectedTabChange)="onTabChanged($event);">
+    <mat-tab label="Personal Details">
+        <br>
+        <div class="_row">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Father Name</mat-label>
+                    <input matInput [value]="persnolInfo.father_name" disabled>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Mother Name</mat-label>
+                    <input matInput [value]="persnolInfo.mother_name" disabled>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Spouse Name</mat-label>
+                    <input matInput [value]="persnolInfo.spouse_name" disabled>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_row">
+            <div class="col-sm">
+                <!-- <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Date of Birth</mat-label>
+                    <input  matInput formControlName="date_of_birth">
+                </mat-form-field> -->
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Date of Birth</mat-label>
+                    <input matInput [matDatepicker]="picker" [value]="persnolInfo.date_of_birth" disabled>
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                        <!-- <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon> -->
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Nationality</mat-label>
+                    <input matInput [value]="persnolInfo.nationality" disabled>
+                </mat-form-field>
+            </div>
+            <!-- <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Email ID</mat-label>
+                    <input matInput [value]="persnolInfo.email_id" disabled>
+                </mat-form-field>
+            </div> -->
+        </div>
+        <div class="_row">
+            <!-- <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Mobile Number</mat-label>
+                    <input matInput #mb maxlength="10" [value]="persnolInfo.mobile_number" disabled>
+                    <mat-hint align="end">{{mb.value.length}} / 10</mat-hint>
+                    <mat-error *ngIf="accountsUserForm.get('mobile_number')?.hasError('pattern')">Please enter valid
+                        Mobile Number</mat-error>
+                </mat-form-field>
+            </div> -->
+            <!-- <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Secondary Phone</mat-label>
+                    <input  matInput formControlName="secondary_phone">
+                </mat-form-field>
+            </div> -->
+            <div class="col-sm">
+                <!-- <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>CIF / CIS No.</mat-label>
+                    <input  matInput formControlName="customer_id">
+                </mat-form-field> -->
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>CIF / CIS No.</mat-label>
+                    <input matInput [type]="cifcishide ? 'password' : 'text'" [value]="persnolInfo.customer_id"
+                        disabled>
+                    <button mat-icon-button matSuffix (click)="cifcishide = !cifcishide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="cifcishide">
+                        <mat-icon>{{cifcishide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- <div class="_rows" *ngIf="!updateAddinfo">
+            <div class="col-sm msg">
+                <span>Additional Information will be edited by only Agents </span>
+            </div>
+        </div>
+        <div class="btn_row">
+            <button mat-raised-button (click)="updateLead()" *ngIf="isEditPrivilegedModule"
+                [disabled]="!accountsUserForm.invalid">Update Personal Details</button>
+        </div> -->
+    </mat-tab>
+    <mat-tab label="Additional Information">
+        <br>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Emirates ID</mat-label>
+                    <input matInput [type]="EIDhide ? 'password' : 'text'" formControlName="emirates_id_number" *ngIf="!showEmiratesDropdown">
+                    <mat-select formControlName="selected_emirates_id" *ngIf="showEmiratesDropdown" [disabled]="false" (selectionChange)="onEmiratesIdSelectionChange($event)">
+                        <mat-option *ngFor="let emiratesId of emiratesIds" [value]="emiratesId.value" [disabled]="true">
+                            {{emiratesId.label}} {{emiratesId.isLatest ? '(Latest)' : ''}}
+                        </mat-option>
+                    </mat-select>
+                    <button mat-icon-button matSuffix (click)="EIDhide = !EIDhide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="EIDhide" *ngIf="!showEmiratesDropdown">
+                        <mat-icon>{{EIDhide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="accountsUserForm.get('emirates_id_number').hasError('required')">
+                        <strong>Emirates ID is required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="accountsUserForm.get('emirates_id_number').hasError('pattern')">
+                        <strong>Please enter a valid Emirates ID</strong>
+                    </mat-error>
+                    <mat-error *ngIf="accountsUserForm.get('emirates_id_number').hasError('maxlength')">
+                        <strong>Emirates ID cannot exceed 15 characters</strong>
+                    </mat-error>
+                </mat-form-field>
+                <!-- <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Visa Emirates ID</mat-label>
+                    <input matInput [value]="addnInfo.visa_emirates_id" disabled>
+                </mat-form-field> -->
+            </div>
+            <div class="col-sm">
+                <!-- <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Passport No.</mat-label>
+                    <input  matInput formControlName="passport_number">
+                </mat-form-field> -->
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Passport No.</mat-label>
+                    <input matInput [type]="passportHide ? 'password' : 'text'" [value]="addnInfo.passport_number"
+                        disabled>
+                    <button mat-icon-button matSuffix (click)="passportHide = !passportHide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passportHide">
+                        <mat-icon>{{passportHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="accountsUserForm.get('passport_number').hasError('required')">
+                        <strong>Passport No. is required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="accountsUserForm.get('passport_number').hasError('pattern')">
+                        <strong> Please enter a valid Passport No.</strong>
+                    </mat-error>
+                    <mat-error *ngIf="accountsUserForm.get('passport_number').hasError('maxlength')">
+                        <strong>Passport No. cannot exceed 8 characters</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Employer Details</mat-label>
+                    <input matInput formControlName="employer_details">
+                    <mat-error *ngIf="accountsUserForm.get('employer_details').hasError('required')">
+                        <strong> Employer Details is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Designation</mat-label>
+                    <input matInput formControlName="designation">
+                    <mat-error *ngIf="accountsUserForm.get('designation').hasError('required')">
+                        <strong> Designation is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Company Contact Number</mat-label>
+                    <input matInput formControlName="company_contact" #ccn maxlength="10">
+                    <mat-hint align="end">{{ccn.value.length}} / 10</mat-hint>
+                    <mat-error *ngIf="accountsUserForm.get('company_contact').hasError('required')">
+                        <strong> Company Contact Number is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Business Name</mat-label>
+                    <input matInput formControlName="business_name">
+                    <mat-error *ngIf="accountsUserForm.get('business_name').hasError('required')">
+                        <strong> Business Name is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Banker Name</mat-label>
+                    <input matInput formControlName="banker_name">
+                    <mat-error *ngIf="accountsUserForm.get('banker_name').hasError('required')">
+                        <strong> Banker Name is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <br>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Account Number</mat-label>
+                    <input matInput [type]="acHide ? 'password' : 'text'" [value]="addnInfo.account_number" disabled>
+                    <button mat-icon-button matSuffix (click)="acHide = !acHide" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="acHide">
+                        <mat-icon>{{acHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="accountsUserForm.get('account_number').hasError('required')">
+                        <strong> Account Number is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Product Type</mat-label>
+                    <input matInput [value]="addnInfo.product_type" disabled>
+                    <mat-error *ngIf="accountsUserForm.get('product_type').hasError('required')">
+                        <strong> Product Type is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Product Account No.</mat-label>
+                    <input matInput [type]="pdAcNo ? 'password' : 'text'" [value]="addnInfo.product_account_number"
+                        disabled>
+                    <button mat-icon-button matSuffix (click)="pdAcNo = !pdAcNo" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="pdAcNo">
+                        <mat-icon>{{pdAcNo ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="accountsUserForm.get('product_account_number').hasError('required')">
+                        <strong> Product Account No. is required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="accountsUserForm.get('product_account_number').hasError('pattern')">
+                        <strong> Product Account No. is required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="accountsUserForm.get('product_account_number').hasError('maxlength')">
+                        <strong> Product Account No. is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Agreement Id</mat-label>
+                    <input matInput [type]="agId ? 'password' : 'text'" [value]="addnInfo.agreement_id" disabled>
+                    <button mat-icon-button matSuffix (click)="agId = !agId" [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="agId">
+                        <mat-icon>{{agId ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="accountsUserForm.get('agreement_id').hasError('required')">
+                        <strong>Agreement Id is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+            <!-- New Fields Section -->
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>FINWARE ACN01</mat-label>
+                    <input matInput formControlName="finware_acn01">
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Fresh/Stab</mat-label>
+                    <input matInput formControlName="fresh_stab">
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Cycle Statement</mat-label>
+                    <input matInput formControlName="cycle_statement">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Card Auth</mat-label>
+                    <input matInput formControlName="card_auth">
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>DPD R</mat-label>
+                    <input matInput formControlName="dpd_r">
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Due Since Date</mat-label>
+                    <input matInput [matDatepicker]="due_since_date" formControlName="due_since_date">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="due_since_date"></mat-datepicker-toggle>
+                    <mat-datepicker #due_since_date></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>DCORE ID</mat-label>
+                    <input matInput formControlName="dcore_id">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>PLI Status</mat-label>
+                    <!-- <input matInput formControlName="pli_status"> -->
+                    <mat-select formControlName="pli_status">
+                        <mat-option disabled>--Select--</mat-option>
+                        <mat-option value="FILED">FILED</mat-option>
+                        <mat-option value="NOT FILED">NOT FILED</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="accountsUserForm.get('pli_status').hasError('required')">
+                        <strong>PLI Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Execution Status</mat-label>
+                    <input matInput formControlName="execution_status">
+                    <mat-error *ngIf="accountsUserForm.get('execution_status').hasError('required')">
+                        <strong>Execution Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Bucket Status</mat-label>
+                    <input matInput formControlName="bucket_status">
+                    <mat-error *ngIf="accountsUserForm.get('bucket_status').hasError('required')">
+                        <strong>Bucket Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Overdue</mat-label>
+                    <input matInput formControlName="overdue">
+                    <mat-error *ngIf="accountsUserForm.get('overdue').hasError('required')">
+                        <strong>Overdue is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Vintage</mat-label>
+                    <input matInput formControlName="vintage">
+                    <mat-error *ngIf="accountsUserForm.get('vintage').hasError('required')">
+                        <strong>Vintage is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Date of WOFF</mat-label>
+                    <input matInput [matDatepicker]="date_of_woff" formControlName="date_of_woff">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="date_of_woff">
+                        <!-- <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon> -->
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #date_of_woff></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Allocation Status</mat-label>
+                    <input matInput formControlName="allocation_status">
+                    <mat-error *ngIf="accountsUserForm.get('allocation_status').hasError('required')">
+                        <strong>Allocation Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <!-- <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Visa Status</mat-label>
+                    <mat-select formControlName="visa_status">
+                        <mat-option disabled>--Select--</mat-option>
+                        <mat-option [value]="visa" *ngFor="let visa of visaStatus">{{visa}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="accountsUserForm.get('visa_status').hasError('required')">
+                        <strong>Visa Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>MOL Status</mat-label>
+                    <mat-select formControlName="mol_status">
+                        <mat-option disabled>--Select--</mat-option>
+                        <mat-option [value]="mol" *ngFor="let mol of molStatus">{{mol}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="accountsUserForm.get('mol_status').hasError('required')">
+                        <strong>MOL Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div> -->
+            <div class="col-3">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Settlement Status</mat-label>
+                    <mat-select formControlName="settlement_status">
+                        <mat-option disabled>--Select--</mat-option>
+                        <mat-option [value]="ss" *ngFor="let ss of settlementStatus">{{ss}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="accountsUserForm.get('settlement_status').hasError('required')">
+                        <strong>Settlement Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <br>
+        <mat-divider></mat-divider>
+        <div class="_rows" *ngIf="!updateAddinfo">
+            <div class="col-sm msg">
+                <span>Additional Information will be edited by only Agents </span>
+            </div>
+        </div>
+        <div class="btn_row">
+            <button mat-raised-button (click)="updateLead()" *ngIf="isEditPrivilegedModule"
+                [disabled]="!hasChange">Update Additional Information</button>
+        </div>
+    </mat-tab>
+    <mat-tab label="Payment Ledger">
+        <ng-template matTabContent>
+            <app-payment-ledger-tab *ngIf="isReadPrivilegedModule"></app-payment-ledger-tab>
+            <div *ngIf="!isReadPrivilegedModule">
+                <p>Access denied for this module.</p>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Contacts">
+        <!-- <app-contacts-tab *ngIf="isReadPrivilegedModule"></app-contacts-tab>
+        <div *ngIf="!isReadPrivilegedModule">
+            <p>Access denied for this module.</p>
+        </div> -->
+        <ng-template matTabContent>
+            <app-contacts-tab *ngIf="isReadPrivilegedModule"></app-contacts-tab>
+            <div *ngIf="!isReadPrivilegedModule">
+                <p>Access denied for this module.</p>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Address">
+        <!-- <app-address-tab></app-address-tab> -->
+        <ng-template matTabContent>
+            <app-address-tab *ngIf="isReadPrivilegedModule"></app-address-tab>
+            <div *ngIf="!isReadPrivilegedModule">
+                <p>Access denied for this module.</p>
+            </div>
+        </ng-template>
+    </mat-tab>
+
+    <mat-tab label="Visa Check">
+        <ng-template matTabContent>
+            <!-- <app-visa-check-tab></app-visa-check-tab> -->
+            <app-visa-check-tab *ngIf="isReadPrivilegedModule"></app-visa-check-tab>
+            <div *ngIf="!isReadPrivilegedModule">
+                <p>Access denied for this module.</p>
+            </div>
+        </ng-template>
+    </mat-tab>
+
+    <mat-tab label="MOL Check">
+        <ng-template matTabContent>
+            <!-- <app-mol-check-tab></app-mol-check-tab> -->
+            <app-mol-check-tab *ngIf="isReadPrivilegedModule"></app-mol-check-tab>
+            <div *ngIf="!isReadPrivilegedModule">
+                <p>Access denied for this module.</p>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Tracing Details">
+        <ng-template matTabContent>
+            <!-- <app-tracing-tab></app-tracing-tab> -->
+            <app-tracing-tab *ngIf="isReadPrivilegedModule"></app-tracing-tab>
+            <div *ngIf="!isReadPrivilegedModule">
+                <p>Access denied for this module.</p>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Web Tracing">
+        <ng-template matTabContent>
+            <!-- <app-tracing-details-tab></app-tracing-details-tab> -->
+            <app-tracing-details-tab *ngIf="isReadPrivilegedModule"></app-tracing-details-tab>
+            <div *ngIf="!isReadPrivilegedModule">
+                <p>Access denied for this module.</p>
+            </div>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>
+<br>

@@ -1,0 +1,140 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<mat-divider></mat-divider><br>
+<mat-dialog-content class="__tasks" [formGroup]="ticketForm">
+    <div class="row">
+        <div class="col-sm">
+            <mat-form-field appearance="outline" class="mat_form_fields">
+                <mat-label>Issue</mat-label>
+                <mat-select name="issue" formControlName="ticket_issue_category_type_name"
+                    (selectionChange)="tktIssueCathandler($event)">
+                    <mat-option *ngFor="let ts of tktIssueCatArr" [value]="ts.ticket_issue_category_type_name">
+                        {{ts.ticket_issue_category_type_name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-sm">
+            <mat-form-field appearance="outline" class="mat_form_fields">
+                <mat-label>Status</mat-label>
+                <mat-select name="issue" formControlName="ticket_status_type_name"
+                    (selectionChange)="tktStatusTypehandler($event)">
+                    <mat-option *ngFor="let tts of tktStatusTypeArr" [value]="tts.ticket_status_type_name">
+                        {{tts.ticket_status_type_name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <mat-form-field appearance="outline" class="mat_form_fields">
+                <mat-label>Raised By <span class="required-field">*</span></mat-label>
+                <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                    [formControl]="ticketRaisedByFullName" formControlName="ticket_raised_by_full_name"
+                    [matAutocomplete]="auto">
+                <button
+                    *ngIf="ticketForm.get('ticket_raised_by_full_name').value && isUserDeactivated(ticketForm.get('ticket_raised_by_full_name').value)"
+                    mat-icon-button
+                    matSuffix
+                    aria-label="Warning"
+                    (click)="showDeactivatedUserWarning()"
+                >
+                    <mat-icon color="warn">warning</mat-icon>
+                </button>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="assignedByHandler($event.option.value)">
+                    <mat-option *ngFor="let option of assignedByFilteredOptions | async" [value]="option.full_name">
+                        {{option.full_name}}
+                        <sub>({{option.user_id}} | {{option.role_name | uppercase}})</sub>
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-error *ngIf="ticketForm.get('ticket_raised_by_full_name').hasError('required')">
+                    <strong>Raised By is required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-sm">
+            <mat-form-field appearance="outline" class="mat_form_fields">
+                <mat-label>Raised Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="ticket_raised_dtm"
+                    (dateChange)="assignedDateHandler($event)">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <mat-form-field appearance="outline" class="mat_form_fields">
+                <mat-label>Resolved Date</mat-label>
+                <input matInput [matDatepicker]="pickers" formControlName="ticket_resolved_dtm"
+                    (dateChange)="resolvedDateHandler($event)" [disabled]="isNewTicket">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matSuffix [for]="pickers" [disabled]="isNewTicket">
+                </mat-datepicker-toggle>
+                <mat-datepicker #pickers></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+
+</mat-dialog-content>
+<br>
+<div *ngIf="commentsArr && commentsArr.length>0">
+    <!-- <h2 mat-dialog-title>Issue</h2> -->
+    <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+    <!-- <mat-dialog-content class="__notes">
+        <div class="row" *ngFor="let c of commentsArr;let i = index">
+            <div class="col-11">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <textarea matInput [value]="c.comment" (change)="typeComment($event,i)"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-1">
+                <button mat-icon-button (click)="saveComments(c.comment_id,c,i)" [disabled]="c.iscommentsDisabled"><span
+                        class="material-symbols-outlined">
+                        save
+                    </span></button>
+                <button mat-icon-button (click)="deletecomments(c,i)"><span class="material-symbols-outlined">
+                        delete
+                    </span></button>
+            </div>
+        </div>
+    </mat-dialog-content> -->
+    <mat-dialog-content class="__notes">
+        <div class="row" *ngFor="let c of commentsArr; let i = index">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Describe Issue</mat-label>
+                    <textarea matInput [value]="c.comment" (input)="typeComment($event, i)"
+                        [ngClass]="{'dirty': c.isEdited}"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col-1" *ngIf="dialogTitle !== 'Raise New Ticket' && isEditPrivilegedModule">
+                <button mat-icon-button (click)="saveComments(c.comment_id, c, i)" [disabled]="!c.isEdited" *ngIf="dialogTitle !== 'Raise New Ticket' && isCreatePrivilegedModule || isEditPrivilegedModule">
+                    <span class="material-symbols-outlined">save</span>
+                </button>
+                <button mat-icon-button (click)="deletecomments(c, i)">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
+            </div>
+        </div>
+    </mat-dialog-content>
+
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelTicket()">Cancel</button>
+    <ng-container>
+        <button mat-stroked-button (click)="addNewComment()" *ngIf="dialogTitle !== 'Raise New Ticket'">
+            Describe Issue
+        </button>
+        <button mat-raised-button color="primary" (click)="createNewTicket()"
+            [disabled]="!commentsArr[0].isEdited || ticketForm.invalid || !ticketForm.get('ticket_raised_by_full_name').value" 
+            *ngIf="dialogTitle === 'Raise New Ticket' && (isCreatePrivilegedModule || isITManager)">Create Ticket</button>
+    </ng-container>
+    <button mat-raised-button color="primary" (click)="updateTicket(dialogData)" 
+        [disabled]="!formEdited || ticketForm.invalid || !ticketForm.get('ticket_raised_by_full_name').value"
+        *ngIf="dialogTitle !== 'Raise New Ticket' && isEditPrivilegedModule">Update Ticket</button>
+</mat-dialog-actions>

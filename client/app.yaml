@@ -1,0 +1,51 @@
+runtime: python312
+service: frontend
+
+automatic_scaling:
+  max_instances: 10
+
+handlers:
+  # Serve favicon files specifically
+  - url: /favicon.ico
+    static_files: sunshine/favicon.ico
+    upload: sunshine/favicon.ico
+    expiration: 1d
+    mime_type: image/x-icon
+
+  - url: /favicon-16x16.png
+    static_files: sunshine/favicon-16x16.png
+    upload: sunshine/favicon-16x16.png
+    expiration: 1d
+    mime_type: image/png
+
+  - url: /favicon-32x32.png
+    static_files: sunshine/favicon-32x32.png
+    upload: sunshine/favicon-32x32.png
+    expiration: 1d
+    mime_type: image/png
+
+  - url: /apple-touch-icon.png
+    static_files: sunshine/apple-touch-icon.png
+    upload: sunshine/apple-touch-icon.png
+    expiration: 1d
+    mime_type: image/png
+
+  # Serve static files from sunshine directory
+  - url: /(.*\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map|txt|json|csv))$
+    static_files: sunshine/\1
+    upload: sunshine/.*\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|map|txt|json|csv)$
+    expiration: 1d
+
+  # Serve HTML files
+  - url: /(.*\.html)$
+    static_files: sunshine/\1
+    upload: sunshine/.*\.html$
+    mime_type: text/html
+    expiration: 1d
+
+  # Serve index.html for root and SPA routes
+  - url: /.*
+    static_files: sunshine/index.html
+    upload: sunshine/index.html
+    mime_type: text/html
+

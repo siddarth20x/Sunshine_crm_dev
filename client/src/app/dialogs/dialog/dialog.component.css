@@ -1,0 +1,37 @@
+.mat-raised-button{
+    background: var(--button-color-bg);
+    color: var(--button-color-text);
+}
+
+.example-full-width {
+    width: 100%;
+}
+.companyName {
+    margin: 0 1rem 0 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.companyName span {
+    border-radius: 10px;
+    background-color: rgb(186, 181, 181);
+    padding: 0.2rem 0.4rem;
+    margin: 0.2rem;
+    font-size: 12px;
+    /* flex: 1 1 auto; */
+    text-align: center;
+}
+
+.client-container {
+    display: inline;
+}
+
+/* Hide checkboxes in mat-select dropdown */
+::ng-deep .mat-select-panel .mat-option .mat-pseudo-checkbox {
+  display: none !important;
+}
+
+::ng-deep .mat-select-panel .mat-option .mat-pseudo-checkbox-container {
+  display: none !important;
+}

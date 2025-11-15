@@ -1,0 +1,1050 @@
+.container-fluid {
+    /* padding-left: 0; */
+    padding: 0;
+}
+
+.stats__row {
+    margin: 2% 0;
+}
+
+.table__row {
+    padding: 0 25px;
+}
+
+.card_stats {
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: none;
+    border: 1px solid #E5E7EB;
+    /* box-shadow: 0px 1px 4px 1px #00000026; */
+    font-family: var(--font-regular);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+    height: 130px;
+}
+
+.example-header-image-1 {
+    background-image: url('../../assets/icons/ac-al.png');
+    background-size: 25px;
+    background-color: #F3F4F6;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+}
+
+.example-header-image-2 {
+    background-image: url('../../assets/icons/user-tick.png');
+    background-size: 25px;
+    background-color: #F3F4F6;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+}
+
+.example-header-image-3 {
+    background-image: url('../../assets/icons/user-edit.png');
+    background-size: 25px;
+    background-color: #F3F4F6;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+}
+
+.example-header-image-4 {
+    background-image: url('../../assets/icons/money-in.png');
+    background-size: 25px;
+    background-color: #F3F4F6;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+}
+
+.example-header-image-5 {
+    background-image: url('../../assets/icons/money-out.png');
+    background-size: 25px;
+    background-color: #F3F4F6;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+}
+
+.example-header-image-6 {
+    background-image: url('../../assets/icons/user-search.png');
+    background-size: 25px;
+    background-color: #F3F4F6;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+}
+
+.example-header-image-8 {
+    background-image: url('../../assets/icons/user.png');
+    background-size: 25px;
+    background-color: #F3F4F6;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 40px;
+    height: 40px;
+}
+
+/* .mat-mdc-card-header */
+mat-card-header {
+    display: flex;
+    /* padding: 16px 0 0 0; */
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-regular);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+}
+
+mat-card-title {
+    padding: 0;
+
+}
+
+table {
+    width: 100%;
+    box-shadow: none;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    /* width: 100%; */
+    float: inline-end;
+}
+.bankInp{
+    width: 100%;
+}
+
+td,
+th {
+    /* width: 25%; */
+    width: auto;
+    font-family: var(--font-regular);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+}
+
+th {
+    background-color: #fafafa;
+    font-family: var(--font-bold);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
+
+}
+
+
+.status-red {
+    color: #DC2626;
+}
+
+.status-green {
+    color: #22C55E;
+}
+
+.status-blue {
+    color: #1D4ED8;
+}
+
+.status-pink {
+    color: #fd00e8;
+}
+
+.status-yellow {
+    color: #EAB308;
+}
+
+td:hover {
+    cursor: pointer;
+    /* background: #fafafa; */
+}
+
+.table__card {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+}
+
+.mat-elevation-z8 {
+    box-shadow: none;
+}
+
+.mat_card_content {
+    font-family: var(--font-regular);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+    padding: 1% 0;
+
+}
+
+.card-sub-stats {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.card-sub-stats span p {
+    font-family: var(--font-bold);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: left;
+}
+
+.card-sub-stats span mat-card-subtitle {
+    font-family: var(--font-bold);
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: left;
+}
+
+
+.table__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.pending-days-filter {
+    min-width: 200px;
+}
+
+/* .pending-high {
+    color: #DC2626;
+    font-weight: 600;
+}
+
+.pending-medium {
+    color: #EAB308;
+    font-weight: 600;
+}
+
+.pending-low {
+    color: #1D4ED8;
+    font-weight: 600;
+} */
+
+.mat-card-stats {
+    background: #103a68;
+    color: white;
+    border: 1px solid #103a68;
+    cursor: pointer;
+}
+
+.activeCard {
+    border: 1px solid #103a68;
+    background: white;
+    color: black;
+    cursor: pointer;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.status-red-blink {
+    color: red;
+    animation: blink 5s infinite;
+}
+
+.status-warn-blink {
+    color: #ffd000;
+    animation: blink 5s infinite;
+}
+
+.filter_row {
+    padding: 0 25px;
+}
+
+.bank-selection-content {
+    padding: 16px 0;
+}
+
+.bank-selection-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.bankInp {
+    width: 50%;
+    min-width: 250px;
+}
+
+.filter_header{
+    font-family: var(--font-regular);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: left;
+}
+
+.__table__header{
+    align-items: flex-start;
+}
+@media screen and (max-width:960px) {
+    .container-fluid {
+        padding: 0;
+
+    }
+
+    .mat-card-header .mat-card-title {
+        font-size: 18px;
+    }
+
+    .mat_card_content {
+        font-family: var(--font-regular);
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+        padding: 10% 0;
+    }
+
+    .card_stats {
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: none;
+        border: 1px solid #E5E7EB;
+        font-family: var(--font-regular);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+        height: 130px;
+        margin: 10px 0;
+    }
+
+    .activeCard {
+        border: 1px solid #103a68;
+        background: white;
+        color: black;
+        cursor: pointer;
+    }
+    
+    /* Adjust spacing for medium screens */
+    .mat-column-senior_manager,
+    .mat-column-team_manager,
+    .mat-column-team_lead,
+    .mat-column-agent {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    
+    .mat-column-senior_manager {
+        padding-left: 20px !important;
+    }
+    
+    .mat-column-agent {
+        padding-right: 20px !important;
+    }
+}
+
+/* @media screen and (max-width: 960px) {
+    .mat-elevation-z8 {
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .mat-header-row {
+        display: none;
+    }
+
+    tbody {
+        display: block;
+        width: 100%;
+    }
+
+    .mat-table {
+        background: transparent;
+    }
+
+    .mat-table * {
+        box-sizing: border-box;
+    }
+
+    .mat-row {
+        display: block;
+        overflow: hidden;
+        height: auto;
+        position: relative;
+        border-radius: 3px;
+        border: 1px solid #E5E7EB;
+    }
+
+    .mat-row+.mat-row {
+        margin-top: 24px;
+    }
+
+    .mat-cell {
+        display: block;
+        width: 100%;
+        padding: 0 16px;
+        margin: 16px 0;
+        border: 0 none;
+    }
+
+    .mat-cell:first-child {
+        padding: 0 48px 0 16px;
+    }
+
+    .mat-cell:first-child a {
+        font-size: 20px;
+        color: inherit;
+    }
+
+    .mat-cell:first-child:before {
+        display: none;
+    }
+
+    .mat-cell.m-card-sub-title {
+        margin-top: -8px;
+        padding: 0 48px 0 16px;
+        color: rgba(0, 0, 0, 0.54);
+    }
+
+    .has_label_on_mobile:before {
+        content: attr(data-label);
+        display: inline;
+        font-weight: normal;
+    }
+
+    .mat-column-star {
+        width: auto;
+        padding: 8px 0 0 !important;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .mat-column-star:before {
+        display: none;
+    }
+
+    .mat-paginator {
+        margin-top: 24px;
+    }
+
+
+    .mat-card-header .mat-card-title {
+        font-size: 18px;
+    }
+
+    .mat_card_content {
+        font-family: var(--font-regular);
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+        padding: 10% 0;
+    }
+
+    .card_stats {
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: none;
+        border: 1px solid #E5E7EB;
+        font-family: var(--font-regular);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+        height: 130px;
+        margin: 10px 0;
+    }
+} */
+
+
+@media screen and (max-width:428px) {
+
+    .container-fluid {
+        margin: 10% 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    .mat-card-header .mat-card-title {
+        font-size: 16px;
+    }
+
+    .mat_card_content {
+        font-family: var(--font-regular);
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+        padding: 0;
+        margin: 2% 0px
+    }
+
+    .card_stats {
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: none;
+        border: 1px solid #E5E7EB;
+        font-family: var(--font-regular);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+        height: 130px;
+        margin: 10px 0;
+
+    }
+
+    /* Mat-Table Responsive CSS */
+
+    .mat-table .mat-cell {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: 1em;
+        text-align: right;
+        font-weight: bold;
+        height: 30px;
+        margin-bottom: 4%;
+    }
+
+    .mat-header-row {
+        display: none;
+    }
+
+    .mat-table .mat-cell:before {
+        content: attr(data-label);
+        float: left;
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 0.85em;
+    }
+
+    .mat-table .mat-cell:last-child {
+        border-bottom: 0;
+    }
+
+    .mat-table .mat-cell:first-child {
+        margin-top: 4%;
+    }
+
+    th.mat-header-cell:first-of-type,
+    td.mat-cell:first-of-type,
+    td.mat-footer-cell:first-of-type {
+        padding: 0;
+    }
+
+    .table__header {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .activeCard {
+        border: 1px solid #103a68;
+        background: white;
+        color: black;
+        cursor: pointer;
+    }
+
+    .col-4 {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+    
+    /* Mobile responsive adjustments for user columns */
+    .mat-column-senior_manager,
+    .mat-column-team_manager,
+    .mat-column-team_lead,
+    .mat-column-agent {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    
+    .user-cell {
+        gap: 1px;
+    }
+    
+    .deactivated-user-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* Deactivated user styles */
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    justify-content: center;
+    text-align: center;
+}
+
+.deactivated-user-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 1px;
+}
+
+.deactivated-user-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Ensure the user name text doesn't get cut off */
+.user-cell span {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Add spacing between user role columns */
+.mat-column-senior_manager,
+.mat-column-team_manager,
+.mat-column-team_lead,
+.mat-column-agent {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    text-align: center !important;
+}
+
+/* Additional spacing for better visual separation */
+.mat-column-senior_manager {
+    padding-left: 30px !important;
+}
+
+.mat-column-agent {
+    padding-right: 30px !important;
+}
+
+/* Improve table overall appearance */
+.mat-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    min-width: 1200px; /* Ensure minimum width for all columns */
+}
+
+/* Add responsive table wrapper */
+.table-responsive-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mat-header-cell {
+    text-align: center !important;
+    font-weight: 600;
+    color: #333;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    white-space: nowrap;
+    padding: 12px 8px;
+    min-width: 100px;
+    max-width: 150px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Specific column width constraints for better fit */
+.mat-column-lead_status_type_name {
+    min-width: 80px !important;
+    max-width: 100px !important;
+}
+
+.mat-column-company_name {
+    min-width: 120px !important;
+    max-width: 150px !important;
+}
+
+.mat-column-customer_name {
+    min-width: 120px !important;
+    max-width: 150px !important;
+}
+
+.mat-column-account_number {
+    min-width: 100px !important;
+    max-width: 130px !important;
+}
+
+.mat-column-product_account_number {
+    min-width: 120px !important;
+    max-width: 150px !important;
+}
+
+.mat-column-pending_days {
+    min-width: 140px !important;
+    max-width: 160px !important;
+}
+
+.mat-column-pli_status {
+    min-width: 60px !important;
+    max-width: 80px !important;
+}
+
+.mat-column-senior_manager {
+    min-width: 120px !important;
+    max-width: 140px !important;
+}
+
+.mat-column-team_manager {
+    min-width: 120px !important;
+    max-width: 140px !important;
+}
+
+.mat-column-team_lead {
+    min-width: 100px !important;
+    max-width: 120px !important;
+}
+
+.mat-column-agent {
+    min-width: 100px !important;
+    max-width: 120px !important;
+}
+
+.mat-cell {
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
+
+/* Specific styling for user role columns */
+.mat-column-senior_manager .mat-cell,
+.mat-column-team_manager .mat-cell,
+.mat-column-team_lead .mat-cell,
+.mat-column-agent .mat-cell {
+    text-align: center;
+    vertical-align: middle;
+    min-width: 120px;
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Add spacing between user role columns */
+.mat-column-senior_manager,
+.mat-column-team_manager,
+.mat-column-team_lead,
+.mat-column-agent {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    text-align: center !important;
+}
+
+/* Additional spacing for better visual separation */
+.mat-column-senior_manager {
+    padding-left: 15px !important;
+}
+
+.mat-column-agent {
+    padding-right: 15px !important;
+}
+
+/* Disabled card styles */
+.disabled-card {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.disabled-card:hover {
+    transform: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Disabled table styles */
+.disabled-table {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.disabled-table .mat-table {
+    filter: grayscale(50%);
+}
+
+/* Disabled controls styles */
+.disabled-controls {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.disabled-controls .mat-form-field {
+    pointer-events: none;
+}
+
+.disabled-controls input,
+.disabled-controls .mat-select {
+    cursor: not-allowed;
+}
+
+/* Responsive design for different screen resolutions */
+@media screen and (max-width: 1400px) {
+    .mat-table {
+        min-width: 1100px;
+    }
+    
+    .mat-header-cell {
+        font-size: 12px;
+        padding: 10px 6px;
+    }
+    
+    .mat-cell {
+        font-size: 12px;
+        padding: 10px 6px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .mat-table {
+        min-width: 1000px;
+    }
+    
+    .mat-header-cell {
+        font-size: 11px;
+        padding: 8px 4px;
+    }
+    
+    .mat-cell {
+        font-size: 11px;
+        padding: 8px 4px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .mat-table {
+        min-width: 900px;
+    }
+    
+    .mat-header-cell {
+        font-size: 10px;
+        padding: 6px 3px;
+    }
+    
+    .mat-cell {
+        font-size: 10px;
+        padding: 6px 3px;
+    }
+}
+
+/* Specific handling for 90% zoom or similar scenarios */
+@media screen and (max-width: 90%) {
+    .table-responsive-wrapper {
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #888 #f1f1f1;
+    }
+    
+    .table-responsive-wrapper::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .table-responsive-wrapper::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+    
+    .table-responsive-wrapper::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+    
+    .table-responsive-wrapper::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
+
+/* Additional responsive rules for very small screens */
+@media screen and (max-width: 768px) {
+    .mat-table {
+        min-width: 800px;
+    }
+    
+    .mat-header-cell {
+        font-size: 9px;
+        padding: 4px 2px;
+        min-width: 80px;
+        max-width: 100px;
+    }
+    
+    .mat-cell {
+        font-size: 9px;
+        padding: 4px 2px;
+    }
+    
+    /* Further reduce column widths for mobile */
+    .mat-column-lead_status_type_name {
+        min-width: 60px !important;
+        max-width: 80px !important;
+    }
+    
+    .mat-column-company_name {
+        min-width: 100px !important;
+        max-width: 120px !important;
+    }
+    
+    .mat-column-customer_name {
+        min-width: 100px !important;
+        max-width: 120px !important;
+    }
+    
+    .mat-column-account_number {
+        min-width: 80px !important;
+        max-width: 100px !important;
+    }
+    
+    .mat-column-product_account_number {
+        min-width: 100px !important;
+        max-width: 120px !important;
+    }
+    
+    .mat-column-pending_days {
+        min-width: 80px !important;
+        max-width: 100px !important;
+    }
+    
+    .mat-column-pli_status {
+        min-width: 50px !important;
+        max-width: 60px !important;
+    }
+    
+    .mat-column-senior_manager {
+        min-width: 100px !important;
+        max-width: 120px !important;
+    }
+    
+    .mat-column-team_manager {
+        min-width: 100px !important;
+        max-width: 120px !important;
+    }
+    
+    .mat-column-team_lead {
+        min-width: 80px !important;
+        max-width: 100px !important;
+    }
+    
+    .mat-column-agent {
+        min-width: 80px !important;
+        max-width: 100px !important;
+    }
+}
+
+/* Ensure table container doesn't overflow */
+.table__card {
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.mat-elevation-z8 {
+    overflow: hidden;
+    max-width: 100%;
+}
+
+/* Force table to stay within bounds */
+.table-responsive-wrapper {
+    max-width: 100vw;
+    overflow-x: auto;
+}
+
+/* Ensure headers don't wrap and stay readable */
+.mat-header-cell {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Special styling for Team Manager header to display in two lines */
+.mat-column-team_manager .mat-header-cell {
+    white-space: normal !important;
+    line-height: 1.2 !important;
+    height: auto !important;
+    min-height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Special styling for Senior Manager header to display in two lines */
+.mat-column-senior_manager .mat-header-cell {
+    white-space: normal !important;
+    line-height: 1.2 !important;
+    height: auto !important;
+    min-height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Special styling for Product Account No. header to display in two lines */
+.mat-column-product_account_number .mat-header-cell {
+    white-space: normal !important;
+    line-height: 1.2 !important;
+    height: auto !important;
+    min-height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Special styling for Pending No of days header to display in two lines */
+.mat-column-pending_days .mat-header-cell {
+    white-space: normal !important;
+    line-height: 1.2 !important;
+    height: auto !important;
+    min-height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}

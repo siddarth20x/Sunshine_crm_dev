@@ -1,0 +1,170 @@
+<div class="_row">
+    <div class="col-2">
+        <mat-form-field appearance="outline" class="mat_form_fields">
+            <mat-label>From Date</mat-label>
+            <input matInput [matDatepicker]="from" [value]="fromTime" (dateChange)="fromDateHandler($event)">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="from">
+            </mat-datepicker-toggle>
+            <mat-datepicker #from></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="col-2">
+        <mat-form-field appearance="outline" class="mat_form_fields">
+            <mat-label>To Date</mat-label>
+            <input matInput [matDatepicker]="to" [value]="toTime" (dateChange)="toDateHandler($event)">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="to">
+            </mat-datepicker-toggle>
+            <mat-datepicker #to></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="col-sm">
+        <mat-form-field appearance="outline" class="mat_form_fields">
+            <mat-label>Users</mat-label>
+            <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="agentFullName"
+                [matAutocomplete]="auto">
+                <button *ngIf="dailyRepParams.agent_id!==null" mat-icon-button matSuffix aria-label="Clear"
+                (click)="clearAgentSelection()">
+                <mat-icon>clear</mat-icon>
+            </button>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="agentHandler($event.option.value)">
+                <mat-option *ngFor="let option of agentFilteredOptions | async" [value]="option.full_name">
+                    {{option.full_name}}
+                    <sub>({{option.user_id}} | {{option.role_name |
+                        uppercase}})</sub>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div class="col-sm">
+        <mat-form-field appearance="outline" class="mat_form_fields">
+            <mat-label>Bank</mat-label>
+            <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="companyName"
+                [matAutocomplete]="cmp">
+                <button *ngIf="dailyRepParams.company_id!==null" mat-icon-button matSuffix
+                aria-label="Clear" (click)="clearcompanySelection()">
+                <mat-icon>clear</mat-icon>
+            </button>
+            <mat-autocomplete #cmp="matAutocomplete" (optionSelected)="companyHandler($event.option.value)">
+                <mat-option *ngFor="let option of companyNameFilteredOptions | async" [value]="option.company_name">
+                    {{option.company_name}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <!-- <div class="col-sm">
+        <mat-form-field appearance="outline" class="mat_form_fields">
+            <mat-label>Touched / Untouched</mat-label>
+            <mat-select name="stage" (selectionChange)="contactableHandler($event)">
+                <mat-option *ngFor="let stage of stageArr" [value]="stage">
+                    {{stage}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div> -->
+</div>
+<div class="_row">
+    <div class="col-sm report_btns">
+        <button mat-raised-button class="btnGen" [disabled]="disableGenerateBtn"
+            (click)="generateCNCReport(loggedInUserId)">Generate</button>
+        <button mat-raised-button class="btnGen" (click)="exportToExcelFormat(myDataArray,'Not worked from 15-30 days Reports')"
+            [disabled]="disableExportBtn">Export
+            To Excel</button>
+    </div>
+</div>
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<div class="table__row" *ngIf="showCNCTBLBtn">
+    <mat-card class="table__card" *ngIf="resultsLength>0">
+        <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+        <mat-card-header class="table__header">
+            <mat-card-title>Not worked from 15-30 days</mat-card-title>
+            <!-- <mat-card-subtitle *ngIf="fromTime && toTime">
+                {{fromTime}} to {{toTime}}
+            </mat-card-subtitle>
+            <mat-card-subtitle *ngIf="!fromTime || !toTime">
+                {{fromTime ? (fromTime | date:"dd-MMM-yyyy") : ''}}
+                {{toTime ? (toTime | date:"dd-MMM-yyyy") : ''}}
+            </mat-card-subtitle> -->
+
+            <mat-form-field appearance="standard">
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyFilter($event)" #input>
+            </mat-form-field>
+        </mat-card-header>
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" multiTemplateDataRows>
+                <ng-container matColumnDef="lead_id">
+                    <th mat-header-cell *matHeaderCellDef>Lead Id</th>
+                    <td mat-cell *matCellDef="let row" data-label="Lead Id">{{row.lead_id}}</td>
+                </ng-container>
+                <ng-container matColumnDef="company_name">
+                    <th mat-header-cell *matHeaderCellDef>Bank</th>
+                    <td mat-cell *matCellDef="let row" data-label="Bank">{{row.company_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="product_type">
+                    <th mat-header-cell *matHeaderCellDef>Product Type</th>
+                    <td mat-cell *matCellDef="let row" data-label="Product Type">{{row.product_type}}</td>
+                </ng-container>
+                <ng-container matColumnDef="customer_id">
+                    <th mat-header-cell *matHeaderCellDef>Customer Id</th>
+                    <td mat-cell *matCellDef="let row" data-label="Customer Id">{{row.customer_id}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="account_number">
+                    <th mat-header-cell *matHeaderCellDef>Account Number</th>
+                    <td mat-cell *matCellDef="let row" data-label="Account Number">{{row.account_number}}</td>
+                </ng-container>
+                <!-- <ng-container matColumnDef="last_activity_dtm">
+                    <th mat-header-cell *matHeaderCellDef>Touched / Untouched</th>
+                    <td mat-cell *matCellDef="let row" data-label="Touched / Untouched">{{row.last_activity_dtm!==null?'TOUCHED':'UNTOUCHED'}}</td>
+                </ng-container> -->
+                <!-- <ng-container matColumnDef="expand">
+                    <th mat-header-cell *matHeaderCellDef>Activity Detail</th>
+                    <td mat-cell *matCellDef="let row">More</td>
+                </ng-container> -->
+                <!-- <ng-container matColumnDef="expand">
+                    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button aria-label="expand row"
+                            (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+                            <mat-icon *ngIf="expandedElement === element">keyboard_arrow_up</mat-icon>
+                            <mat-icon *ngIf="expandedElement != element">keyboard_arrow_down</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="expandedDetail">
+                    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+                        <div class="example-element-detail"
+                            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                            <div class="example-element-description">
+                                Report Start Time : {{element.report_start_time}} <br>
+                                Report End Time : {{element.report_end_time}}
+                            </div>
+                        </div>
+                    </td>
+                </ng-container> -->
+
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+                <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
+                    [class.example-expanded-row]="expandedElement === element"
+                    (click)="expandedElement = expandedElement === element ? null : element">
+                </tr>
+                <!-- <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr> -->
+            </table>
+            <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of logs"
+                showFirstLastButtons></mat-paginator>
+        </div>
+    </mat-card>
+</div>
+<br>
+<div *ngIf="resultsLength==0" class="noDataFound">
+    <p>
+        <strong> No records found </strong>
+    </p>
+    <p>
+        <button mat-stroked-button class="clearFilters" color="primary" (click)="clearFilters()">
+            Clear your filters and try again
+        </button>
+    </p>
+</div>

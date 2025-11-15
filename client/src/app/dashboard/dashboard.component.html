@@ -1,0 +1,428 @@
+<div class="container-fluid container-fluid-sm container-fluid-md container-fluid-lg container-fluid-xl">
+    <!-- Bank Selection Section - Moved to top -->
+    <div class="row filter_row mt-3">
+        <mat-card class="table__card">
+            <mat-card-header class="filter_header">
+                Select Bank
+            </mat-card-header>
+            <mat-card-content class="bank-selection-content">
+                <div class="bank-selection-container">
+                    <mat-form-field class="bankInp" appearance="outline">
+                        <mat-label>Please select bank</mat-label>
+                        <mat-select name="bank" [formControl]="companyControl"
+                            (selectionChange)="companySelectHandler($event)">
+                            <mat-option disabled>
+                                --Select--
+                            </mat-option>
+                            <mat-option *ngFor="let company of companyArr" [value]="company.company_name">
+                                {{company.company_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- Stat Cards Row -->
+    <div class="row stats__row">
+        <div class="col-sm">
+            <mat-card class="card_stats" id="card1" 
+                [ngClass]="!allocatedAcc?'card_stats':'activeCard'"
+                [class.disabled-card]="!isBankSearched"
+                (click)="isBankSearched ? searchByBank(userId,companyId) : null">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image-1"></div>
+                    <mat-card-title>Accounts Allocated</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="mat_card_content">
+                    <div class="card-sub-stats">
+                        <span>
+                            <p></p>
+                            <mat-card-subtitle *ngIf="!isCountsLoading">
+                                {{accountsAllocated}}
+                            </mat-card-subtitle>
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isCountsLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-sm">
+            <mat-card class="card_stats" id="card2" 
+                [ngClass]="!touchedAcc?'card_stats':'activeCard'"
+                [class.disabled-card]="!isBankSearched"
+                (click)="isBankSearched ? filterTouchedAccounts() : null">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image-2"></div>
+                    <mat-card-title>Accounts Touched</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="mat_card_content">
+                    <div class="card-sub-stats">
+                        <span>
+                            <p></p>
+                            <mat-card-subtitle *ngIf="!isCountsLoading">
+                                {{touchedAccLength}}
+                            </mat-card-subtitle>
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isCountsLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <!-- New Untouched Accounts Card -->
+        <div class="col-sm">
+            <mat-card class="card_stats" id="cardUntouched" 
+                [ngClass]="!untouchedAcc?'card_stats':'activeCard'"
+                [class.disabled-card]="!isBankSearched"
+                (click)="isBankSearched ? filterUntouchedAccounts() : null">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image-8"></div>
+                    <mat-card-title>Accounts Untouched</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="mat_card_content">
+                    <div class="card-sub-stats">
+                        <span>
+                            <p></p>
+                            <mat-card-subtitle *ngIf="!isCountsLoading">
+                                {{untouchedAccLength}}
+                            </mat-card-subtitle>
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isCountsLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+  
+
+    <div class="row stats__row">
+        <!-- <div class="col-sm">
+            <mat-card class="card_stats">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image-4">
+                    </div>
+                    <mat-card-title>Total Collections</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="mat_card_content">
+                    <div class="card-sub-stats">
+                        <span>
+                            <p>Total Paid</p>
+                            <mat-card-subtitle>
+                                {{totalCollection}}
+                            </mat-card-subtitle>
+                        </span>
+                        <span>
+                            <p>Total PTP</p>
+                            <mat-card-subtitle>
+                                {{totalCollection}}
+                            </mat-card-subtitle>
+                        </span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div> -->
+        <div class="col-sm" *ngIf="loggedInUserRole!=='ADMIN'">
+            <mat-card class="card_stats" [class.disabled-card]="!isBankSearched">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image-4">
+                    </div>
+                    <mat-card-title>Target</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="mat_card_content">
+                    <div class="card-sub-stats">
+                        <span>
+                            <p>Total</p>
+                            <mat-card-subtitle *ngIf="!isCountsLoading">
+                                {{formatNumber(targetAmount)}}
+                            </mat-card-subtitle>
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isCountsLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                        <span>
+                            <p>Achieved</p>
+                            <mat-card-subtitle *ngIf="!isCountsLoading">
+                                {{formatNumber(achievedAmount)}}
+                            </mat-card-subtitle>
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isCountsLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                        <span>
+                            <p>Daily</p>
+                            <mat-card-subtitle *ngIf="!isCountsLoading">
+                                {{formatNumber(dailyTarget)}}
+                            </mat-card-subtitle>
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isCountsLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </div>
+                    <mat-progress-bar mode="indeterminate" *ngIf="isCountsLoading"></mat-progress-bar>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-sm">
+            <mat-card class="card_stats" [class.disabled-card]="!isBankSearched">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image-5"></div>
+                    <mat-card-title>Total Outstanding</mat-card-title>
+                    <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+                </mat-card-header>
+                <mat-card-content class="mat_card_content">
+                    <div class="card-sub-stats">
+                        <span>
+                            <p></p>
+                            <mat-card-subtitle *ngIf="!isCountsLoading">
+                                {{totalOutstanding}}
+                            </mat-card-subtitle>
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isCountsLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-sm">
+            <mat-card class="card_stats" id="card4" 
+                [ngClass]="{'activeCard': followUpAcc, 'card_stats': !followUpAcc}"
+                [class.disabled-card]="!isBankSearched">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image-6"></div>
+                    <mat-card-title>Follow-ups</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="mat_card_content">
+                    <div class="card-sub-stats">
+                        <span>
+                            <p>Current Month</p>
+                            <mat-card-subtitle *ngIf="!isCountsLoading" 
+                                (click)="isBankSearched ? filterCurrentMonthFollowUps($event) : null">
+                                {{currentMonthFollowups}}
+                            </mat-card-subtitle>
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isCountsLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                        <span>
+                            <p>Current Day</p>
+                            <mat-card-subtitle *ngIf="!isCountsLoading" 
+                                (click)="isBankSearched ? filterCurrentDayFollowUps($event) : null">
+                                {{currentDayFollowups}}
+                            </mat-card-subtitle>
+                            <div class="spinner-border spinner-border-sm" role="status" *ngIf="isCountsLoading">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+  <!-- Move Bank Selection below cards -->
+    <div class="row table__row">
+        <mat-card class="table__card">
+            <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+            <mat-card-header class="table__header">
+                <mat-card-title>{{tableTxt}}</mat-card-title>
+                <div class="filter-controls" [class.disabled-controls]="!isBankSearched">
+                    <mat-form-field appearance="standard" class="pending-days-filter">
+                        <mat-label>Filter by Pending number of days</mat-label>
+                        <mat-select [(ngModel)]="pendingDaysFilter" 
+                                   (selectionChange)="isBankSearched ? filterByPendingDays() : null"
+                                   [disabled]="!isBankSearched">
+                            <mat-option value="">All</mat-option>
+                            <mat-option value="0-7">0-7 Days</mat-option>
+                            <mat-option value="8-15">8-15 Days</mat-option>
+                            <mat-option value="16-30">16-30 Days</mat-option>
+                            <mat-option value="31-60">31-60 Days</mat-option>
+                            <mat-option value="61-90">61-90 Days</mat-option>
+                            <mat-option value="90+">90+ Days</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="standard">
+                        <mat-label>Type here to filter</mat-label>
+                        <input matInput (keyup)="isBankSearched ? applyFilter($event) : null" 
+                               #input [disabled]="!isBankSearched">
+                    </mat-form-field>
+                </div>
+            </mat-card-header>
+            <div class="mat-elevation-z8" [class.disabled-table]="!isBankSearched">
+                <div class="table-responsive-wrapper">
+                    <table mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="lead_status_type_name">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td mat-cell *matCellDef="let row" #tooltip="matTooltip"
+                            matTooltip="{{row.lead_status_type_name}}" matTooltipPosition="left" data-label="Status">
+                            <span class="material-symbols-outlined" [ngClass]="{
+                                'status-pink': row.lead_status_type_name === 'PENDING',
+                                'status-yellow': row.lead_status_type_name === 'IN PROGRESS',
+                                'status-green': row.lead_status_type_name === 'COMPLETED',
+                                'status-blue': row.lead_status_type_name === 'DEFERRED',
+                                'status-red': row.lead_status_type_name === 'CANCELLED'
+                            }">
+                                radio_button_checked
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="company_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Bank Name </th>
+                        <td mat-cell *matCellDef="let row"
+                            routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}"
+                            data-label="Bank name">
+                            {{row.company_name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="customer_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
+                        <td mat-cell *matCellDef="let row"
+                            routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}"
+                            data-label="customer name">
+                            {{row.customer_name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="account_number">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Account No. </th>
+                        <td mat-cell *matCellDef="let row"
+                            routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}"
+                            data-label="account no">
+                            {{row.account_number}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="product_account_number">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Product Account No. </th>
+                        <td mat-cell *matCellDef="let row"
+                            routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}"
+                            data-label="product account no">
+                            {{row.product_account_number}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="pending_days">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Pending No of days</th>
+                        <td mat-cell *matCellDef="let row" data-label="pending">
+                            <span [ngClass]="{
+                                'pending-high': calculatePendingDays(row) >= 90,
+                                'pending-medium': calculatePendingDays(row) >= 30 && calculatePendingDays(row) < 90,
+                                'pending-low': calculatePendingDays(row) >= 7 && calculatePendingDays(row) < 30
+                            }">
+                                {{calculatePendingDays(row) >= 0 ? calculatePendingDays(row) : 0}}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="pli_status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> PLI </th>
+                        <td mat-cell *matCellDef="let row" data-label="pli">
+                            <ng-container *ngIf="row.has_police_case == 1">
+                                <span class="material-symbols-outlined status-red-blink">
+                                    report
+                                </span>
+                            </ng-container>
+                        </td>
+                    </ng-container>
+
+                    <ng-container *ngIf="loggedInUserRole !== 'AGENT'" matColumnDef="multiple_bank_list">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Multiple Banks </th>
+                        <td mat-cell *matCellDef="let row" data-label="Multiple Banks">
+                            <ng-container *ngIf="row.multiple_banks_list">
+                                <span class="material-symbols-outlined status-warn-blink">
+                                    warning
+                                </span>
+                            </ng-container>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="senior_manager">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Senior Manager </th>
+                        <td mat-cell *matCellDef="let row"
+                            routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}"
+                            data-label="Senior Manager">
+                            <div class="user-cell">
+                                <span>{{row.senior_manager_full_name}}</span>
+                                <mat-icon *ngIf="isUserDeactivated(row.senior_manager_full_name)" 
+                                         color="warn" 
+                                         class="deactivated-user-icon"
+                                         matTooltip="User has been deactivated/deleted from platform"
+                                         (click)="openDeactivatedUserMessage('Senior Manager'); $event.stopPropagation()">
+                                    warning
+                                </mat-icon>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="team_manager">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Team Manager </th>
+                        <td mat-cell *matCellDef="let row"
+                            routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}"
+                            data-label="Team Manager">
+                            <div class="user-cell">
+                                <span>{{row.team_manager_full_name}}</span>
+                                <mat-icon *ngIf="isUserDeactivated(row.team_manager_full_name)" 
+                                         color="warn" 
+                                         class="deactivated-user-icon"
+                                         matTooltip="User has been deactivated/deleted from platform"
+                                         (click)="openDeactivatedUserMessage('Team Manager'); $event.stopPropagation()">
+                                    warning
+                                </mat-icon>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="team_lead">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Team Lead </th>
+                        <td mat-cell *matCellDef="let row"
+                            routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}"
+                            data-label="Team Lead">
+                            <div class="user-cell">
+                                <span>{{row.assigned_by_full_name}}</span>
+                                <mat-icon *ngIf="isUserDeactivated(row.assigned_by_full_name)" 
+                                         color="warn" 
+                                         class="deactivated-user-icon"
+                                         matTooltip="User has been deactivated/deleted from platform"
+                                         (click)="openDeactivatedUserMessage('Team Lead'); $event.stopPropagation()">
+                                    warning
+                                </mat-icon>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="agent">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Agent </th>
+                        <td mat-cell *matCellDef="let row"
+                            routerLink="/account-management/view/{{row.lead_id}}/{{row.company_id}}" data-label="Agent">
+                            <div class="user-cell">
+                                <span>{{row.assigned_to_full_name}}</span>
+                                <mat-icon *ngIf="isUserDeactivated(row.assigned_to_full_name)" 
+                                         color="warn" 
+                                         class="deactivated-user-icon"
+                                         matTooltip="User has been deactivated/deleted from platform"
+                                         (click)="openDeactivatedUserMessage('Agent'); $event.stopPropagation()">
+                                    warning
+                                </mat-icon>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedAccHoldersColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedAccHoldersColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="12">No Accounts Found</td>
+                    </tr>
+                </table>
+                </div>
+            </div>
+            <mat-paginator [length]="resultsLength" [pageSize]="20" aria-label="Select page of users"
+                showFirstLastButtons></mat-paginator>
+        </mat-card>
+    </div>
+</div>

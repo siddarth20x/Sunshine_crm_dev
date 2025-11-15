@@ -1,0 +1,41 @@
+._rows {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+::ng-deep .mat-dialog-content.__tasks {
+    max-height: 300px;
+    /* Adjust the height as needed */
+    overflow-y: auto;
+    padding-right: 16px;
+    /* Ensure proper padding for scrollbar */
+}
+
+::ng-deep .mat-dialog-content.__notes {
+    max-height: 200px;
+    /* Adjust the height as needed */
+    overflow-y: auto;
+    padding-right: 16px;
+    /* Ensure proper padding for scrollbar */
+}
+
+.mat_form_fields {
+    width: 100%;
+}
+
+@media screen and (max-width:428px) {
+    ._rows {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+}

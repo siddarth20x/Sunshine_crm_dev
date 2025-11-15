@@ -1,0 +1,177 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<mat-divider></mat-divider><br>
+<mat-dialog-content>
+    <form [formGroup]="contactsForm">
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" type="email">
+                    <mat-error *ngIf="contactsForm.get('email').hasError('required')">
+                        <strong>Email is required for {{selectedModeOfContact}} mode</strong>
+                    </mat-error>
+                    <mat-error *ngIf="contactsForm.get('email').hasError('email')">
+                        <strong>Please enter a valid email address</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-2">
+                <mat-form-field class="example-full-width country-dropdown" appearance="outline">
+                    <mat-label>Country</mat-label>
+                    <mat-select formControlName="phone_ext" (selectionChange)="onCountryChange($event)" [compareWith]="compareCountries">
+                        <mat-select-trigger>
+                            <span *ngIf="selectedCountry; else noCountrySelected">
+                                {{selectedCountry.phoneCode}}
+                            </span>
+                            <ng-template #noCountrySelected>
+                                <span>Select Country</span>
+                            </ng-template>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let country of countries" [value]="country">
+                            <div class="country-info">
+                                <span class="country-name">{{country.name}}</span>
+                                <span class="country-code">{{country.phoneCode}}</span>
+                            </div>
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="contactsForm.get('phone_ext').hasError('required')">
+                        <strong>Country is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Phone</mat-label>
+                    <input matInput formControlName="phone" 
+                           (input)="onPhoneInput($event, 'phone')">
+                    <mat-error *ngIf="contactsForm.get('phone').hasError('required')">
+                        <strong>Phone is required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="contactsForm.get('phone').hasError('pattern')">
+                        <strong>Please enter a valid phone number for {{selectedCountry?.name}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Alternate Phone</mat-label>
+                    <input matInput formControlName="alternate_phone" 
+                           (input)="onPhoneInput($event, 'alternate_phone')">
+                    <mat-error *ngIf="contactsForm.get('alternate_phone').hasError('required')">
+                        <strong>Alternate Phone is required for {{selectedModeOfContact}} mode</strong>
+                    </mat-error>
+                    <mat-error *ngIf="contactsForm.get('alternate_phone').hasError('pattern')">
+                        <strong>Please enter a valid phone number for {{selectedCountry?.name}}</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Employment Status</mat-label>
+                    <mat-select name="employment_status" formControlName="employment_status">
+                        <mat-option *ngFor="let emps of empStatusArr" [value]="emps">
+                            {{emps}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="contactsForm.get('employment_status').hasError('required')">
+                        <strong>Employment Status is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Employment Type</mat-label>
+                    <mat-select name="employment_type" formControlName="employment_type">
+                        <mat-option *ngFor="let et of empTypeArr" [value]="et">
+                            {{et}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="contactsForm.get('employment_type').hasError('required')">
+                        <strong>Employment Type is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <h2>Other Contacts</h2>
+        <mat-divider></mat-divider><br>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Contact Name</mat-label>
+                    <input matInput formControlName="contact_name">
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Relationship</mat-label>
+                    <!-- <input type="text" matInput formControlName="relationship"> -->
+                    <mat-select name="relationship" formControlName="relationship">
+                        <mat-option *ngFor="let rel of relationshipArr" [value]="rel">
+                            {{rel}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="contactsForm.get('relationship').hasError('required')">
+                        <strong>Relationship is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Other Contact</mat-label>
+                    <input type="number" matInput formControlName="contact_name_ph_no">
+                    <mat-error *ngIf="contactsForm.get('contact_name_ph_no').hasError('required')">
+                        <strong>Other Contact is required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="contactsForm.get('contact_name_ph_no').hasError('pattern')">
+                        <strong>Other Contact should be numbers only</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        
+        <div class="_rows" id="mobile_only">
+            <div class="col-1">
+                <button mat-stroked-button (click)="toggleCamera()">
+                    <span class="material-symbols-outlined">
+                        photo_camera
+                    </span>
+                    {{ cameraOpened ? 'Close Camera' : 'Open Camera' }}
+                </button>
+            </div>
+        </div>
+        <div id="mobile_only">
+
+            <div class="video-container" *ngIf="!error">
+                <video [class.show]="!isCaptured" [class.hide]="isCaptured" #video id="video" autoplay></video>
+                <canvas [class.show]="isCaptured" [class.hide]="!isCaptured" #canvas id="canvas"></canvas>
+            </div>
+            <div class="snap-container">
+                <button class="btn btn-primary" *ngIf="cameraOpened && !isCaptured" (click)="capture()">Snap
+                    Photo</button>
+                <button class="btn btn-primary" *ngIf="isCaptured" (click)="uploadFileToBucket()">Upload</button>
+                <!-- <button class="btn btn-danger" *ngIf="isCaptured" (click)="removeCurrent()">Take Another</button> -->
+            </div>
+            <ul class="list-unstyled">
+                <li *ngFor="let src of captures; let idx = index" (click)="setPhoto(idx)">
+                    <img [src]="src" height="50" />
+                </li>
+            </ul>
+        </div>
+
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-checkbox color="primary" formControlName="is_primary">Is Primary Contact?</mat-checkbox>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelContact()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="saveContact()" [disabled]="!areMandatoryFieldsFilled()">Save
+        Contact</button>
+</mat-dialog-actions>

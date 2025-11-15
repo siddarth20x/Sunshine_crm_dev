@@ -1,0 +1,165 @@
+.table__row {
+    padding: 0 11px;
+}
+
+
+table {
+    width: 100%;
+    box-shadow: none;
+
+}
+
+.mat-form-field {
+    font-size: 14px;
+    /* width: 100%; */
+    float: inline-end;
+}
+
+td,
+th {
+    width: 25%;
+    font-family: var(--font-regular);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    /* text-align: left; */
+}
+
+th {
+    background-color: #fafafa;
+}
+
+td:hover {
+    cursor: pointer;
+    /* background: #fafafa; */
+}
+
+.table__card {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    margin: 15px;
+}
+
+.mat-elevation-z8 {
+    box-shadow: none;
+}
+
+.table__header {
+    display: flex;
+    flex-direction: row;
+}
+
+mat-card-header {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-regular);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: left;
+}
+
+mat-card-title {
+    padding: 0;
+
+}
+
+.mat-card-header-text {
+    margin: 0 !important;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+    padding: 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    width: auto;
+}
+
+@media screen and (max-width:428px) {
+
+    .table__row {
+        padding: 0;
+    }
+
+
+    .mat-card-header .mat-card-title {
+        font-size: 16px;
+    }
+
+    .mat_card_content {
+        font-family: var(--font-regular);
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+        padding: 0;
+        margin: 9% 0px
+    }
+
+    .card_stats {
+        cursor: pointer;
+        border-radius: 8px;
+        box-shadow: none;
+        border: 1px solid #E5E7EB;
+        font-family: var(--font-regular);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+        height: 130px;
+        margin: 10px 0;
+
+    }
+
+    /* Mat-Table Responsive CSS */
+    .mat-table .mat-row {
+        /* border-bottom: 5px solid #ddd; */
+        /* display: block; */
+    }
+
+    .mat-table .mat-cell {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: 1em;
+        text-align: right;
+        font-weight: bold;
+        height: 30px;
+        margin-bottom: 4%;
+    }
+
+    .mat-header-row {
+        display: none;
+    }
+
+    .mat-table .mat-cell:before {
+        content: attr(data-label);
+        float: left;
+        text-transform: uppercase;
+        font-weight: normal;
+        font-size: 0.85em;
+    }
+
+    .mat-table .mat-cell:last-child {
+        border-bottom: 0;
+    }
+
+    .mat-table .mat-cell:first-child {
+        margin-top: 4%;
+    }
+
+    th.mat-header-cell:first-of-type,
+    td.mat-cell:first-of-type,
+    td.mat-footer-cell:first-of-type {
+        padding: 0;
+    }
+
+    .table__header {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

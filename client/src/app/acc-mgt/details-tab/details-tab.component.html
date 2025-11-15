@@ -1,0 +1,161 @@
+<div class="account-details-wrapper" *ngIf="leadResById && leadResById.length">
+    <div class="account-details-container">
+        <div class="account-details-table">
+            <table>
+                <tr>
+                    <td class="label">Account no/ Agreement No/CRN No. :</td>
+                    <td class="value">{{ leadResById[0]?.account_number || '--' }}</td>
+                    <td class="label">OverDue Amount :</td>
+                    <td class="value">{{ leadResById[0]?.overdue || '--' }}</td>
+                    <td class="label">GHRC Offer 2 :</td>
+                    <td class="value">{{ leadResById[0]?.ghrc_offer_2 || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Product Type * :</td>
+                    <td class="value">{{ leadResById[0]?.product_type || '--' }}</td>
+                    <td class="label">Passport No :</td>
+                    <td class="value">{{ leadResById[0]?.passport_number || '--' }}</td>
+                    <td class="label">GHRC Offer 3 :</td>
+                    <td class="value">{{ leadResById[0]?.ghrc_offer_3 || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Product Account :</td>
+                    <td class="value">{{ leadResById[0]?.product_account_number || '--' }}</td>
+                    <td class="label">DOB :</td>
+                    <td class="value">{{ leadResById[0]?.date_of_birth | date:'dd/MM/yyyy' || '--' }}</td>
+                    <td class="label">Withdraw Date :</td>
+                    <td class="value">{{ leadResById[0]?.withdraw_date | date:'dd/MM/yyyy' || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Agreement ID :</td>
+                    <td class="value">{{ leadResById[0]?.agreement_id || '--' }}</td>
+                    <td class="label">Emirates ID Number :</td>
+                    <td class="value">{{ leadResById[0]?.emirates_id_number || '--' }}</td>
+                    <td class="label">Home Country Address :</td>
+                    <td class="value">{{ leadResById[0]?.home_country_address || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">FINWARE_ACN01 :</td>
+                    <td class="value">{{ leadResById[0]?.finware_acn01 || '--' }}</td>
+                    <td class="label">DUE Since Date :</td>
+                    <td class="value">{{ leadResById[0]?.due_since_date | date:'dd/MM/yyyy' || '--' }}</td>
+                    <td class="label">City :</td>
+                    <td class="value">{{ leadResById[0]?.city || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Allocation Status * :</td>
+                    <td class="value">{{ leadResById[0]?.allocation_status || '--' }}</td>
+                    <td class="label">Vintage :</td>
+                    <td class="value">{{ leadResById[0]?.vintage || '--' }}</td>
+                    <td class="label">Pincode :</td>
+                    <td class="value">{{ leadResById[0]?.pincode || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Cust ID - Relationship No. * :</td>
+                    <td class="value">{{ leadResById[0]?.customer_id || '--' }}</td>
+                    <td class="label">Date of WOFF :</td>
+                    <td class="value">{{ leadResById[0]?.date_of_woff | date:'dd/MM/yyyy' || '--' }}</td>
+                    <td class="label">State :</td>
+                    <td class="value">{{ leadResById[0]?.state || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">SME Account Name :</td>
+                    <td class="value">{{ leadResById[0]?.sme_account_name || '--' }}</td>
+                    <td class="label">Nationality :</td>
+                    <td class="value">{{ leadResById[0]?.nationality || '--' }}</td>
+                    <td class="label">Father Name :</td>
+                    <td class="value">{{ leadResById[0]?.father_name || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Customer Name * :</td>
+                    <td class="value">{{ leadResById[0]?.customer_name || '--' }}</td>
+                    <td class="label">Mobile Number :</td>
+                    <td class="value">{{ leadResById[0]?.mobile_number || '--' }}</td>
+                    <td class="label">Mother Name :</td>
+                    <td class="value">{{ leadResById[0]?.mother_name || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Credit Limit :</td>
+                    <td class="value">{{ leadResById[0]?.credit_limit || '--' }}</td>
+                    <td class="label">Email ID :</td>
+                    <td class="value">{{ leadResById[0]?.email_id || '--' }}</td>
+                    <td class="label">Spouse Name :</td>
+                    <td class="value">{{ leadResById[0]?.spouse_name || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">TOS Amount * :</td>
+                    <td class="value">{{ leadResById[0]?.tos_amount || '--' }}</td>
+                    <td class="label">Monthly Income :</td>
+                    <td class="value">{{ leadResById[0]?.monthly_income || '--' }}</td>
+                    <td class="label">Last Payment Amount :</td>
+                    <td class="value">{{ leadResById[0]?.last_payment_amount || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">POS Amount :</td>
+                    <td class="value">{{ leadResById[0]?.pos_amount || '--' }}</td>
+                    <td class="label">Employer Details :</td>
+                    <td class="value">{{ leadResById[0]?.employer_details || '--' }}</td>
+                    <td class="label">Last Payment Date :</td>
+                    <td class="value">{{ leadResById[0]?.last_payment_date | date:'dd/MM/yyyy' || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">FRESH/STAB :</td>
+                    <td class="value">{{ leadResById[0]?.fresh_stab || '--' }}</td>
+                    <td class="label">Designation :</td>
+                    <td class="value">{{ leadResById[0]?.designation || '--' }}</td>
+                    <td class="label">Last Month Paid Unpaid :</td>
+                    <td class="value">{{ leadResById[0]?.last_month_paid_unpaid || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Cycle Statement :</td>
+                    <td class="value">{{ leadResById[0]?.cycle_statement || '--' }}</td>
+                    <td class="label">Company Contact :</td>
+                    <td class="value">{{ leadResById[0]?.company_contact || '--' }}</td>
+                    <td class="label">Last Usage Date :</td>
+                    <td class="value">{{ leadResById[0]?.last_usage_date | date:'dd/MM/yyyy' || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">BKT Status :</td>
+                    <td class="value">{{ leadResById[0]?.bucket_status || '--' }}</td>
+                    <td class="label">Office Address :</td>
+                    <td class="value">{{ leadResById[0]?.office_address || '--' }}</td>
+                    <td class="label">DPD Strin :</td>
+                    <td class="value">{{ leadResById[0]?.dpd_strin || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Card Auth :</td>
+                    <td class="value">{{ leadResById[0]?.card_auth || '--' }}</td>
+                    <td class="label">Home Country Number :</td>
+                    <td class="value">{{ leadResById[0]?.home_country_number || '--' }}</td>
+                    <td class="label">PLI Status :</td>
+                    <td class="value">{{ leadResById[0]?.pli_status || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">DPD_R :</td>
+                    <td class="value">{{ leadResById[0]?.dpd_r || '--' }}</td>
+                    <td class="label">Friend_Residence_Phone :</td>
+                    <td class="value">{{ leadResById[0]?.friend_residence_phone || '--' }}</td>
+                    <td class="label">Execution Status :</td>
+                    <td class="value">{{ leadResById[0]?.execution_status || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Mindex Manual :</td>
+                    <td class="value">{{ leadResById[0]?.mindex_manual || '--' }}</td>
+                    <td class="label">Minimum Payment :</td>
+                    <td class="value">{{ leadResById[0]?.minimum_payment || '--' }}</td>
+                    <td class="label">Banker Name * :</td>
+                    <td class="value">{{ leadResById[0]?.banker_name || '--' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">RB Amount :</td>
+                    <td class="value">{{ leadResById[0]?.rb_amount || '--' }}</td>
+                    <td class="label">GHRC Offer 1 :</td>
+                    <td class="value">{{ leadResById[0]?.ghrc_offer_1 || '--' }}</td>
+                    <td class="label">DCORE ID :</td>
+                    <td class="value">{{ leadResById[0]?.dcore_id || '--' }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<br>

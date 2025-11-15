@@ -1,0 +1,105 @@
+<div class="container-fluid">
+    <br>
+    <div class="btn_row">
+        <div class="col-sm" *ngIf="isCreatePrivilegedModule">
+            <button mat-raised-button class="tktBtn" (click)="raiseTktDialog()">
+                <span class="material-symbols-outlined">
+                    confirmation_number
+                </span> Raise a Ticket</button>
+        </div>
+    </div>
+    <br>
+    <div class="row table__row">
+        <mat-card class="table__card">
+            <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+            <mat-card-header class="table__header">
+                <mat-card-title>{{tableTxt}}</mat-card-title>
+                <mat-form-field appearance="standard">
+                    <mat-label>Filter Tickets</mat-label>
+                    <input matInput (keyup)="applyFilter($event)" #input>
+                </mat-form-field>
+            </mat-card-header>
+            <div class="mat-elevation-z8 table-responsive">
+                <table mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="ticket_id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ticket Id </th>
+                        <td mat-cell *matCellDef="let row; let i=index" (click)="viewTicket(row)"
+                            data-label="Ticket Id"> {{row.ticket_id}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ticket_status_type_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ticket Status </th>
+                        <td mat-cell *matCellDef="let row" (click)="viewTicket(row)" data-label="Ticket Status">
+                            {{row.ticket_status_type_name}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ticket_issue_category_type_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Issue </th>
+                        <td mat-cell *matCellDef="let row" (click)="viewTicket(row)" data-label="Issue">
+                            {{row.ticket_issue_category_type_name}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="full_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Raised By </th>
+                        <td mat-cell *matCellDef="let row" (click)="viewTicket(row)" data-label="Raised By">
+                            <div class="user-name-container">
+                                <span>{{row.full_name}}</span>
+                                <mat-icon *ngIf="isUserDeactivated(row.full_name)" 
+                                         color="warn" 
+                                         class="deactivated-user-icon" 
+                                         matTooltip="User got deactivated/deleted from platform">
+                                    warning
+                                </mat-icon>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="created_by_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Created By </th>
+                        <td mat-cell *matCellDef="let row" (click)="viewTicket(row)" data-label="Created By">
+                            {{row.created_by_name || 'N/A'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ticket_raised_dtm">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Raised At </th>
+                        <td mat-cell *matCellDef="let row" (click)="viewTicket(row)" data-label="Raised At">
+                            {{row.ticket_raised_dtm | date:"dd-MMM-yyyy"}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="ticket_resolved_dtm">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Resolved At </th>
+                        <td mat-cell *matCellDef="let row" (click)="viewTicket(row)" data-label="Resolved At">
+                            {{row.ticket_resolved_dtm | date:"dd-MMM-yyyy"}} </td>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="created_id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Created By </th>
+                        <td mat-cell *matCellDef="let row">
+                            {{row.created_id}} </td>
+                    </ng-container> -->
+                    <!-- <ng-container matColumnDef="company_desc">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Company Description </th>
+                        <td mat-cell *matCellDef="let row"> {{row.company_desc}} </td>
+                    </ng-container> -->
+
+                    <!-- <ng-container matColumnDef="more">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let row">
+                            <button mat-icon-button aria-label="Actions" #tooltip="matTooltip"
+                                matTooltip="View more details" matTooltipPosition="below"
+                                routerLink="/client-management/view/{{row.company_id}}">
+                                <span class="material-symbols-outlined">
+                                    chevron_right
+                                </span>
+                            </button>
+                        </td>
+                    </ng-container> -->
+
+                    <tr mat-header-row *matHeaderRowDef="displayedClientHoldersColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedClientHoldersColumns;"></tr>
+
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" colspan="5">No Ticket(s) Found</td>
+                    </tr>
+                </table>
+                <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of banks"
+                    showFirstLastButtons></mat-paginator>
+            </div>
+        </mat-card>
+    </div>
+</div>

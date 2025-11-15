@@ -1,0 +1,523 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<!-- <h4 *ngIf="dialogTitle!=='Create New Task'">Task ID : {{dialogData?.task_id}}</h4> -->
+<mat-divider></mat-divider><br>
+<mat-dialog-content class="__tasks">
+    <form [formGroup]="tasksForm">
+        <div class="row">
+            <!-- <div class="col-3" *ngIf="dialogTitle!='Create New Task'">
+                <mat-form-field appearance="outline">
+                    <mat-label>Task ID</mat-label>
+                    <input matInput formControlName="task_id">
+                </mat-form-field>
+            </div> -->
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>Task Type</mat-label>
+                    <mat-select name="task_type" formControlName="task_type_name"
+                        (selectionChange)="taskTypeHandler($event)" [disabled]="dialogTitle === 'View Tasks'">
+                        <mat-option *ngFor="let tt of taskTypeArr" [value]="tt.task_type_name">
+                            {{tt.task_type_name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>Task Status</mat-label>
+                    <mat-select name="task_status" formControlName="task_status_type_name"
+                        (selectionChange)="taskStatusTypeHandler($event)" [disabled]="!isTaskStatusEnabled()">
+                        <mat-option *ngFor="let tts of filteredTaskStatusTypeArr" [value]="tts.task_status_type_name">
+                            {{tts.task_status_type_name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+   <div class="row">
+            <div class="col-sm" *ngIf="hideDocUpldSelector">
+                <span class="__upload">
+                    <input type="file" name="documentUpload" id="documentUpload" class="form-control shadow-none"
+                        (change)="attachFile($event)">
+                    <button mat-raised-button (click)="uploadFileToBucket()" color="primary"
+                        [disabled]="docUploadDisable">
+                        Upload
+                    </button>
+                </span>
+            </div>
+            <div class="col-sm"
+                *ngIf="dialogData&&dialogData.task_type_name==='DOCUMENT UPLOAD' && dialogData.document_url!==null">
+                <button mat-stroked-button (click)="downloadDocFromStorage(dialogData.document_url
+                )">Click to retrieve the attachment</button>
+                <a *ngIf="downloadURL" [href]="downloadURL" target="_blank">Download Link</a>
+            </div>
+        </div><br>
+        <div class="row" *ngIf="taskType==='FIELD VISIT'">
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>Country</mat-label>
+                    <!-- <button  mat-icon-button matSuffix aria-label="Clear"
+                        (click)="clearCountrySelection()">
+                        <mat-icon>clear</mat-icon>
+                    </button> -->
+                    <mat-select (selectionChange)="onCountryChange($event)" formControlName="country">
+                        <mat-option *ngFor="let country of countries" [value]="country.name">
+                            {{ country.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>State</mat-label>
+                    <mat-select (selectionChange)="onStateChange($event)" formControlName="state">
+                        <mat-option *ngFor="let state of states" [value]="state.name">
+                            {{ state.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>City</mat-label>
+                <mat-select (selectionChange)="onCityChange($event)" formControlName="city">
+                    <mat-option *ngFor="let city of cities" [value]="city">
+                        {{ city }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> -->
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Assigned By</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                        [formControl]="assignedByControl" formControlName="assigned_by_full_name"
+                        [matAutocomplete]="auto" [disabled]="true">
+                    <button
+                        *ngIf="tasksForm.get('assigned_by_full_name').value && isUserDeactivated(tasksForm.get('assigned_by_full_name').value)"
+                        mat-icon-button
+                        matSuffix
+                        aria-label="Warning"
+                        (click)="showDeactivatedUserWarning('Assigned By')"
+                    >
+                        <mat-icon color="warn">warning</mat-icon>
+                    </button>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="assignedByHandler($event.option.value)">
+                        <mat-option *ngFor="let option of assignedByFilteredOptions | async" [value]="option.full_name">
+                            {{option.full_name}}
+                            <sub>({{option.user_id}} | {{option.role_name |
+                                uppercase}})</sub>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Assigned To</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="String" matInput
+                        [formControl]="assignedToControl" formControlName="assigned_to_full_name"
+                        [matAutocomplete]="autoAssignTo"
+                        [disabled]="isAssignedToFieldDisabled()">
+                    <button
+                        *ngIf="tasksForm.get('assigned_to_full_name').value && isUserDeactivated(tasksForm.get('assigned_to_full_name').value)"
+                        mat-icon-button
+                        matSuffix
+                        aria-label="Warning"
+                        (click)="showDeactivatedUserWarning('Assigned To')"
+                    >
+                        <mat-icon color="warn">warning</mat-icon>
+                    </button>
+                    <mat-autocomplete #autoAssignTo="matAutocomplete"
+                        (optionSelected)="assignedToHandler($event.option.value)">
+                        <mat-option *ngFor="let option of assignedToFilteredOptions | async" [value]="option.full_name">
+                            {{option.full_name}}
+                            <sub>({{option.user_id}} | {{option.role_name |
+                                uppercase}})</sub>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>Assigned date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="assigned_dtm"
+                        (dateChange)="assignedDateHandler($event)">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>Target date</mat-label>
+                    <input matInput [matDatepicker]="target_dtmpicker" formControlName="target_dtm"
+                        (dateChange)="targetDateHandler($event)"
+                        [disabled]="!canEditTargetDate(tasksForm.get('target_dtm').value)">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="target_dtmpicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #target_dtmpicker></mat-datepicker>
+                    <mat-error *ngIf="tasksForm.get('target_dtm').hasError('invalidTargetDate')">Target date must be
+                        greater
+                        than or equal to the assigned date.</mat-error>
+                </mat-form-field>
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>Contactable / Non-contactable</mat-label>
+                            <mat-select name="stage" formControlName="stage" (selectionChange)="contactableHandler($event)"
+                    [disabled]="isLoadingContactableData">
+            <!-- Loading state -->
+            <mat-option *ngIf="isLoadingContactableData" disabled>
+                <mat-spinner diameter="20"></mat-spinner>
+                Loading...
+            </mat-option>
+            
+            <!-- Normal options -->
+            <mat-option *ngFor="let stage of stageArr" [value]="stage.stage">
+                {{stage.stage}}
+            </mat-option>
+            
+            <!-- Fallback options if no data loaded -->
+            <mat-option *ngIf="!isLoadingContactableData && stageArr.length === 0" [value]="'CONTACTED'">
+                CONTACTED
+            </mat-option>
+            <mat-option *ngIf="!isLoadingContactableData && stageArr.length === 0" [value]="'NON CONTACTED'">
+                NON CONTACTED
+            </mat-option>
+        </mat-select>
+        
+        <!-- Simple loading hint -->
+        <mat-hint *ngIf="isLoadingContactableData">Loading...</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields">
+                    <mat-label>Disposition Stage</mat-label>
+                    <mat-select name="stage_status" formControlName="stage_status"
+                        (selectionChange)="stageSelecetHandler($event)" [disabled]="!dispositionFieldsEnabled">
+                        <mat-option *ngFor="let stage of stageNameArr" [value]="stage.stage_status">
+                            {{stage.stage_status}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Message to guide user to select Contactable/Non-contactable -->
+        <div class="row" *ngIf="!dispositionFieldsEnabled">
+            <div class="col-12">
+                <div class="disposition-message">
+                    <span class="message-text">Please select Contactable/Non-contactable to enable Disposition fields</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message to guide user to select Disposition Code for Task Status -->
+        <div class="row" *ngIf="dispositionFieldsEnabled && !isTaskStatusEnabled()">
+            <div class="col-12">
+                <div class="disposition-message">
+                    <span class="message-text">Please select Disposition Code to enable Task Status field</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification for Contacted tasks -->
+        <div class="row mt-2" *ngIf="tasksForm.get('stage').value === 'CONTACTED' && taskType !== 'FIELD VISIT' && 
+                        (!detailsStatus.contact || !detailsStatus.visa || !detailsStatus.tracing) && !showProgressBar">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <strong>Required Fields Missing:</strong>
+                    <span>Please complete the following required fields:</span>
+                    <ul class="mb-0 mt-1">
+                        <li *ngIf="!detailsStatus.contact">Contact Details</li>
+                        <li *ngIf="!detailsStatus.visa">Visa Check</li>
+                        <li *ngIf="!detailsStatus.tracing">Tracing Details</li>
+                    </ul>
+                    <div class="mt-2">
+                        <button mat-stroked-button color="primary" (click)="openContactDialog(leadId)" class="mr-2" *ngIf="!detailsStatus.contact">
+                            <mat-icon>call</mat-icon> Contact
+                        </button>
+                        <button mat-stroked-button color="primary" (click)="openVisaCheckDialog(leadId)" class="mr-2" *ngIf="!detailsStatus.visa">
+                            <mat-icon>badge</mat-icon> Visa Check
+                        </button>
+                        <button mat-stroked-button color="primary" (click)="openTracingDetailsDialog(leadId)" *ngIf="!detailsStatus.tracing">
+                            <mat-icon>person_search</mat-icon> Tracing
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mode-specific validation messages for Contacted tasks -->
+        <div class="row mt-2" *ngIf="tasksForm.get('stage').value === 'CONTACTED' && taskType !== 'FIELD VISIT' && 
+                        tasksForm.get('mode_of_contact').value && !showProgressBar">
+            <!-- CALL mode validation -->
+            <div class="col-12" *ngIf="tasksForm.get('mode_of_contact').value === 'CALL'">
+                <div class="alert alert-warning">
+                    <strong>Mode of Contact Requirement:</strong>
+                    <span>For CALL mode, Contact Details and Phone Number are mandatory.</span>
+                    <div class="mt-2">
+                        <button mat-stroked-button color="primary" (click)="openContactDialog(leadId)">
+                            <mat-icon>call</mat-icon> Add Contact Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MESSAGE mode validation -->
+            <div class="col-12" *ngIf="tasksForm.get('mode_of_contact').value === 'MESSAGE'">
+                <div class="alert alert-warning">
+                    <strong>Mode of Contact Requirement:</strong>
+                    <span>For MESSAGE mode, Contact Details and Phone Number are mandatory.</span>
+                    <div class="mt-2">
+                        <button mat-stroked-button color="primary" (click)="openContactDialog(leadId)">
+                            <mat-icon>message</mat-icon> Add Contact Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EMAIL mode validation -->
+            <div class="col-12" *ngIf="tasksForm.get('mode_of_contact').value === 'EMAIL' && !detailsStatus.email">
+                <div class="alert alert-warning">
+                    <strong>Mode of Contact Requirement:</strong>
+                    <span>For EMAIL mode, Email ID is mandatory.</span>
+                    <div class="mt-2">
+                        <button mat-stroked-button color="primary" (click)="openContactDialog(leadId)">
+                            <mat-icon>email</mat-icon> Add Email ID
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISIT mode validation -->
+            <div class="col-12" *ngIf="tasksForm.get('mode_of_contact').value === 'VISIT' && !detailsStatus.address">
+                <div class="alert alert-warning">
+                    <strong>Mode of Contact Requirement:</strong>
+                    <span>For VISIT mode, Address is mandatory.</span>
+                    <div class="mt-2">
+                        <button mat-stroked-button color="primary" (click)="openAddressDialog(leadId)">
+                            <mat-icon>home</mat-icon> Add Address
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification for Non-Contacted tasks -->
+        <div class="row mt-2" *ngIf="tasksForm.get('stage').value === 'NON CONTACTED' && taskType !== 'FIELD VISIT' && !detailsStatus.webTracing && !showProgressBar">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <strong>Required Fields Missing:</strong>
+                    <span>Please complete the following required fields:</span>
+                    <ul class="mb-0 mt-1">
+                        <li *ngIf="!detailsStatus.webTracing">Web Tracing Details</li>
+                    </ul>
+                    <div class="mt-2">
+                        <button mat-stroked-button color="primary" (click)="openWebTracingDialog(leadId)">
+                            <mat-icon>content_paste_search</mat-icon> Web Tracing
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification for Disposition Code requirement -->
+        <!-- <div class="row mt-2" *ngIf="!tasksForm.get('stage_status_code')?.value">
+            <div class="col-12">
+                <div class="alert alert-warning">
+                    <strong>Required Fields Missing:</strong>
+                    <span>Please complete the following required fields:</span>
+                    <ul class="mb-0 mt-1">
+                        <li *ngIf="!tasksForm.get('stage_status')?.value">Disposition Stage</li>
+                        <li *ngIf="!tasksForm.get('stage_status_name')?.value">Disposition Code</li>
+                        <li *ngIf="!tasksForm.get('stage_status_code')?.value">Disposition Code</li>
+                        <li *ngIf="tasksForm.get('stage').value === 'CONTACTED' && !detailsStatus.contact">Contact Details</li>
+                        <li *ngIf="tasksForm.get('stage').value === 'CONTACTED' && !detailsStatus.visa">Visa Check</li>
+                        <li *ngIf="tasksForm.get('stage').value === 'CONTACTED' && !detailsStatus.tracing">Tracing Details</li>
+                        <li *ngIf="tasksForm.get('stage').value === 'NON CONTACTED' && !detailsStatus.webTracing">Web Tracing Details</li>
+                    </ul>
+                    <span class="d-block mt-2">These details are required to create or update a task.</span>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="row">
+            <div class="col-sm">
+                <!-- <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Disposition Status</mat-label>
+                    <input type="text" placeholder="Pick one" aria-label="Number" matInput
+                        [formControl]="dispositionStatusControl" formControlName="stage_status_name"
+                        [matAutocomplete]="stageStatusName">
+                    <mat-autocomplete #stageStatusName="matAutocomplete"
+                        (optionSelected)="statusSelectHandler($event.option.value)">
+                        <mat-option *ngFor="let option of dispositionStatusFilteredOptions | async"
+                            [value]="option.stage_status_name">
+                            {{option.stage_status_name}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field> -->
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Disposition Code</mat-label>
+                    <mat-select name="stage_status_name" formControlName="stage_status_name"
+                        (selectionChange)="statusSelectHandler($event)" [disabled]="!dispositionFieldsEnabled">
+                        <mat-option *ngFor="let status of filteredStatusArr" [value]="status.stage_status_name">
+                            {{status.stage_status_name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row" *ngIf="tasksForm.get('stage').value === 'CONTACTED'">
+            <div class="col-sm">
+                <div *ngIf="showModeOfContactMessage" class="alert alert-info mb-2">
+                    When 'Contactable' is chosen, a mode of contact must be provided.
+                </div>
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <mat-label>Mode of Contact</mat-label>
+                    <mat-select name="mode_of_contact" formControlName="mode_of_contact"
+                        (selectionChange)="selectContactMode($event)">
+                        <mat-option *ngFor="let mode of contactMode" [value]="mode">
+                            {{mode}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- <div class="row"> -->
+        <div class="row" *ngIf="dialogTitle==='View Tasks' || dialogTitle==='Create New Task'">
+            <div class="col-sm" align="end">
+                <button mat-stroked-button [matMenuTriggerFor]="menu">Update Account Details</button>
+                <mat-menu #menu="matMenu">
+                    <!-- Contact - always available -->
+                    <button mat-menu-item (click)="openContactDialog(leadId)">
+                        <mat-icon>call</mat-icon>
+                        Contact
+                    </button>
+                    
+                    <!-- Address - always available -->
+                    <button mat-menu-item (click)="openAddressDialog(leadId)">
+                        <mat-icon>home</mat-icon>
+                        Address
+                    </button>
+                    
+                    <!-- Visa Check - not for FIELD VISIT -->
+                    <button mat-menu-item (click)="openVisaCheckDialog(leadId)" *ngIf="taskType!=='FIELD VISIT'">
+                        <mat-icon>badge</mat-icon>
+                        Visa Check
+                    </button>
+                    
+                    <!-- MOL Check - not for FIELD VISIT -->
+                    <button mat-menu-item (click)="openMOLCheckDialog(leadId)" *ngIf="taskType!=='FIELD VISIT'">
+                        <mat-icon>fact_check</mat-icon>
+                        MOL Check
+                    </button>
+                    
+                    <!-- Web Tracing - not for FIELD VISIT -->
+                    <button mat-menu-item (click)="openWebTracingDialog(leadId)" *ngIf="taskType!=='FIELD VISIT'">
+                        <mat-icon>content_paste_search</mat-icon>
+                        Web Tracing
+                    </button>
+                    
+                    <!-- Tracing Details - always available -->
+                    <button mat-menu-item (click)="openTracingDetailsDialog(leadId)">
+                        <mat-icon>person_search</mat-icon>
+                        Tracing Details
+                    </button>
+                </mat-menu>
+            </div> 
+        </div>
+        <br>
+        <!-- <div class="form-group" *ngIf="!hideDocUpldSelector">
+            <label for="document_url">Document URL</label>
+            <div class="input-group">
+                <input
+                    type="text"
+                    class="form-control"
+                    id="document_url"
+                    formControlName="document_url"
+                    [disabled]="docUrlDisable"
+                    readonly
+                />
+                <div class="input-group-append" *ngIf="tasksForm.get('document_url')?.value">
+                    <button 
+                        class="btn btn-outline-primary download-btn" 
+                        type="button"
+                        (click)="downloadDocFromStorage(tasksForm.get('document_url')?.value)"
+                        matTooltip="Download Document"
+                    >
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </div> -->
+    </form>
+</mat-dialog-content>
+<div *ngIf="notesArr && notesArr.length>0">
+    <h2 mat-dialog-title>{{ nonPrelimTask ? 'Feedback' : 'Note(s)' }} - {{notesArr.length}}</h2>
+    <mat-divider></mat-divider>
+    
+    <!-- Message to guide user about feedback/note character limit -->
+    <div class="row">
+        <div class="col-12">
+            <div class="feedback-message">
+                <span class="message-text">Only 7 digits can be entered in Feedback/ Note</span>
+            </div>
+        </div>
+    </div>
+    
+    <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+    <mat-dialog-content class="__notes">
+        <div class="row" *ngFor="let note of notesArr;let i = index">
+            <div class="col-11">
+                <mat-form-field class="mat_form_fields" appearance="outline">
+                    <textarea matInput [value]="note.note" (input)="validateDigits($event, i)"
+                        (change)="typeNotes($event,i)" [ngClass]="{'dirty': note.isEdited}"></textarea>
+                    <mat-error *ngIf="errorMessage[i]">{{ errorMessage[i] }}</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-1">
+                <button mat-icon-button (click)="saveNote(note.note_id,note,i)" [disabled]="!note.note || note.note.trim() === ''"
+                    *ngIf="isCreatePrivilegedModule||isEditPrivilegedModule"><span class="material-symbols-outlined">
+                        save
+                    </span></button>
+                <button mat-icon-button (click)="deleteNote(note,i)" *ngIf="isEditPrivilegedModule"><span
+                        class="material-symbols-outlined">
+                        delete
+                    </span></button>
+            </div>
+            <!-- <mat-divider></mat-divider> -->
+        </div>
+    </mat-dialog-content>
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelTask()">Cancel</button>
+
+    <ng-container *ngIf="isCreatePrivilegedModule">
+        <button mat-stroked-button (click)="addNewNote()" *ngIf="dialogTitle !== 'Create New Task'">
+            {{ nonPrelimTask ? 'Add Feedback' : 'Add Note' }}
+        </button>
+        <button mat-raised-button color="primary" (click)="createNewTask()"
+            [disabled]="!tasksForm.get('task_type_name')?.value || 
+             !tasksForm.get('assigned_by_full_name')?.value || 
+             !tasksForm.get('assigned_to_full_name')?.value ||
+             !tasksForm.get('task_status_type_name')?.value"
+            *ngIf="dialogTitle === 'Create New Task'">Create Task</button>
+    </ng-container>
+
+    <button mat-raised-button color="primary" 
+    (click)="updateTask(dialogData)" 
+    [disabled]="disableCreateTaskBtn || (!tasksForm.dirty && !contactableChanged)"
+    *ngIf="dialogTitle !== 'Create New Task' && isEditPrivilegedModule">
+Update Task
+</button>
+
+</mat-dialog-actions>

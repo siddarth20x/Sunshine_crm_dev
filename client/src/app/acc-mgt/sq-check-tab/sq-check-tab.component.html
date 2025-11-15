@@ -1,0 +1,153 @@
+<div class="container-fluid">
+    <br>
+    <div class="table-responsive">
+        <table
+            class="table text-center table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Total Score</th>
+                    <th>
+                        <!-- {{totalS1Score}} -->
+                    </th>
+                    <th>{{totalS2Score}}</th>
+                    <th>{{totalS3Score}}</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="!sqIsAvailable">
+                <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+                <tr *ngFor="let sqChk of sqCheckArray; let i=index">
+                    <td>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Parameters</mat-label>
+                            <input matInput [value]="sqParamsType[i].sq_parameter_type_name" disabled>
+                        </mat-form-field>
+                    </td>
+                    <ng-container
+                        *ngIf="sqParamsType[i]?.sq_parameter_type_name === 'SYSTEM UPDATE' || sqParamsType[i]?.sq_parameter_type_name === 'VERIFICATION'; else showInputs">
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 1 Status</mat-label>
+                                <mat-select (selectionChange)="scoring1StsHandler($event,i)">
+                                    <mat-option *ngFor="let option of scoringOptions1Status"
+                                        [value]="option">{{option}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 2 Status</mat-label>
+                                <mat-select (selectionChange)="scoring2StsHandler($event,i)">
+                                    <mat-option *ngFor="let option of scoringOptions2Status"
+                                        [value]="option">{{option}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td *ngIf="showScoring3">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 3 Status</mat-label>
+                                <mat-select (selectionChange)="scoring3StsHandler($event,i)">
+                                    <mat-option *ngFor="let option of scoringOptions3Status"
+                                        [value]="option">{{option}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-template #showInputs>
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 1</mat-label>
+                                <input type="number" matInput (change)="scoring1Handler($event,i)">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 2</mat-label>
+                                <input type="number" matInput (input)="scoring2Handler($event,i)">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Feedback</mat-label>
+                                <input type="text" matInput (input)="scoring3Handler($event,i)">
+                            </mat-form-field>
+                        </td>
+                    </ng-template>
+                </tr>
+            </tbody>
+            <tbody *ngIf="sqIsAvailable">
+                <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+                <tr *ngFor="let sqChk of sqCheckArray; let i=index">
+                    <td>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Parameters</mat-label>
+                            <input matInput [value]="sqChk.sq_parameter_type_name" disabled>
+                        </mat-form-field>
+                    </td>
+                    <ng-container
+                        *ngIf="sqChk.sq_parameter_type_name === 'SYSTEM UPDATE' || sqChk.sq_parameter_type_name === 'VERIFICATION'; else showInputs">
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 1 Status</mat-label>
+                                <mat-select (selectionChange)="scoring1StsHandler($event,i)" disabled
+                                    [value]="sqChk.scoring1_status">
+                                    <mat-option *ngFor="let option of scoringOptions1Status"
+                                        [value]="option">{{option}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 2 Status</mat-label>
+                                <mat-select (selectionChange)="scoring2StsHandler($event,i)" disabled
+                                    [value]="sqChk.scoring2_status">
+                                    <mat-option *ngFor="let option of scoringOptions2Status"
+                                        [value]="option">{{option}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                        <td *ngIf="showScoring3">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 3 Status</mat-label>
+                                <mat-select (selectionChange)="scoring3StsHandler($event,i)" disabled
+                                    [value]="sqChk.scoring3_status">
+                                    <mat-option *ngFor="let option of scoringOptions3Status"
+                                        [value]="option">{{option}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </td>
+                    </ng-container>
+                    <ng-template #showInputs>
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 1</mat-label>
+                                <input type="number" matInput (change)="scoring1Handler($event, i)" disabled
+                                    [value]="sqChk.scoring1">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 2</mat-label>
+                                <input type="number" matInput (input)="scoring2Handler($event,i)" disabled
+                                    [value]="sqChk.scoring2">
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Scoring 3</mat-label>
+                                <input type="number" matInput (input)="scoring3Handler($event,i)" disabled
+                                    [value]="sqChk.scoring3">
+                            </mat-form-field>
+                        </td>
+                    </ng-template>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm">
+            <button mat-raised-button (click)="saveSQScores()" [disabled]="sqIsAvailable">Save</button>
+        </div>
+    </div>
+
+</div>

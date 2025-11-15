@@ -1,0 +1,236 @@
+<div class="uploaded-files-container">
+  <mat-card class="filters-card">
+    <mat-card-header>
+      <div class="filters-header">
+        <div class="filters-title-group">
+          <h2 class="filters-title">Uploaded Files</h2>
+          <p class="filters-subtitle">
+            Narrow results by date, user, or bank, then generate the document list.
+          </p>
+        </div>
+        <button
+          mat-stroked-button
+          color="primary"
+          type="button"
+          (click)="clearFilters()"
+          [disabled]="!isAnyFilterSet()"
+        >
+          Clear Filters
+        </button>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="filters-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>From Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="from"
+            [(ngModel)]="startDate"
+            (dateChange)="fromDateHandler($event)"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+          <mat-datepicker #from></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>To Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="to"
+            [(ngModel)]="endDate"
+            (dateChange)="toDateHandler($event)"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
+          <mat-datepicker #to></mat-datepicker>
+        </mat-form-field>
+
+        <ng-container *ngIf="showUserFilter">
+          <mat-form-field appearance="outline">
+            <mat-label>User</mat-label>
+            <input
+              type="text"
+              placeholder="Search by name"
+              matInput
+              [formControl]="userControl"
+              [matAutocomplete]="autoUser"
+            />
+            <button
+              *ngIf="userControl.value"
+              mat-icon-button
+              matSuffix
+              aria-label="Clear user selection"
+              (click)="clearUserSelection()"
+            >
+              <mat-icon>clear</mat-icon>
+            </button>
+            <mat-autocomplete
+              #autoUser="matAutocomplete"
+              (optionSelected)="onUserSelected($event)"
+              [displayWith]="displayUserFn"
+            >
+              <mat-option *ngFor="let user of userFilteredOptions | async" [value]="user">
+                {{ user.full_name }}
+                <sub>({{ user.user_id }} · {{ user.role_name | uppercase }})</sub>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </ng-container>
+
+        <mat-form-field
+          appearance="outline"
+          class="bank-field"
+          [class.bank-field--disabled]="!userControl.value && showUserFilter"
+        >
+          <mat-label>Bank</mat-label>
+          <input
+            type="text"
+            placeholder="Select after choosing a user"
+            matInput
+            [formControl]="bankControl"
+            [matAutocomplete]="autoBank"
+            [disabled]="showUserFilter && !userControl.value"
+            [readonly]="showUserFilter && !userControl.value"
+          />
+          <button
+            *ngIf="bankControl.value"
+            mat-icon-button
+            matSuffix
+            aria-label="Clear bank selection"
+            (click)="clearBankSelection()"
+          >
+            <mat-icon>clear</mat-icon>
+          </button>
+          <mat-autocomplete #autoBank="matAutocomplete" [displayWith]="displayBankFn">
+            <mat-option *ngFor="let company of bankFilteredOptions | async" [value]="company">
+              {{ company.company_name }}
+              <sub>(ID: {{ company.company_id }})</sub>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div
+        class="filters-inline-message"
+        *ngIf="showUserFilter && !userControl.value && loggedInUserRoleName !== 'AGENT'"
+      >
+        <mat-icon>info</mat-icon>
+        <div>
+          <strong>Heads up!</strong>
+          <p>Select a user first to enable the bank filter.</p>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button
+        mat-flat-button
+        color="primary"
+        class="generate-button"
+        (click)="onGenerateClick()"
+        [disabled]="!isAnyFilterSet()"
+      >
+        Generate
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <section class="results-placeholder" *ngIf="!showTable">
+    <div class="placeholder-card">
+      <mat-icon>cloud_upload</mat-icon>
+      <div>
+        <h3>Ready when you are</h3>
+        <p>Pick any filter combination above and click Generate to see matching documents.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="results-section" *ngIf="showTable">
+    <div *ngIf="dataSource.data.length === 0" class="noDataFound centered">
+      <mat-icon class="no-results-icon">search_off</mat-icon>
+      <p class="no-results-title"><strong>No documents matched your filters</strong></p>
+      <button mat-stroked-button class="clearFilters" color="primary" (click)="clearFilters()">
+        Clear your filters and try again
+      </button>
+    </div>
+
+    <mat-card class="table__card" *ngIf="dataSource.data.length > 0">
+      <mat-card-header class="table__header">
+        <mat-card-title>Uploaded Files</mat-card-title>
+        <span class="spacer"></span>
+        <mat-form-field appearance="standard">
+          <mat-label>Quick filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" #input />
+        </mat-form-field>
+      </mat-card-header>
+      <div class="results-summary">
+        <span *ngIf="userControl.value && bankControl.value">
+          Viewing results for <b>{{ userControl.value.full_name }}</b> and <b>{{ bankControl.value.company_name }}</b>
+        </span>
+        <span *ngIf="userControl.value && !bankControl.value">
+          Viewing results for <b>{{ userControl.value.full_name }}</b>
+        </span>
+        <span *ngIf="!userControl.value && bankControl.value">
+          Viewing results for <b>{{ bankControl.value.company_name }}</b>
+        </span>
+        <span *ngIf="!userControl.value && !bankControl.value">
+          Viewing results for <b>all users</b> and <b>all companies</b>
+        </span>
+      </div>
+      <div>
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="bank_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Bank Name</th>
+            <td mat-cell *matCellDef="let file">{{ file.bank_name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="user_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+            <td mat-cell *matCellDef="let file">{{ file.user_name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="email_address">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+            <td mat-cell *matCellDef="let file">{{ file.email_address }}</td>
+          </ng-container>
+          <ng-container matColumnDef="file_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>File Name</th>
+            <td mat-cell *matCellDef="let file">{{ file.file_name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="upload_date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Uploaded</th>
+            <td mat-cell *matCellDef="let file">{{ formatDate(file.upload_date) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let file">
+              <div class="action-buttons">
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="downloadFile(file)"
+                  matTooltip="Download file"
+                >
+                  <mat-icon>download</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of files"></mat-paginator>
+      </div>
+    </mat-card>
+  </section>
+
+  <div class="loading-shade" *ngIf="isLoading">
+    <mat-spinner [diameter]="64"></mat-spinner>
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    <mat-icon>error</mat-icon>
+    <span>{{ error }}</span>
+  </div>
+</div>

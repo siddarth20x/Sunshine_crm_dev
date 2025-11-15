@@ -1,0 +1,176 @@
+<br>
+<div>
+    <!-- <div class="col-sm"> -->
+    <span class="legends__btn">
+        <mat-card class="__legends">
+            Task Legend:
+            <p>Pending</p>
+            <p>In-progress</p>
+            <p>Completed</p>
+            <p>Deferred</p>
+            <p>Cancelled</p>
+            <p>Re work</p>
+            <p>Awaiting</p>
+        </mat-card>
+        <button mat-raised-button (click)="createTasks()" *ngIf="isCreatePrivilegedModule">
+            <span class="material-symbols-outlined">
+                add </span>New Task</button>
+    </span>
+    <!-- </div> -->
+</div>
+<div class="tasks_row">
+    <span class="tasks_col">
+        <mat-list role="list" class="tasks_list_pending">
+            <ng-container *ngIf="pendingTasks && pendingTasks.length; else noData">
+                <mat-list-item role="listitem" class="list_item" *ngFor="let task of pendingTasks; let i = index"
+                    (click)="viewTasks(task)">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }} <br>
+                    Task Id : {{task.task_id}}
+                </mat-list-item>
+            </ng-container>
+            <ng-template #noData>
+                <mat-list-item class="__noDataFound">
+                    <span class="material-symbols-outlined">
+                        info
+                    </span> No tasks found
+                </mat-list-item>
+            </ng-template>
+        </mat-list>
+        <mat-list role="list" class="tasks_list_progress">
+            <ng-container *ngIf="inProgTasks && inProgTasks.length; else noInProgTasks">
+                <mat-list-item role="listitem" class="list_item" *ngFor="let task of inProgTasks; let i = index"
+                    (click)="viewTasks(task)">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                    <br>
+                    Task Id : {{task.task_id}}
+                </mat-list-item>
+            </ng-container>
+            <ng-template #noInProgTasks>
+                <mat-list-item class="__noDataFound">
+                    <span class="material-symbols-outlined">
+                        info
+                    </span> No tasks found
+                </mat-list-item>
+            </ng-template>
+        </mat-list>
+
+        <mat-list role="list" class="tasks_list_completed">
+            <ng-container *ngIf="completedTasks && completedTasks.length; else noCompletedTasks">
+                <mat-list-item role="listitem" class="list_item" *ngFor="let task of completedTasks; let i = index"
+                    (click)="viewTasks(task)">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                    <br>
+                    Task Id : {{task.task_id}}
+                </mat-list-item>
+                <!-- <mat-list-item role="listitem" class="list_item" *ngFor="let task of completedTasks; let i = index">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                </mat-list-item> -->
+            </ng-container>
+            <ng-template #noCompletedTasks>
+                <mat-list-item class="__noDataFound">
+                    <span class="material-symbols-outlined">
+                        info
+                    </span> No tasks found
+                </mat-list-item>
+            </ng-template>
+        </mat-list>
+
+        <mat-list role="list" class="tasks_list_deffered">
+            <ng-container *ngIf="deferredTasks && deferredTasks.length; else noDeferredTasks">
+                <mat-list-item role="listitem" class="list_item" *ngFor="let task of deferredTasks; let i = index"
+                    (click)="viewTasks(task)">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                    <br>
+                    Task Id : {{task.task_id}}
+                </mat-list-item>
+            </ng-container>
+            <ng-template #noDeferredTasks>
+                <mat-list-item class="__noDataFound">
+                    <span class="material-symbols-outlined">
+                        info
+                    </span> No tasks found
+                </mat-list-item>
+            </ng-template>
+        </mat-list>
+
+        <mat-list role="list" class="tasks_list_cancelled">
+            <!-- <ng-container *ngIf="cancelledTasks && cancelledTasks.length; else noCancelledTasks">
+                <mat-list-item role="listitem" class="list_item" *ngFor="let task of cancelledTasks; let i = index"
+                    (click)="viewTasks(task)">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                </mat-list-item>
+            </ng-container> -->
+            <ng-container *ngIf="cancelledTasks && cancelledTasks.length; else noCancelledTasks">
+                <mat-list-item role="listitem" class="list_item" *ngFor="let task of cancelledTasks; let i = index">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                </mat-list-item>
+            </ng-container>
+            <ng-template #noCancelledTasks>
+                <mat-list-item class="__noDataFound">
+                    <span class="material-symbols-outlined">
+                        info
+                    </span> No tasks found
+                </mat-list-item>
+            </ng-template>
+        </mat-list>
+
+        <mat-list role="list" class="tasks_list_rework">
+            <!-- <ng-container *ngIf="cancelledTasks && cancelledTasks.length; else noCancelledTasks">
+                <mat-list-item role="listitem" class="list_item" *ngFor="let task of cancelledTasks; let i = index"
+                    (click)="viewTasks(task)">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                </mat-list-item>
+            </ng-container> -->
+            <ng-container *ngIf="reWorkTasks && reWorkTasks.length; else noReWorkTask">
+                <mat-list-item role="listitem" class="list_item" *ngFor="let task of reWorkTasks; let i = index"
+                    (click)="viewTasks(task)">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                    <br>
+                    Task Id : {{task.task_id}}
+                </mat-list-item>
+            </ng-container>
+            <ng-template #noReWorkTask>
+                <mat-list-item class="__noDataFound">
+                    <span class="material-symbols-outlined">
+                        info
+                    </span> No tasks found
+                </mat-list-item>
+            </ng-template>
+        </mat-list>
+
+        <mat-list role="list" class="tasks_list_await">
+            <!-- <ng-container *ngIf="cancelledTasks && cancelledTasks.length; else noCancelledTasks">
+                <mat-list-item role="listitem" class="list_item" *ngFor="let task of cancelledTasks; let i = index"
+                    (click)="viewTasks(task)">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                </mat-list-item>
+            </ng-container> -->
+            <ng-container *ngIf="awaitAssignmentTasks && awaitAssignmentTasks.length; else noAwaitingTask">
+                <mat-list-item role="listitem" class="list_item"
+                    *ngFor="let task of awaitAssignmentTasks; let i = index" (click)="viewTasks(task)">
+                    {{ task.task_type_name }} <br>
+                    Assignee: {{ task.assigned_to_full_name }}
+                    <br>
+                    Task Id : {{task.task_id}}
+                </mat-list-item>
+            </ng-container>
+            <ng-template #noAwaitingTask>
+                <mat-list-item class="__noDataFound">
+                    <span class="material-symbols-outlined">
+                        info
+                    </span> No tasks found
+                </mat-list-item>
+            </ng-template>
+        </mat-list>
+    </span>
+</div>

@@ -1,0 +1,265 @@
+.reminders-container {
+  padding: 32px 0 0 0;
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+.reminders-container .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.reminders-container .header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.reminders-container .mat-tab-group {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.reminders-container .mat-tab-body-content {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.reminders-container .filters {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 24px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.reminders-container .filters mat-form-field {
+  width: 100%;
+}
+
+.reminders-container .task-count {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 16px;
+  padding-left: 16px;
+}
+
+.reminders-container .error-message-card {
+  background: #ffebee;
+  color: #b71c1c;
+  margin-bottom: 16px;
+  border-left: 5px solid #f44336;
+}
+
+.reminders-container .error-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1em;
+}
+
+.reminders-container .no-tasks-card {
+  background: #f5f5f5;
+  color: #666;
+  margin-top: 32px;
+  text-align: center;
+  border-left: 5px solid #2196f3;
+}
+
+.reminders-container .empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1em;
+}
+
+.reminders-container .loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.reminders-container .tasks-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 0 16px;
+}
+
+.reminders-container .tasks-list .task-card mat-card-header {
+  margin-bottom: 16px;
+}
+
+.reminders-container .tasks-list .task-card mat-card-content p {
+  margin: 8px 0;
+  color: #666;
+}
+
+.reminders-container .no-tasks {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.mat-elevation-z1 {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mat-table {
+  min-width: 900px;
+}
+
+.mat-header-row, .mat-row {
+  height: 48px;
+}
+
+.mat-header-cell, .mat-cell {
+  padding: 0 16px;
+  font-size: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.mat-header-cell {
+  font-weight: 600;
+  color: #333;
+  background: #f5f5f5;
+}
+
+.mat-row:hover {
+  background: #f0f7ff;
+}
+
+.mat-paginator {
+  margin: 0 auto 24px auto;
+  display: flex;
+  justify-content: flex-end;
+  background: #fff;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  padding: 8px 16px;
+  width: 100%;
+}
+
+@media (max-width: 1000px) {
+  .mat-table {
+    min-width: 600px;
+  }
+}
+
+.table-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 32px auto;
+  padding: 0 8px;
+  box-sizing: border-box;
+} 
+.paginator-bottom-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.5em 0;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+/* Tab Count Badge Styles */
+.tab-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-count-badge {
+  background-color: #1976d2;
+  color: white;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  min-width: 20px;
+  height: 20px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Hover effect for better UX */
+.tab-count-badge:hover {
+  background-color: #1565c0;
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
+/* Active tab badge styling */
+.mat-tab-label-active .tab-count-badge {
+  background-color: #0d47a1;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .tab-count-badge {
+    font-size: 0.7rem;
+    padding: 1px 6px;
+    min-width: 18px;
+    height: 18px;
+  }
+  
+  .tab-label {
+    gap: 6px;
+  }
+}
+
+/* Ensure tab labels don't wrap awkwardly */
+.mat-tab-label {
+  min-width: 120px;
+  white-space: nowrap;
+}

@@ -1,0 +1,10 @@
+<div class="reminders-dialog">
+  <h2 mat-dialog-title>{{ data.type === 'today' ? 'Today\'s Tasks' : 'Escalation Tasks' }}</h2>
+  <mat-dialog-content>
+    <p>{{ data.message }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="goToReminders()">Close</button>
+    <button mat-raised-button color="primary" (click)="goToReminders()">View Tasks</button>
+  </mat-dialog-actions>
+</div> 

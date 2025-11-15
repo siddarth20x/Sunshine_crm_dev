@@ -1,0 +1,267 @@
+<h2 mat-dialog-title>Create New User</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="row">
+        <form [formGroup]="singupForm">
+            <div class="row " cellspacing="0">
+                <div class="col-sm">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input matInput formControlName="first_name">
+                        <mat-error *ngIf="singupForm.get('first_name')?.hasError('required')">First
+                            Name is required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm"><mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput formControlName="last_name">
+                        <mat-error *ngIf="singupForm.get('last_name')?.hasError('required')">Last
+                            Name is required</mat-error>
+
+                    </mat-form-field></div>
+                <div class="col-sm">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Phone</mat-label>
+                        <input matInput formControlName="phone">
+                        <mat-error *ngIf="singupForm.get('phone')?.hasError('required')">
+                            Phone is required
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input type="email" matInput formControlName="email_id" placeholder="Ex. pat@example.com">
+                        <mat-error
+                            *ngIf="singupForm.get('email_id').hasError('email_id') && !singupForm.get('email_id').hasError('required')">
+                            Please enter a valid email address
+                        </mat-error>
+                        <mat-error *ngIf="singupForm.get('email_id')?.hasError('required')">
+                            Email is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="col-sm">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Allowed IP</mat-label>
+                        <input matInput formControlName="allowed_ip">
+                        <mat-error
+                            *ngIf="singupForm.get('allowed_ip')?.hasError('allowed_ip') && !singupForm.get('allowed_ip')?.hasError('required')">
+                            Please Enter IP Address
+                        </mat-error>
+                        <mat-error *ngIf="singupForm.get('allowed_ip')?.hasError('pattern') ">
+                            Invalid IP Address
+                        </mat-error>
+                        <mat-error *ngIf="singupForm.get('allowed_ip').hasError('allowed_ip')">
+                            IP Address is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div> -->
+                <div class="col-sm">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>MAC Address</mat-label>
+                        <input matInput formControlName="mac_address">
+                        <mat-error
+                            *ngIf="singupForm.get('mac_address')?.hasError('mac_address') && !singupForm.get('mac_address')?.hasError('required')">
+                            Please Enter MAC Address
+                        </mat-error>
+                        <mat-error *ngIf="singupForm.get('mac_address')?.hasError('pattern') ">
+                            Invalid MAC Address
+                        </mat-error>
+                        <mat-error *ngIf="singupForm.get('mac_address').hasError('mac_address')">
+                            MAC Address is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="col-sm">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Designation</mat-label>
+                        <mat-select formControlName="designation" (selectionChange)="onDesignationSelect($event)">
+                            <mat-option *ngFor="let desig of designation" [value]="desig.name">
+                                {{desig.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div> -->
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm">
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Role</mat-label>
+                        <input type="text" aria-label="Number" placeholder="Pick one" matInput
+                            [formControl]="roleControl" [matAutocomplete]="auto1">
+                        <button *ngIf="roleControl.value" mat-icon-button matSuffix aria-label="Clear"
+                            (click)="clearRoleSelection()">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="onDesignationSelect($event)">
+                            <mat-option *ngFor="let option of filteredRoles | async" [value]="option.role_name">
+                                {{ option.role_name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm">
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Reporting To</mat-label>
+                        <input type="text" aria-label="Number" placeholder="Pick one" matInput
+                            [formControl]="reportingControl" [matAutocomplete]="auto2">
+                        <button *ngIf="roleControl.value" mat-icon-button matSuffix aria-label="Clear"
+                            (click)="clearReportingSelection()">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                        <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="onReportingSelect($event)">
+                            <mat-option *ngFor="let option of filterdReportingUsers | async" [value]="option.full_name">
+                                {{ option.full_name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                        <!-- <mat-error *ngIf="singupForm.get('roleControl')?.hasError('required')">
+                            designation is <strong>required</strong>
+                        </mat-error> -->
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Country</mat-label>
+                        <!-- <button *ngIf="roleControl.value" mat-icon-button matSuffix aria-label="Clear"
+                            (click)="clearRoleSelection()">
+                            <mat-icon>clear</mat-icon>
+                        </button> -->
+                        <mat-select (selectionChange)="onCountryChange($event)" formControlName="country">
+                            <mat-option *ngFor="let country of countries" [value]="country.name">
+                                {{ country.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm">
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>State</mat-label>
+                        <mat-select (selectionChange)="onStateChange($event)" formControlName="state">
+                            <mat-option *ngFor="let state of states" [value]="state.name">
+                                {{ state.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm">
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>City</mat-label>
+                        <mat-select (selectionChange)="onCityChange($event)" formControlName="city">
+                            <mat-option *ngFor="let city of cities" [value]="city">
+                                {{ city }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-select
+                          (openedChange)="openedChange($event)"
+                          placeholder="Allowed Banks"
+                          [formControl]="selectFormControl"
+                          multiple
+                          required
+                          [disableOptionCentering]="true"
+                        >
+                          <mat-select-trigger>
+                            {{
+                              selectFormControl.value
+                                ? selectFormControl.value[0]?.company_name
+                                : ""
+                            }}
+                            <span
+                              *ngIf="selectFormControl.value?.length > 1"
+                              class="additional-selection"
+                            >
+                              (+{{ selectFormControl.value.length - 1 }}
+                              {{
+                                selectFormControl.value?.length === 2
+                                  ? "other"
+                                  : "others"
+                              }})
+                            </span>
+                          </mat-select-trigger>
+                          <div class="select-container">
+                            <mat-optgroup>
+                              <mat-form-field style="width: 100%">
+                                <input
+                                  #search
+                                  autocomplete="off"
+                                  placeholder="Search Banks"
+                                  aria-label="Search"
+                                  matInput
+                                  [formControl]="searchTextboxControl"
+                                />
+                                <button
+                                  [disableRipple]="true"
+                                  *ngIf="search.value"
+                                  matSuffix
+                                  mat-icon-button
+                                  aria-label="Clear"
+                                  (click)="clearSearch($event)"
+                                >
+                                  <mat-icon>close</mat-icon>
+                                </button>
+                              </mat-form-field>
+                            </mat-optgroup>
+                            <mat-optgroup
+                              *ngIf="(filteredCompany | async)?.length === 0"
+                            >
+                              <mat-option>No companies found</mat-option>
+                            </mat-optgroup>
+
+                            <mat-option
+                              (onSelectionChange)="selectionChange($event)"
+                              *ngFor="let option of filteredCompany | async"
+                              [value]="option"
+                            >
+                              {{ option.company_name }}
+                            </mat-option>
+                          </div>
+                        </mat-select>
+                      </mat-form-field>
+                      <div class="client-container">
+                        <mat-label *ngIf="selectFormControl.value?.length > 0"
+                          >Your chosen banks</mat-label
+                        ><br />
+                        <div *ngIf="selectFormControl.value" class="companyName">
+                          <span *ngFor="let comp of selectedValues">
+                            {{ comp.company_name }}
+                            <button mat-icon-button (click)="cancelCompany(comp)">
+                              <mat-icon>cancel</mat-icon>
+                            </button></span
+                          >
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="submit()">Create</button> -->
+    <button mat-raised-button (click)="submit()"
+        [disabled]="singupForm.invalid || this.selectFormControl.value.length == 0">Create</button>
+</mat-dialog-actions>

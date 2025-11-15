@@ -1,0 +1,111 @@
+.mat_form_fields {
+    width: 100%;
+}
+
+.col-sm {
+    position: relative;
+}
+
+/* Warning message styles */
+.warning-message {
+    position: absolute;
+    top: -36px;
+    /* Adjust as needed for spacing above the field */
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #856404;
+    z-index: 10;
+    margin-bottom: 0;
+    min-height: 32px;
+    pointer-events: none;
+}
+
+.warning-icon {
+    color: #f39c12;
+    font-size: 16px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.warning-message span {
+    line-height: 1.2;
+}
+
+/* Feedback message styling - Enhanced for better visibility */
+.feedback-message {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    margin: -35px 0 0 0;
+    border-radius: 6px;
+    background-color: #fff5f5;
+    border-left: 5px solid #dc3545;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: 208%;
+    margin-left: -357px;
+    margin-bottom: 17px;
+    margin-top: -15px;
+}
+
+.feedback-message:hover {
+    background-color: #ffe6e6;
+    border-left-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(220, 53, 69, 0.2);
+}
+
+.feedback-message .message-text {
+    color: #dc3545;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    transition: color 0.3s ease;
+    letter-spacing: 0.2px;
+}
+
+.feedback-message:hover .message-text {
+    color: #c90d0d;
+}
+
+/* Responsive design for feedback message */
+@media screen and (max-width: 1100px) {
+    .feedback-message {
+        width: 80%;
+        margin-left: 150px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .feedback-message {
+        width: 90%;
+        margin-left: 50px;
+        padding: 10px 12px;
+    }
+
+    .feedback-message .message-text {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 428px) {
+    .feedback-message {
+        width: 95%;
+        margin-left: 10px;
+        padding: 8px 10px;
+    }
+
+    .feedback-message .message-text {
+        font-size: 13px;
+    }
+}

@@ -1,0 +1,136 @@
+<mat-progress-bar mode="indeterminate" *ngIf="showProgressBar"></mat-progress-bar>
+<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<!-- <h4 *ngIf="dialogTitle!='Create New Task'">Task ID</h4> -->
+<mat-divider></mat-divider><br>
+<mat-dialog-content class="__tasks">
+    <form [formGroup]="paymentLedgerForm">
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field appearance="outline" class="mat_form_fields" subscriptSizing="dynamic">
+                    <mat-label>Select Task</mat-label>
+                    <mat-select name="task_type" formControlName="task_id" (selectionChange)="tasksHandler($event)">
+                        <mat-option *ngFor="let t of tasksArr" [value]="t.task_id">
+                            {{ t.task_type_name }} <sub>(ID : {{ t.task_id }} | Code : {{ t.stage_status_code }})</sub>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Credit Limit</mat-label>
+                    <input type="number" matInput [value]="paymentLedgerForm.value.credit_limit" [disabled]="isDisabled"
+                        formControlName="credit_limit">
+                    <mat-error *ngIf="paymentLedgerForm.get('credit_limit').hasError('required')">
+                        <strong>Credit Limit is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Principal Outstanding Amount</mat-label>
+                    <input type="number" matInput [value]="paymentLedgerForm.value.principal_outstanding_amount"
+                        [disabled]="isDisabled" formControlName="principal_outstanding_amount">
+                    <mat-error *ngIf="paymentLedgerForm.get('principal_outstanding_amount').hasError('required')">
+                        <strong>Principal Outstanding Amount is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Total Outstanding Amount</mat-label>
+                    <input type="number" matInput [value]="paymentLedgerForm.value.total_outstanding_amount"
+                        [disabled]="isDisabled" formControlName="total_outstanding_amount">
+                    <mat-error *ngIf="paymentLedgerForm.get('total_outstanding_amount').hasError('required')">
+                        <strong>Total Outstanding Amount is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Paid Amount</mat-label>
+                    <input type="number" matInput formControlName="last_paid_amount">
+                    <mat-error *ngIf="paymentLedgerForm.get('last_paid_amount').hasError('required')">
+                        <strong>Last Paid Amount is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Paid Date</mat-label>
+                    <input matInput [matDatepicker]="last_paid_datepicker" formControlName="last_paid_date"
+                        (dateChange)="assignedDateHandler($event)">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="last_paid_datepicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #last_paid_datepicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Minimum Payment</mat-label>
+                    <input type="number" matInput formControlName="minimum_payment">
+                    <mat-error *ngIf="paymentLedgerForm.get('minimum_payment').hasError('required')">
+                        <strong>Minimum Payment is required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="_rows">
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>GHRC Offer 1</mat-label>
+                    <input type="number" matInput [value]="paymentLedgerForm.value.ghrc_offer_1" [disabled]="isDisabled"
+                        formControlName="ghrc_offer_1">
+                    <mat-error *ngIf="paymentLedgerForm.get('ghrc_offer_1').hasError('required')">
+                        <strong>GHRC Offer 1 is required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="paymentLedgerForm.get('ghrc_offer_1').hasError('pattern')">
+                        <strong>GHRC Offer 1 should be numbers only</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>GHRC Offer 2</mat-label>
+                    <input type="number" matInput [value]="paymentLedgerForm.value.ghrc_offer_2" [disabled]="isDisabled"
+                        formControlName="ghrc_offer_2">
+                    <mat-error *ngIf="paymentLedgerForm.get('ghrc_offer_2').hasError('required')">
+                        <strong>GHRC Offer 2 is required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="paymentLedgerForm.get('ghrc_offer_2').hasError('pattern')">
+                        <strong>GHRC Offer 2 should be numbers only</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-sm">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>GHRC Offer 3</mat-label>
+                    <input type="number" matInput [value]="paymentLedgerForm.value.ghrc_offer_3" [disabled]="isDisabled"
+                        formControlName="ghrc_offer_3">
+                    <mat-error *ngIf="paymentLedgerForm.get('ghrc_offer_3').hasError('required')">
+                        <strong>GHRC Offer 3 is required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="paymentLedgerForm.get('ghrc_offer_3').hasError('pattern')">
+                        <strong>GHRC Offer 3 should be numbers only</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <br>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="cancelTask()">Cancel</button>
+    <!-- <button mat-raised-button color="primary" (click)="createPaymentLedgerEntry()"
+        [disabled]="paymentLedgerForm.invalid"
+        *ngIf="dialogTitle && dialogTitle=='New Payment Ledger Entry'">Create</button> -->
+    <button mat-raised-button color="primary" (click)="createPaymentLedgerEntry()"
+        *ngIf="dialogTitle && dialogTitle=='New Payment Ledger Entry'">Create</button>
+    <button mat-raised-button color="primary" (click)="updatePayment(dialogData)" [disabled]="disableCreateTaskBtn"
+        *ngIf="dialogTitle !== 'New Payment Ledger Entry'">Update Payment</button>
+</mat-dialog-actions>
